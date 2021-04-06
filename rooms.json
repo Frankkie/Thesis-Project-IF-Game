@@ -1,0 +1,49 @@
+{
+    "New Room": {
+        "reference_name": "New Room",
+        "reference_noun": "NewRoom",
+        "display_name": "New Room",
+        "description": "This is a new room.",
+        "container": null,
+        "contents": {
+            "Small Room": [
+                {
+                    "reference_name": "Small Room",
+                    "reference_noun": "SmallRoom",
+                    "display_name": "Small Room",
+                    "description": "This is the small room, inside the new room.",
+                    "container": [
+                        "New Room",
+                        "Room"
+                    ],
+                    "contents": {},
+                    "plural": false,
+                    "directions": {},
+                    "_class_": "Room"
+                },
+                "There is a small room."
+            ]
+        },
+        "plural": false,
+        "directions": {
+            "North": [
+                {
+                    "reference_name": "North Room",
+                    "reference_noun": "NorthRoom",
+                    "display_name": "North Room",
+                    "description": "This is the North Room, north of the New Room.",
+                    "container": [
+                        "New Room",
+                        "Room"
+                    ],
+                    "contents": {},
+                    "plural": false,
+                    "directions": {},
+                    "_class_": "Room"
+                },
+                "To the north there is the North Room."
+            ]
+        },
+        "_class_": "Room"
+    }
+}

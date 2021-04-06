@@ -21,3 +21,12 @@ $RECYCLE.BIN/
 # =========================
 # Operating System Files
 # =========================
+
+# Venv Folder
+/venv/
+
+# Pycache Folder
+/__pycache__/
+
+# .idea Folder
+/.idea/

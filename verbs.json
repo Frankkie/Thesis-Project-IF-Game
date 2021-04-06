@@ -1,0 +1,10 @@
+{
+    "eat | O": {
+        "forms": [
+            "eat",
+            "eats"
+        ],
+        "pattern": "O",
+        "_class_": "Verb"
+    }
+}
