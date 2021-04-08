@@ -1,39 +1,60 @@
 import nltk
 from nltk import tokenize as tok
 import string
-import os
-
-import things
-import verbs
-import actors
-import game
-
-Grammar = nltk.data.load('file:grammar.cfg')
+from custom_json import custom_load
 
 
 class Parser:
-
-    def __init__(self, text):
-        self.text = text
+    def __init__(self, actors, verbs):
+        self.parser = nltk.ChartParser(nltk.data.load('file:grammar.cfg'))
+        self.game_actors = actors
+        self.game_verbs = verbs
         self.sent_separators = ('.', '?', '!', ',', 'then', ';')
-        self.text = self.preparse()
-        self.words = self.tokenize()
-        self.parser = nltk.ChartParser(Grammar)
+        self.text = None
+        self.current_actors = None
+        self.words = None
         self.pos = []
         self.trees = []
         self.parts = []
+
+    def run_parser(self, text):
+        self.text = text
+        self.text = self.preparse()
+        self.words = self.tokenize()
+        self.pos = []
+        self.trees = []
+        self.parts = []
+        print(self.words)
         for sentence in self.words:
             sent_pos = self.pos_tagging(sentence)
             self.pos.append(sent_pos)
+            print(self.pos)
             sent_trees = self.build_tree(sent_pos)
             if not sent_trees:
                 self.error_message("GrammarError")
-                return
+                return None
             sent_trees = self.change_tree_labels(sent_trees, sentence)
             self.trees.append(sent_trees)
 
+
+        print(self.trees)
         for sent in self.trees:
             self.id_syntax_parts(sent)
+
+        for sent in self.parts:
+            if not sent:
+                self.error_message("VerbError")
+                return None
+
+        self.disambiguate_pattern()
+        for sent in self.parts:
+            if not sent:
+                self.error_message("SyntaxError")
+                return None
+        print(self.parts)
+
+        # self.disambiguate_object()
+        return self.parts
 
     def preparse(self):
         self.text = self.text.lower()
@@ -45,8 +66,7 @@ class Parser:
         sentences = tok.sent_tokenize(self.text)
         for ind, sent in enumerate(sentences):
             sent_words = tok.word_tokenize(sent)
-            # CHANGE THIS CURRENT_GAME THING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            if sent_words[0].capitalize() not in game.CURRENT_GAME.actors:
+            if sent_words[0].capitalize() not in self.game_actors:
                 if ind > 0:
                     sent_ = [words[0][0]]
                 else:
@@ -80,17 +100,20 @@ class Parser:
         return Trees
 
     def change_tree_labels(self, trees, words):
-        Trees = []
+        new_trees = []
         for tree in trees:
             self.temp_words = [w for w in words]
-            self.traverse_in_order(tree)
-            Trees.append(tree)
-        return Trees
+            # print(trees)
+            ntree = self.traverse_in_order(tree)
+            new_trees.append(tree)
+        return new_trees
 
     def traverse_in_order(self, tree):
         for index, subtree in enumerate(tree):
             subsub = subtree[0]
             if type(subtree) == tuple:
+                if subtree[1] == self.temp_words[0]:
+                    self.temp_words.pop(0)
                 break
             if type(subsub) == str:
                 lbl = subtree.label()
@@ -100,6 +123,7 @@ class Parser:
                 tree[index] = subtree
             else:
                 self.traverse_in_order(subtree)
+        return tree
 
     def id_syntax_parts(self, trees):
         self.parts.append([])
@@ -113,12 +137,22 @@ class Parser:
                     label = subtree.label()
                     sub = subtree
                 if label == "C":
-                    d["Actor"] = [vp.leaves() for vp in list(subtree.subtrees())][0][0][1]
+                    actor = [vp.leaves() for vp in list(subtree.subtrees())][0][0][1]
+                    d["Actor"] = self.game_actors[actor]
                 elif label == "V":
                     verb_parts = [x[1] for x in [vp.leaves() for vp in list(subtree.subtrees())][0]]
-                    d["Verb"] = " ".join(verb_parts)
+                    verb = " ".join(verb_parts)
+                    for v in self.game_verbs.keys():
+                        if verb in self.game_verbs[v].forms:
+                            d["Verb"] = self.game_verbs[v]
+                            break
                 elif label == "O":
-                    d["Object"] = sub
+                    if sub:
+                        obj_parts = [x for x in [vp.leaves() for vp in list(sub.subtrees())][0]]
+                    else:
+                        obj_parts = None
+
+                    d["Object"] = obj_parts
                 elif label == "I":
                     prep = None
                     sub = None
@@ -126,59 +160,48 @@ class Parser:
                         if i == 0:
                             prep = t[1]
                         else:
-                            sub = t
+                            sub = [x for x in [vp.leaves() for vp in list(t.subtrees())][0]]
                     d["Qualifier"] = prep
                     d["Indirect"] = sub
 
-            self.parts[-1].append(d)
+            if d["Verb"]:
+                self.parts[-1].append(d)
 
-    def error_message(self, error_type):
-
-        if error_type == "GrammarError":
-            print("I could not understand your command.")
-
-
-class Interpreter:
-    def __init__(self, sent_components):
-        self.components = sent_components
-        self.actor_cand = self.components["Actor"]
-        self.verb_cand = self.components["Verb"]
-        self.object_cand = self.components["Object"]
-        self.qualifier_cand = self.components["Qualifier"]
-        self.indirect_cand = self.components["Indirect"]
-
-    def disambiguate_actor(self):
-        pass
-
-    def disambiguate_verb(self):
-        pass
+    def disambiguate_pattern(self):
+        for s_index, sent in enumerate(self.parts):
+            for t_index, tree in enumerate(sent):
+                pattern = ""
+                if tree["Object"]:
+                    pattern += "O"
+                if tree["Qualifier"]:
+                    pattern += "Q"
+                if tree["Indirect"]:
+                    pattern += "I"
+                if pattern not in tree["Verb"].patterns:
+                    sent.pop(t_index)
+                    self.parts[s_index] = sent
 
     def disambiguate_object(self):
-        pass
-
-    def disambiguate_qualifier(self):
-        pass
-
-    def disambiguate_ind_object(self):
-        pass
+        for s_index, sent in enumerate(self.parts):
+            for t_index, tree in enumerate(sent):
+                obj = tree["Object"]
+                if obj:
+                    pass
 
     def error_message(self, error_type):
-        if error_type == "ActorNotKnownError":
-            print("There is no character named %s." % self.actor_cand)
-        if error_type == "ActorMissingError":
-            print("%s is not in the room" % self.actor_cand.capitalize())
-        if error_type == "ActorNotCommandable":
-            print("%s refuses to do what you're asking of them." % self.actor_cand.capitalize())
+        if error_type == "GrammarError":
+            print("I could not understand your command.")
+        if error_type == "VerbError":
+            print("I could not understand this verb.")
+        if error_type == "SyntaxError":
+            print("This is the incorrect syntax for this verb.")
 
 
 if __name__ == "__main__":
+
+    parser = Parser(custom_load("actors.json"), custom_load("verbs.json"))
     while True:
         text = input("> ")
-        parser = Parser(text)
-        print(parser.parts)
-
+        parser.run_parser(text)
         if text == "quit":
             break
-
-    os.system("pause")
-

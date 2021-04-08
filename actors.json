@@ -1,6 +1,6 @@
 {
-    "I player": {
-        "reference_name": "I player",
+    "I": {
+        "reference_name": "I",
         "reference_noun": "I",
         "display_name": "you",
         "description": "This is you, the player.",
@@ -9,8 +9,8 @@
         "plural": false,
         "_class_": "Actor"
     },
-    "Carl player": {
-        "reference_name": "Carl player",
+    "Carl": {
+        "reference_name": "Carl",
         "reference_noun": "Carl",
         "display_name": "Carl",
         "description": "This is Carl, the computer.",

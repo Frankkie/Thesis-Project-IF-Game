@@ -1,8 +1,10 @@
-from verbs import *
-from rooms import *
-from things import *
-
 import json
+
+from verbs import Verb
+from rooms import Room
+from things import Thing
+from actors import Actor
+from entities import Entity
 
 
 class EncodeCustom(json.JSONEncoder):
@@ -24,6 +26,7 @@ class DecodeCustom(json.JSONDecoder):
         json.JSONDecoder.__init__(self, object_hook=self.object_hook, *args, **kwargs)
 
     def object_hook(self, dct):
+
         if isinstance(dct, dict) and '_class_' in dct:
             class_name = dct['_class_']
             del dct['_class_']

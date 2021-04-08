@@ -2,10 +2,8 @@
     This is the file for the Game class, the class that holds all the important information
     about the game and its state.
 """
-import things
-import actors
-import verbs
-
+import custom_json as cjson
+from my_parser import Parser
 
 class Game:
     def __init__(self, title, credits_, curr_room):
@@ -20,8 +18,7 @@ class Game:
     def boot_game(self):
         # Load Verbs, Actors and Things
         # CHANGE THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        self.actors.append(actors.Actor("I", "you", description="This is you, the player.",
-                                        container=CURRENT_GAME.current_room))
+        self.actors = cjson.custom_load("actors.json")
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         print(self.title)
         print(self.credits)
@@ -39,9 +36,4 @@ class Game:
     def quit_game(self):
         print("You quit '%s'! Such a shame." % self.title)
         return
-
-
-#############################################################################
-
-CURRENT_GAME = Game("Test Game", "", None)
 

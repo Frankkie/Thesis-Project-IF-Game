@@ -1,10 +1,112 @@
 {
-    "eat | O": {
-        "forms": [
-            "eat",
-            "eats"
-        ],
-        "pattern": "O",
+    "eat": {
+        "forms": ["eat", "eats"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "drink": {
+        "forms": ["drink", "drinks"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "go": {
+        "forms": ["go", "goes"],
+        "patterns": ["Q"],
+        "_class_": "Verb"
+    },
+    "go to": {
+        "forms": ["go to", "goes to"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "make": {
+        "forms": ["make", "makes"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "take": {
+        "forms": ["take", "takes"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "come": {
+        "forms": ["come", "comes"],
+        "patterns": ["Q", "QI"],
+        "_class_": "Verb"
+    },
+    "look for": {
+        "forms": ["look for", "looks for"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "look at": {
+        "forms": ["look at", "looks at"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "look in": {
+        "forms": ["look in", "looks in"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "look": {
+        "forms": ["look", "looks"],
+        "patterns": [""],
+        "_class_": "Verb"
+    },
+    "use": {
+        "forms": ["use", "uses"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "find": {
+        "forms": ["find", "finds"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "call": {
+        "forms": ["call", "calls"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "ask": {
+        "forms": ["ask", "asks"],
+        "patterns": ["O", "QI"],
+        "_class_": "Verb"
+    },
+    "feel": {
+        "forms": ["feel", "feels"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "become": {
+        "forms": ["become", "becomes"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "leave": {
+        "forms": ["leave", "leaves"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "put": {
+        "forms": ["put", "puts"],
+        "patterns": ["OQI"],
+        "_class_": "Verb"
+    },
+    "begin": {
+        "forms": ["begin", "begins"],
+        "patterns": ["O"],
+        "_class_": "Verb"
+    },
+    "talk": {
+        "forms": ["talk", "talks"],
+        "patterns": ["QI"],
+        "_class_": "Verb"
+    },
+    "listen": {
+        "forms": ["hear", "hears"],
+        "patterns": ["", "QI"],
         "_class_": "Verb"
     }
 }

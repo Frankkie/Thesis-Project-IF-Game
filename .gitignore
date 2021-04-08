@@ -30,3 +30,6 @@ $RECYCLE.BIN/
 
 # .idea Folder
 /.idea/
+
+# Testing files
+testing_site.py

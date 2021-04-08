@@ -8,29 +8,18 @@
 
 
 class Verb:
-    def __init__(self, forms, pattern):
-        self.name = forms[0] + " | " + pattern
+    def __init__(self, forms, patterns):
         self.forms = forms
-        self.pattern = pattern
-
-    def match(self, form, pattern):
-        if form in self.forms:
-            if pattern == self.pattern:
-                return True
-            else:
-                return False
-        else:
-            return False
+        self.patterns = patterns
 
     def __str__(self):
-        return self.name
+        return self.forms[0]
 
     def to_json(self):
         """
             convert the instance of this class to json
         """
         obj_dict = self.__dict__
-        del obj_dict["name"]
         obj_dict["_class_"] = "Verb"
         return obj_dict
 
