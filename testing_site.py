@@ -1,19 +1,29 @@
 from custom_json import custom_load
+from custom_json import custom_dump
 import my_parser
 import os
+from things import *
 
 
 if __name__ == "__main__":
+    """things = {}
+    things["green tomato"] = Thing("green tomato", "tomato", "the green tomato",
+                                   reference_adjectives=["green", "plump"])
+    things["yellow dog"] = Thing("yellow dog", "dog", "the yellow dog",
+                                 reference_adjectives=["yellow", "big"])
+    things["golden duck"] = Thing("golden duck", "duck", "the golden duck",
+                                  reference_adjectives=["gold", "golden"])
+
+    custom_dump(things, "test_things.json")"""
     while True:
         text = input("> ")
-        parser = my_parser.Parser()
-        parts = parser.run_parser(text, custom_load("actors.json"))
+        parser = my_parser.Parser(custom_load("actors.json"), custom_load("verbs.json"),
+                                  custom_load("test_things.json"))
+        parts = parser.run_parser(text)
         print(parts)
 
         if text == "quit":
             break
-
-    os.system("pause")
 
     # ROOMS
     """ins_room = Room("Small Room", "SmallRoom", "Small Room",
