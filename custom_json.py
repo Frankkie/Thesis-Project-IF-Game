@@ -1,6 +1,7 @@
 import json
 
 from verbs import Verb
+from game import Game
 from rooms import Room
 from things import Thing
 from actors import Actor

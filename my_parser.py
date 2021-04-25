@@ -1,7 +1,6 @@
 import nltk
 from nltk import tokenize as tok
 import string
-from custom_json import custom_load
 
 
 def remove_duplicates(lst):
@@ -15,20 +14,39 @@ def remove_duplicates(lst):
     return [i for n, i in enumerate(lst) if i not in lst[:n]]
 
 
-def error_message(error_type):
+class PreParser:
     """
-    This function prints an error message.
-    :param error_type: A string.
-    :return: None
+        The PreParser class is responsible for identifying the type of the command that is
+        provided by the player, and some basic pre-processing before parsing.
     """
-    if error_type == "GrammarError":
-        print("I could not understand your command.")
-    if error_type == "VerbError":
-        print("I could not understand this verb.")
-    if error_type == "SyntaxError":
-        print("This is the incorrect syntax for this verb.")
-    if error_type == "EntityError":
-        print("This object is not here.")
+    def __init__(self):
+        self.text = None
+        self.cmd_type = None
+
+    def run_preparser(self, text):
+        self.text = text
+        self.pre_process()
+        self.cmd_type = self.id_command_type()
+
+    def id_command_type(self):
+        cmd_type = "Command"
+        if self.text in ["quit", "q"]:
+            return "Quit"
+        if self.text in ["help", "h"]:
+            return "Help"
+        if self.text in ["undo", "u", "oops"]:
+            return "Undo"
+        if self.text in ["save", "s"]:
+            return "Save"
+        return cmd_type
+
+    def pre_process(self):
+        """
+        This function processes the text before parsing.
+        :return:
+        """
+        self.text = self.text.lower()
+        self.text = self.text.strip()
 
 
 class Parser:
@@ -37,18 +55,14 @@ class Parser:
         in the game prompt. It then matches the syntactic parts of the sentence, with
         the various Actors, Verbs, and other Entities in the game.
     """
-    def __init__(self, actors, verbs, things):
+    def __init__(self, game):
         """
         The constructor of the Parser Class.
-        :param actors: Dictionary of the active Actor objects in the game.
-        :param verbs: Dictionary of the Verb objects in the game.
-        :param things: Dictionary of the things in the disposal of the player at the moment in the game.
+        :param game: An instance of the Game class.
         """
         # Load custom Context Free Grammar from file and create a ChartParser NLTK object.
         self.parser = nltk.ChartParser(nltk.data.load('file:grammar.cfg'))
-        self.game_actors = actors
-        self.game_verbs = verbs
-        self.game_things = things
+        self.game = game
         # Symbols/Words that can separate sentences.
         self.sent_separators = ('.', '?', '!', ',', 'then', ';')
         # The text given in the prompt by the user.
@@ -71,7 +85,6 @@ class Parser:
                  "Qualifier", "Indirect"} and values being Verb and Entity objects of the game.
         """
         self.text = text
-        self.text = self.preparse()
         self.words = self.tokenize()
         self.pos = []
         self.trees = []
@@ -84,8 +97,7 @@ class Parser:
             sent_trees = self.build_tree(sent_pos)
             # If the grammar fails to create a tree, there is a GrammarError.
             if not sent_trees:
-                error_message("GrammarError")
-                return None
+                return "GrammarError"
             # Tree labels are changed from POS Tags to (POS, word) tuples.
             sent_trees = self.change_tree_labels(sent_trees, sentence)
             self.trees.append(sent_trees)
@@ -99,8 +111,7 @@ class Parser:
             sent = [t for t in sent if t]
             if not sent:
                 # If a sentence is left without valid trees, raise a Verb Error.
-                error_message("VerbError")
-                return None
+                return "VerbError"
             sent = remove_duplicates(sent)
             self.parts[s_index] = sent
 
@@ -112,8 +123,7 @@ class Parser:
             sent = [t for t in sent if t]
             if not sent:
                 # If a sentence is left without valid trees, raise a Syntax Error.
-                error_message("SyntaxError")
-                return None
+                return "SyntaxError"
             sent = remove_duplicates(sent)
             self.parts[s_index] = sent
 
@@ -140,20 +150,11 @@ class Parser:
             sent = [t for t in sent if t]
             if not sent:
                 # If a sentence is left without valid trees, raise an Entity Error
-                error_message("EntityError")
-                return None
+                return "EntityError"
             sent = remove_duplicates(sent)
             self.parts[s_index] = sent
 
         return self.parts
-
-    def preparse(self):
-        """
-        This function processes the text before parsing.
-        :return self.text:
-        """
-        self.text = self.text.lower()
-        return self.text
 
     def tokenize(self):
         """
@@ -166,7 +167,7 @@ class Parser:
         for ind, sent in enumerate(sentences):
             sent_words = tok.word_tokenize(sent)
             # If the first word of the sentence is not a game actor, the parser supposes it it "I"
-            if sent_words[0].capitalize() not in self.game_actors:
+            if sent_words[0].capitalize() not in self.game.actors:
                 if ind > 0:
                     sent_ = [words[0][0]]
                 else:
@@ -258,13 +259,13 @@ class Parser:
                     sub = subtree
                 if label == "C":
                     actor = [vp.leaves() for vp in list(subtree.subtrees())][0][0][1]
-                    d["Actor"] = self.game_actors[actor]
+                    d["Actor"] = self.game.actors[actor]
                 elif label == "V":
                     verb_parts = [x[1] for x in [vp.leaves() for vp in list(subtree.subtrees())][0]]
                     verb = " ".join(verb_parts)
-                    for v in self.game_verbs.keys():
-                        if verb in self.game_verbs[v].forms:
-                            d["Verb"] = self.game_verbs[v]
+                    for v in self.game.verbs.keys():
+                        if verb in self.game.verbs[v].forms:
+                            d["Verb"] = self.game.verbs[v]
                             break
                 elif label == "O":
                     if sub:
@@ -328,20 +329,20 @@ class Parser:
         entity_list = []
         for thing in things:
             entity = None
-            for g_thing in self.game_things.keys():
-                if self.game_things[g_thing].reference_noun == thing["Noun"]:
+            for g_thing in self.game.things.keys():
+                if self.game.things[g_thing].reference_noun == thing["Noun"]:
                     match = True
-                    if self.game_things[g_thing].__class__.__name__ == "Actor":
-                        entity = self.game_things[g_thing]
+                    if self.game.things[g_thing].__class__.__name__ == "Actor":
+                        entity = self.game.things[g_thing]
                     else:
                         for adj in thing["Adjectives"]:
-                            if adj not in self.game_things[g_thing].reference_adjectives:
+                            if adj not in self.game.things[g_thing].reference_adjectives:
                                 match = False
                                 break
                         if not match:
                             continue
                         else:
-                            entity = self.game_things[g_thing]
+                            entity = self.game.things[g_thing]
                 else:
                     continue
             if not entity:
@@ -352,12 +353,3 @@ class Parser:
         return entity_list
 
 
-if __name__ == "__main__":
-
-    parser = Parser(custom_load("actors.json"), custom_load("verbs.json"), custom_load("test_things.json"))
-    while True:
-        text = input("> ")
-        parser.run_parser(text)
-        print(parser.parts)
-        if text == "quit":
-            break
