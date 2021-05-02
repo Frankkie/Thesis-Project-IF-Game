@@ -59,7 +59,10 @@ class Chapter:
                 return result
 
     def __eval_conditions(self, conditions):
-        return False
+        for cond in conditions:
+            if not cond.eval_condition():
+                return False
+        return True
 
     def __end_chapter(self, next_chapter):
         if next_chapter in self.outro_description.keys():
