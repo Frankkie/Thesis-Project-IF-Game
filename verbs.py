@@ -8,12 +8,13 @@
 
 
 class Verb:
-    def __init__(self, forms, patterns):
+    def __init__(self, forms, patterns, name):
         self.forms = forms
         self.patterns = patterns
+        self.name = name
 
     def __str__(self):
-        return self.forms[0]
+        return self.name
 
     def to_json(self):
         """
@@ -24,13 +25,3 @@ class Verb:
         return obj_dict
 
 
-if __name__ == "__main__":
-    pass
-    """import custom_json
-
-    v = Verb(["take", "takes", "took"], "O")
-    VERBS = {v.name: v}
-
-    with open("verbs.json", "w") as file:
-        print(isinstance(v, Verb))
-        custom_json.custom_dump(v, file)"""

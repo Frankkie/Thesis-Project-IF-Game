@@ -1,0 +1,79 @@
+{
+    "green tomato": {
+        "key": "green tomato",
+        "reference_noun": "tomato",
+        "display_name": "green tomato",
+        "description": "This is a really plump tomato, but it's still quite green. It's not matured enough yet.",
+        "container": null,
+        "contents": {},
+        "plural": false,
+        "reference_adjectives": [
+            "green",
+            "plump"
+        ],
+        "as_indobj": {
+            "On": true
+        },
+        "action_description": null,
+        "_class_": "Thing"
+    },
+    "yellow dog": {
+        "key": "yellow dog",
+        "reference_noun": "dog",
+        "display_name": "yellow dog",
+        "description": "",
+        "examine_description": "The dog is wagging his tail with joy. It's a Golden Retriever. She's quite old, but seems just as energetic as a young puppy.\nOn her you see a small red light beeping. Curious, you think.",
+        "container": null,
+        "contents": {
+                    "red beeping light": {
+                        "obj": {
+                            "key": "red beeping light",
+                            "reference_noun": "light",
+                            "display_name": "red light",
+                            "description": "This is a small beeping light.",
+                            "examine_description": null,
+                            "container": "yellow dog",
+                            "contents": {},
+                            "plural": false,
+                            "reference_adjectives": [
+                                "red",
+                                "beeping"
+                            ],
+                            "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": false,
+                                           "Close": false, "Push": false, "Use": false, "Read": false, "Put": true, "Send": false,
+                                           "Landon": false, "Enter": false, "Leave": false, "Setup": false, "Swerveoff": false},
+                            "action_description": {
+                                "Take": "You take the small object that's emitting the light in your hands. It's metallic."
+                            },
+                            "_class_": "Thing"
+                        },
+                        "tags": ["Inventory", "Look", "Listen"]
+                    }
+        },
+        "plural": false,
+        "reference_adjectives": [
+            "yellow",
+            "big"
+        ],
+        "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
+                       "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
+                       "Landon": true, "Enter": true, "Leave": true, "Setup": true, "Swerveoff": true},
+        "action_description": null,
+        "_class_": "Thing"
+    },
+    "golden duck": {
+        "key": "golden duck",
+        "reference_noun": "duck",
+        "display_name": "golden duck",
+        "description": "",
+        "container": null,
+        "contents": {},
+        "plural": false,
+        "reference_adjectives": [
+            "gold",
+            "golden"
+        ],
+        "action_description": null,
+        "_class_": "Thing"
+    }
+}

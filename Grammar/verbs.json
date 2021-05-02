@@ -1,0 +1,128 @@
+{
+    "Go": {
+        "forms": ["go", "goes"],
+        "patterns": ["Q"],
+        "_class_": "Verb",
+        "name": "Go"
+    },
+    "Look": {
+        "forms": ["look", "looks", "look at", "looks at", "examine", "examines", "look around", "looks around", "x"],
+        "patterns": ["", "O"],
+        "_class_": "Verb",
+        "name": "Look"
+    },
+    "Listen": {
+        "forms": ["listen", "listens", "listen to", "listens to"],
+        "patterns": ["O", ""],
+        "_class_": "Verb",
+        "name": "Listen"
+    },
+    "Take": {
+        "forms": ["take", "takes"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Take"
+    },
+    "Drop": {
+        "forms": ["drop", "drops"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Drop"
+    },
+    "Open": {
+        "forms": ["open", "opens", "open up", "opens up"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Open"
+    },
+    "Close": {
+        "forms": ["close", "closes"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Close"
+    },
+    "Push": {
+        "forms": ["push", "pushes"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Push"
+    },
+    "Use": {
+        "forms": ["use", "uses"],
+        "patterns": ["O", "OQI"],
+        "_class_": "Verb",
+        "name": "Use"
+    },
+    "Talkto": {
+        "forms": ["talk to"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Talkto"
+    },
+    "Read": {
+        "forms": ["read", "reads"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Read"
+    },
+    "Put": {
+        "forms": ["put", "puts"],
+        "patterns": ["OQI"],
+        "_class_": "Verb",
+        "name": "Put"
+    },
+    "Send": {
+        "forms": ["send", "sends"],
+        "patterns": ["OQI"],
+        "_class_": "Verb",
+        "name": "Send"
+    },
+    "Landon": {
+        "forms": ["land on", "lands on"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Landon"
+    },
+    "Takeoff": {
+        "forms": ["take off", "takes off"],
+        "patterns": [""],
+        "_class_": "Verb",
+        "name": "Takeoff"
+    },
+    "Enter": {
+        "forms": ["enter", "enters"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Enter"
+    },
+    "Leave": {
+        "forms": ["leave", "leaves", "exit", "exits"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Leave"
+    },
+    "Setup": {
+        "forms": ["set up", "sets up", "build", "builds"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Setup"
+    },
+    "Swerveoff": {
+        "forms": ["swerve off", "swerves off"],
+        "patterns": ["O"],
+        "_class_": "Verb",
+        "name": "Swerveoff"
+    },
+    "Speedup": {
+        "forms": ["speed up", "speeds up"],
+        "patterns": [""],
+        "_class_": "Verb",
+        "name": "Speedup"
+    },
+    "Slowdown": {
+        "forms": ["slow down", "slows down"],
+        "patterns": [""],
+        "_class_": "Verb",
+        "name": "Slowdown"
+    }
+}

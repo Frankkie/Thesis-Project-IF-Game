@@ -44,25 +44,25 @@ class Room(Entity):
         """
             This method adds another direction to the directions dictionary of the object.
 
-            :param other: iterable, other[0] should be a direction string,
-                                    other[1] should be an Entity instance,
-                                    other[2] should be the directions description (optional)
+            :param other: dictionary, "dir" should be a direction string,
+                                    "room" should be a Room instance,
+                                    "desc" should be the directions description (optional)
             :return: The object itself.
         """
-        if isinstance(other, list) or isinstance(other, tuple):
-            if isinstance(other[1], Entity):
-                obj = other[1]
-                dir_ = other[0]
-                obj.container = [self.reference_name, self.__class__.__name__]
-                if len(other) == 2:
-                    desc = obj.description
+        if isinstance(other, dict):
+            if isinstance(other["room"], Room):
+                room = other["room"]
+                dir_ = other["dir"]
+                room.container = self.container
+                if "desc" not in other.keys():
+                    desc = room.description
                 else:
-                    desc = other[2]
+                    desc = other["desc"]
             else:
                 raise TypeError
         else:
             raise TypeError
 
-        self.directions[dir_] = [obj, desc]
+        self.directions[dir_] = {"room": room, "desc": desc}
         return self
 

@@ -1,0 +1,9 @@
+{
+  "In": ["in", "into", "inside"],
+  "On": ["on", "onto"],
+  "With": ["with"],
+  "Under": ["under", "bellow"],
+  "To": ["to", "towards", "at"],
+  "Over": ["above", "over"],
+  "Behind": ["behind"]
+}

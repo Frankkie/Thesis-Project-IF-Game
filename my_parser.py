@@ -1,6 +1,8 @@
 import nltk
 from nltk import tokenize as tok
 import string
+from errors import *
+import json
 
 
 def remove_duplicates(lst):
@@ -61,10 +63,12 @@ class Parser:
         :param game: An instance of the Game class.
         """
         # Load custom Context Free Grammar from file and create a ChartParser NLTK object.
-        self.parser = nltk.ChartParser(nltk.data.load('file:grammar.cfg'))
+        self.parser = nltk.ChartParser(nltk.data.load('file:Grammar/grammar.cfg'))
         self.game = game
         # Symbols/Words that can separate sentences.
         self.sent_separators = ('.', '?', '!', ',', 'then', ';')
+        with open("Grammar/qualifiers.json", "r") as file:
+            self.qualifier_types = json.load(file)
         # The text given in the prompt by the user.
         self.text = ""
         # A list of the words/tokens in the text
@@ -93,14 +97,25 @@ class Parser:
         # Building the syntactic trees for each sentence.
         for sentence in self.words:
             sent_pos = self.pos_tagging(sentence)
+            for actor in self.game.actors.values():
+                if actor.reference_noun == sentence[-1]:
+                    sent_pos[-1] = "NNP"
             self.pos.append(sent_pos)
             sent_trees = self.build_tree(sent_pos)
             # If the grammar fails to create a tree, there is a GrammarError.
             if not sent_trees:
-                return "GrammarError"
+                raise ParserError("GrammarError")
+            trees = []
+            tree_count = 0
+            for tree in sent_trees:
+                trees.append(tree)
+                tree_count += 1
+            if tree_count == 0:
+                raise ParserError("GrammarError")
+
             # Tree labels are changed from POS Tags to (POS, word) tuples.
-            sent_trees = self.change_tree_labels(sent_trees, sentence)
-            self.trees.append(sent_trees)
+            trees = self.change_tree_labels(trees, sentence)
+            self.trees.append(trees)
 
         # Identify the syntactic parts of sentences.
         for sent in self.trees:
@@ -111,7 +126,7 @@ class Parser:
             sent = [t for t in sent if t]
             if not sent:
                 # If a sentence is left without valid trees, raise a Verb Error.
-                return "VerbError"
+                raise ParserError("VerbError")
             sent = remove_duplicates(sent)
             self.parts[s_index] = sent
 
@@ -123,7 +138,7 @@ class Parser:
             sent = [t for t in sent if t]
             if not sent:
                 # If a sentence is left without valid trees, raise a Syntax Error.
-                return "SyntaxError"
+                raise ParserError("SyntaxError")
             sent = remove_duplicates(sent)
             self.parts[s_index] = sent
 
@@ -150,7 +165,7 @@ class Parser:
             sent = [t for t in sent if t]
             if not sent:
                 # If a sentence is left without valid trees, raise an Entity Error
-                return "EntityError"
+                raise ParserError("EntityError")
             sent = remove_duplicates(sent)
             self.parts[s_index] = sent
 
@@ -282,8 +297,12 @@ class Parser:
                             prep = t[1]
                         else:
                             sub = [x for x in [vp.leaves() for vp in list(t.subtrees())][0]]
-                    d["Qualifier"] = prep
+                    d["Qualifier"] = self.disambiguate_qualifier(prep)
                     d["Indirect"] = sub
+
+                elif label == "J" or label == "B":
+                    prep = subtree[1]
+                    d["Qualifier"] = self.disambiguate_qualifier(prep)
 
             # Only the trees with a valid Verb object are added back to the list.
             if d["Verb"]:
@@ -307,6 +326,15 @@ class Parser:
                 if pattern not in tree["Verb"].patterns:
                     sent[t_index] = None
                     self.parts[s_index] = sent
+
+    def disambiguate_qualifier(self, qualifier):
+        if not qualifier:
+            return None
+        q_dict = self.qualifier_types
+        for category in q_dict.keys():
+            if qualifier in q_dict[category]:
+                return category
+        return qualifier.capitalize()
 
     def disambiguate_noun_phrase(self, noun_phrase):
         """
@@ -349,7 +377,7 @@ class Parser:
                 return None
             else:
                 entity_list.append(entity)
-
+        entity_list.reverse()
         return entity_list
 
 

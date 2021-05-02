@@ -9,8 +9,6 @@ class Thing(Entity):
         Args:
             :param reference_adjectives: default=None, this is a list of adjectives by which the object.
                                          might be referred by the player.
-            :param desc: default="", this is the string by which the object is described by the look method.
-            :param container: default=None, this is the container Thing of the object.
         """
         super().__init__(*args, **kwargs)
         if reference_adjectives is None:
