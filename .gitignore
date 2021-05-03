@@ -39,5 +39,6 @@ _test
 # Helper files
 verb_names.txt
 Empty
-Games/Test/current
-Games/Test/_temp
+/current/
+/_temp/
+/save_
