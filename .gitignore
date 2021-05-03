@@ -34,11 +34,10 @@ $RECYCLE.BIN/
 # Testing files
 testing_site.py
 Stellar Dataset/hygdata_v3.csv
-_test
 
 # Helper files
 verb_names.txt
 Empty
-Game/Test/current
-Game/Test/_temp
-Game/Test/save_
+Games/Test/current
+Games/Test/_temp
+Games/Test/save_
