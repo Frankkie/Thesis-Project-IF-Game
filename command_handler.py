@@ -133,7 +133,6 @@ class CommandHandler:
         except PreconditionsError as error:
             raise error
 
-        self.__save_game_state()
         return True
 
     def action_execution(self, sentence, syntax):
@@ -222,10 +221,6 @@ class CommandHandler:
             return result
         except PreconditionsError as error:
             raise error
-
-    def __save_game_state(self):
-        self.game.save_game(display=False)
-        return
 
     def __action_(self, actor, verb):
         return actor, verb

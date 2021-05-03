@@ -2,9 +2,8 @@
 
 class Chapter:
     def __init__(self, key, title, previous_chapter, intro_description, outro_description,
-                 events=None, end_conditions=None):
+                 room_file, first_room, events=None, end_conditions=None):
         """
-
         :param key: string
         :param title: string
         :param previous_chapter: string, chapter key
@@ -18,6 +17,8 @@ class Chapter:
         self.previous_chapter = previous_chapter
         self.intro_description = intro_description
         self.outro_description = outro_description
+        self.room_file = room_file
+        self.first_room = first_room
         if not events:
             self.events = {}
         else:
@@ -48,23 +49,26 @@ class Chapter:
         for event_key in self.events:
             event = self.events[event_key]
             conditions = event.trigger_conditions
-            if self.__eval_conditions(conditions) and not event.done:
+            if self.__eval_conditions(game, conditions) and not event.done:
                 result["Descriptions"].append(self.__trigger_event(event, game))
 
-        for chapter_key in self.end_conditions.keys():
-            conditions = self.end_conditions[chapter_key]
-            if self.__eval_conditions(conditions):
-                result["Descriptions"].append(self.__end_chapter(chapter_key))
+        for condition_set in self.end_conditions:
+            conditions = condition_set["conditions"]
+            chapter_key = condition_set["next chapter"]
+            if self.__eval_conditions(game, conditions):
+                result["Descriptions"].append(self._end_chapter(chapter_key))
                 result["Next Chapter"] = chapter_key
                 return result
 
-    def __eval_conditions(self, conditions):
+        return result
+
+    def __eval_conditions(self, game, conditions):
         for cond in conditions:
-            if not cond.eval_condition():
+            if not cond.eval_condition(game):
                 return False
         return True
 
-    def __end_chapter(self, next_chapter):
+    def _end_chapter(self, next_chapter):
         if next_chapter in self.outro_description.keys():
             result = self.outro_description[next_chapter]
             return result
@@ -98,6 +102,15 @@ class EndChapter(Chapter):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def start_chapter(self):
+        result = {"Descriptions": [], "Next Chapter": "__END__"}
+        if self.previous_chapter in self.intro_description.keys():
+            result["Descriptions"].append(self.intro_description[self.previous_chapter])
+        else:
+            result["Descriptions"].append(self.intro_description['generic'])
+        result["Descriptions"].append(self._end_chapter("__END__"))
+        return result
 
 
 class DeathChapter(Chapter):

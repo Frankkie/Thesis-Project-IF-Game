@@ -1,12 +1,13 @@
 import json
 
 from verbs import Verb
+from entities import Entity
 from rooms import Room
 from things import Thing
 from actors import Actor
 from chapters import *
 from events import Event
-from entities import Entity
+from conditions import Condition
 
 
 class EncodeCustom(json.JSONEncoder):
@@ -18,6 +19,8 @@ class EncodeCustom(json.JSONEncoder):
         if isinstance(obj, Chapter):
             return obj.to_json()
         if isinstance(obj, Event):
+            return obj.to_json()
+        if isinstance(obj, Condition):
             return obj.to_json()
         return json.JSONEncoder.default(self, obj)
 

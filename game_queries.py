@@ -50,11 +50,13 @@ class GameQuery:
                 return None
 
     def __disambiguate_attribute(self, obj):
-        if self.instance_type == "GameState":
+        if self.instance_type == "Game" and self.instance_key == "game_state":
             try:
                 return obj[self.attribute_name]
             except KeyError:
                 raise KeyError
+        elif self.instance_type == "Game":
+            return obj
         else:
             try:
                 return getattr(obj, self.attribute_name)
