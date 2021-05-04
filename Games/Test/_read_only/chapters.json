@@ -17,9 +17,7 @@
         "conditions": [
           {
             "key": "IntroEnd1",
-            "instance_key": "game_state",
-            "instance_type": "Game",
-            "attribute_name": "current room",
+            "attribute_path": "game_state.current room",
             "values": [
               "North Room"
             ],

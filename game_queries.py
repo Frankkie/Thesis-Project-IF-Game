@@ -5,60 +5,35 @@ class GameQuery:
 
     """
 
-    def __init__(self, game, instance_type, instance_key, attribute_name):
+    def __init__(self, game, attribute_path):
         """
-        :param instance_key: String, the key of the object that the condition references.
-        :param instance_type: String, either Thing, Room, Actor or Game
-        :param attribute_name: The name of the attribute of the object that the condition references.
+        :param attribute_path: String, The "path" of the attribute of the object that the condition references.
+                               The "path" is evaluated as the chain of attributes/keys/indexes which can point
+                               to a specific variable (starting from game). Each attribute/key/index in the path
+                               is divided by a point "."
         """
         self.game = game
-        self.instance_type = instance_type
-        self.instance_key = instance_key
-        self.instance_type = instance_type
-        self.attribute_name = attribute_name
+        self.attribute_path = attribute_path.split(".")
 
     def query(self):
-        obj = self.__disambiguate_object()
-        if not obj:
-            raise AttributeError
-        try:
-            attr = self.__disambiguate_attribute(obj)
-        except (KeyError, AttributeError):
-            raise AttributeError
-        return obj, attr
+        attribute_sequence = [self.game]
+        for attr in self.attribute_path:
+            deepest_obj = attribute_sequence[-1]
+            if type(deepest_obj) == dict:
+                try:
+                    next_obj = deepest_obj[attr]
+                except KeyError:
+                    return None
+            elif type(deepest_obj) == list or type(deepest_obj) == tuple:
+                try:
+                    next_obj = deepest_obj[int(attr)]
+                except IndexError:
+                    return None
+            else:
+                try:
+                    next_obj = getattr(deepest_obj, attr)
+                except AttributeError:
+                    return None
 
-    def __disambiguate_object(self):
-        if self.instance_type == "Game":
-            try:
-                return getattr(self.game, self.instance_key)
-            except AttributeError:
-                return None
-        if self.instance_type == "Room":
-            try:
-                return self.game.rooms[self.instance_key]
-            except KeyError:
-                return None
-        if self.instance_type == "Actor":
-            try:
-                return self.game.actors[self.instance_key]
-            except KeyError:
-                return None
-        else:
-            try:
-                return self.game.things[self.instance_key]
-            except KeyError:
-                return None
-
-    def __disambiguate_attribute(self, obj):
-        if self.instance_type == "Game" and self.instance_key == "game_state":
-            try:
-                return obj[self.attribute_name]
-            except KeyError:
-                raise KeyError
-        elif self.instance_type == "Game":
-            return obj
-        else:
-            try:
-                return getattr(obj, self.attribute_name)
-            except AttributeError:
-                raise AttributeError
+            attribute_sequence.append(next_obj)
+        return attribute_sequence

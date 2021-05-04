@@ -7,33 +7,31 @@ class Condition:
     Conditions are essentially object - value pairs that are to be evaluated either as true or false.
     """
 
-    def __init__(self, key, instance_key, instance_type, attribute_name, values, not_=False):
+    def __init__(self, key, attribute_path, values, not_=False):
         """
         :param key: String, the key of the condition.
-        :param instance_key: String, the key of the object that the condition references.
-        :param instance_type: String, either Thing, Room, Actor or Game.
-        :param attribute_name: The name of the attribute of the object that the condition references.
+        :param attribute_path: String, The "path" of the attribute of the object that the condition references.
+                               The "path" is evaluated as the chain of attributes/keys/indexes which can point
+                               to a specific variable (starting from game). Each attribute/key/index in the path
+                               is divided by a point "."
         :param values: List of Strings/Booleans/Lists of numbers/Numbers, the values or value ranges for which the
                       condition is deemed True. All the elements of the list are sufficient conditions for
                       valuing the condition as True.
         :param not_: Boolean, default=False, If True, the truth value of each value comparison is reversed.
         """
         self.key = key
-        self.instance_key = instance_key
-        self.instance_type = instance_type
-        self.attribute_name = attribute_name
+        self.attribute_path = attribute_path
         self.values = values
         self.not_ = not_
 
     def eval_condition(self, game):
-        try:
-            q = GameQuery(game, self.instance_type, self.instance_key, self.attribute_name)
-            obj, attr = q.query()
-        except AttributeError:
-            print("Attribute not found! ", self.instance_type, self.instance_key, self.attribute_name)
+        q = GameQuery(game, self.attribute_path)
+        path = q.query()
+        if not path:
             return False
+
         for v in self.values:
-            res = self.__compare_value(attr, v)
+            res = self.__compare_value(path[-1], v)
             if self.not_:
                 res = not res
             if res:

@@ -1,13 +1,14 @@
 import json
 
-from verbs import Verb
-from entities import Entity
-from rooms import Room
-from things import Thing
-from actors import Actor
+from verbs import *
+from entities import *
+from rooms import *
+from things import *
+from actors import *
 from chapters import *
-from events import Event
-from conditions import Condition
+from events import *
+from conditions import *
+from state_updates import *
 
 
 class EncodeCustom(json.JSONEncoder):
@@ -21,6 +22,8 @@ class EncodeCustom(json.JSONEncoder):
         if isinstance(obj, Event):
             return obj.to_json()
         if isinstance(obj, Condition):
+            return obj.to_json()
+        if isinstance(obj, StateUpdate):
             return obj.to_json()
         return json.JSONEncoder.default(self, obj)
 
