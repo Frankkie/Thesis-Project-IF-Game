@@ -2,6 +2,8 @@
     This is the file for the Game class, the class that holds all the important information
     about the game and its state.
 """
+
+
 import os
 import sys
 import time
@@ -12,6 +14,7 @@ import my_parser as prs
 from command_handler import CommandHandler
 from errors import *
 from tools import empty_folder, copytree
+from log_commands import start_log, log_command
 
 
 class Game:
@@ -29,12 +32,14 @@ class Game:
         self.verbs = {}
         self.rooms = {}
         self.chapters = {}
+        start_log(self)
 
     def boot_game(self, actors, verbs, chapters, display, last_save_key):
         self.verbs = verbs
         self.chapters = chapters
         self.actors = actors
         self.display = display
+        self.display.log_file_dir += self.title
         self.last_save_key = last_save_key
         self.load_chapter(self.game_state["current chapter"], start=True)
         self.refresh_things()
@@ -59,6 +64,7 @@ class Game:
     def run_pc_turn(self):
         # Get user's command.
         pc_command = self.get_command("")
+        command_text = pc_command
         # Preparse command.
         self.preparser.run_preparser(pc_command)
         pc_command = self.preparser.text
@@ -81,6 +87,8 @@ class Game:
         # If this is any other command type.
         else:
             self.display.display("", cmd_type)
+
+        log_command(self, command_text)
 
     def parsable_command(self, command):
         try:
