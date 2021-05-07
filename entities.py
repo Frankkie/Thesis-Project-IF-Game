@@ -12,7 +12,7 @@ class Entity:
     def __init__(self, key, reference_noun, display_name, description=None,
                  as_indobj=None, as_dirobj=None, container=None, contents=None, plural=False,
                  examine_description=None, audible_description=None, action_description=None,
-                 already_seen=None, memories=None):
+                 already_seen=None, entity_state=None):
         """
         This is the parent class of all Entities (Things, Rooms, Actors).
 
@@ -80,9 +80,9 @@ class Entity:
             self.already_seen = already_seen
         self.examine_description = examine_description
         self.audible_description = audible_description
-        if not memories:
-            memories = {}
-        self.memories = memories
+        if not entity_state:
+            entity_state = {}
+        self.entity_state = entity_state
 
     def __str__(self):
 

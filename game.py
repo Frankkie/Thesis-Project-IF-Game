@@ -39,7 +39,6 @@ class Game:
         self.chapters = chapters
         self.actors = actors
         self.display = display
-        self.display.log_file_dir += self.title
         self.last_save_key = last_save_key
         self.load_chapter(self.game_state["current chapter"], start=True)
         self.refresh_things()

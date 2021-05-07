@@ -24,6 +24,8 @@ class PreParser:
     def __init__(self):
         self.text = None
         self.cmd_type = None
+        with open("Grammar\\preparse_table.json", "r") as table_file:
+            self.preparse_table = json.load(table_file)
 
     def run_preparser(self, text):
         self.text = text
@@ -32,13 +34,13 @@ class PreParser:
 
     def id_command_type(self):
         cmd_type = "Command"
-        if self.text in ["quit", "q"]:
+        if self.text == "quit":
             return "Quit"
-        if self.text in ["help", "h"]:
+        if self.text == "help":
             return "Help"
-        if self.text in ["undo", "u", "oops"]:
+        if self.text == "undo":
             return "Undo"
-        if self.text in ["save", "s"]:
+        if self.text == "save":
             return "Save"
         return cmd_type
 
@@ -49,6 +51,8 @@ class PreParser:
         """
         self.text = self.text.lower()
         self.text = self.text.strip()
+        if self.text in self.preparse_table.keys():
+            self.text = self.preparse_table[self.text]
 
 
 class Parser:
