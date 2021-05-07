@@ -1,5 +1,5 @@
 {
-  "title": "Test Game",
+  "title": "Test",
   "credits_": "by Christos Frantzolas",
   "game_state": {
     "current room": "New Room",
@@ -8,8 +8,8 @@
     "chapter time": 0,
     "win": false,
     "lose": false,
-    "new game": true,
-    "last save key": "Test Game"
+    "new game": true
   },
+  "last_save_key": null,
   "seed": 0
 }

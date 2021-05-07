@@ -82,6 +82,12 @@ class CommandHandler:
         verb_name = sentence["Verb"].name
         if not actor.on_command[verb_name]:
             raise CheckCommandError("NPCNotCommandableError", actor=actor.display_name)
+        if actor.container != self.game.game_state["current room"] and verb_name not in ["Go"]:
+            npc_room_name = self.game.rooms[actor.container].display_name
+            pc_room_key = self.game.game_state["current room"]
+            pc_room_name = self.game.rooms[pc_room_key].display_name
+            raise CheckCommandError("NPCNotInCurrentRoomError", actor=actor.display_name,
+                                    pc_room=pc_room_name, npc_room=npc_room_name)
 
         # Prepare for action
         try:
@@ -127,7 +133,6 @@ class CommandHandler:
         except PreconditionsError as error:
             raise error
 
-        self.__save_game_state()
         return True
 
     def action_execution(self, sentence, syntax):
@@ -216,10 +221,6 @@ class CommandHandler:
             return result
         except PreconditionsError as error:
             raise error
-
-    def __save_game_state(self):
-        self.game.save_game(display=False)
-        return
 
     def __action_(self, actor, verb):
         return actor, verb

@@ -1,20 +1,43 @@
+"""
+The module of the Actor class and its subclasses.
+
+Classes:
+    Actor(Entity)
+
+"""
+
 from entities import Entity
 import json
 
 
 class Actor(Entity):
     """
-    This is the parent class of all Actors.
+    This is the parent class of all Actors. Actors represent the PC and the NPCs of the game.
+
+    Attributes:
+        The attributes inherited by Entity.
+        abilities: Dict
+            The Verbs whose actions this actor can perform.
+        on_command: Dict
+            The Verbs whose actions this actor can be commanded to perform.
+
+    Methods:
+        _on_go(**kwargs)
+            Triggered by the Go Verb. Changes the Actor's room.
+
     """
     def __init__(self, *args, abilities=None, on_command=None, **kwargs):
         """
         The constructor of actors.
-        :param args: arguments passed to the Entity constructor
-        :param abilities: dict, keys: verb names, values: boolean, depending on whether or not this actor
-                          can perform this action.
-        :param on_command: dict, keys: verb names, values: boolean, depending on whether or not this actor
-                          can be currently commanded to perform this action.
-        :param kwargs: keyword arguments passed to the Entity constructor
+        :param args:
+            arguments passed to the Entity constructor
+        :param abilities: dict
+            keys: verb names, values: boolean, depending on whether or not this actor can perform this action.
+        :param on_command: dict
+            keys: verb names, values: boolean, depending on whether or not this actor can be currently commanded
+            to perform this action.
+        :param kwargs:
+            keyword arguments passed to the Entity constructor
         """
         super().__init__(*args, **kwargs)
 
@@ -37,9 +60,14 @@ class Actor(Entity):
 
     def _on_go(self, **kwargs):
         """
-        The method triggered when the Go Verb is given by the player to the actor.
+        Triggered by the Go verb.
+        Changes the actor's room depending on the qualifier (direction) given.
+
         :param kwargs:
-        :return:
+            Keyword args should include 'game', 'qualifier' and 'actor'
+        :return: str
+            Either the direction description of the new room (if the actor is the PC)
+            or a generic result string (if NPC)
         """
         game = kwargs['game']
         direction = kwargs['qualifier']

@@ -12,7 +12,7 @@ class Entity:
     def __init__(self, key, reference_noun, display_name, description=None,
                  as_indobj=None, as_dirobj=None, container=None, contents=None, plural=False,
                  examine_description=None, audible_description=None, action_description=None,
-                 already_seen=None):
+                 already_seen=None, entity_state=None):
         """
         This is the parent class of all Entities (Things, Rooms, Actors).
 
@@ -80,6 +80,9 @@ class Entity:
             self.already_seen = already_seen
         self.examine_description = examine_description
         self.audible_description = audible_description
+        if not entity_state:
+            entity_state = {}
+        self.entity_state = entity_state
 
     def __str__(self):
 
@@ -101,6 +104,10 @@ class Entity:
                 tags = other['tags']
             else:
                 raise TypeError
+        elif isinstance(other, Entity):
+            obj = other
+            obj.container = self.key
+            tags = ["Inventory", "Look"]
         else:
             raise TypeError
 
@@ -126,7 +133,11 @@ class Entity:
 
     def to_json(self):
         """
-           convert the instance of this class to json
+        Convert the instance of this class to a serializable object.
+
+        :return: Dictionary
+            A dictionary of the object's attributes, containing the key '_class_'.
+
         """
         obj_dict = self.__dict__
         obj_dict["_class_"] = self.__class__.__name__

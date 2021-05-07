@@ -1,3 +1,5 @@
+
+
 class Display:
     def __init__(self, game):
         self.game = game
@@ -13,6 +15,10 @@ class Display:
             self.__display_prompt()
         elif text_type == "AfterAction":
             self.__display_action()
+        elif text_type == "ChapterStart":
+            self.__display_chapter_event()
+        elif text_type == "ChapterEvent":
+            self.__display_chapter_event()
         elif text_type == "Quit":
             self.__display_quit()
         elif text_type == "Help":
@@ -38,6 +44,13 @@ class Display:
                 print(sentence, end=" ")
             print()
 
+    def __display_chapter_event(self):
+        if not self.text["Descriptions"]:
+            return
+        for result in self.text["Descriptions"]:
+            print(result, end=" ")
+        print()
+
     def __display_init(self):
         print(self.game.title)
         print(self.game.credits)
@@ -49,7 +62,7 @@ class Display:
         print("Mistakes are forever!")
 
     def __display_save(self):
-        print("No one can save you!")
+        print("Game saved!")
 
     def __display_quit(self):
         print("You quit '%s'! Such a shame." % self.game.title)

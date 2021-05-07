@@ -59,6 +59,10 @@ class CheckCommandError(Error):
             return "You cannot do this to multiple objects."
         if self.error_type == "ObjectNotAbleError":
             return f"You cannot {self.kwargs['verb']} the {self.kwargs['obj']}."
+        if self.error_type == "NPCNotInCurrentRoomError":
+            return f"{self.kwargs['actor']} is not in the {self.kwargs['pc_room']} with you.\n" \
+                   f"You should direct {self.kwargs['actor']} to return from the {self.kwargs['npc_room']} to fulfill" \
+                   f" your command."
         else:
             return self.error_type
 

@@ -1,13 +1,48 @@
+"""
+Contains the Room class.
+
+Classes:
+    Room(Entity)
+
+"""
+
+
 from entities import Entity
 
 
 class Room(Entity):
+    """
+    The parent Class of all Rooms. A room instance is a component of a Chapter map, and contains
+    all the objects available to the player, as well as a set of directions for the player to exit it.]
+
+    Attributes
+    ----------
+    directions: dict, keys = strings, values = dicts
+        Contains the possible directions to exit the room from.
+
+    Methods
+    -------
+    string(print_parts=True, print_directions=True):
+        Returns a string representation of the room.
+    __iand__(other):
+        Adds another direction to the directions dictionary of the object.
+
+    """
     def __init__(self, *args, directions=None, **kwargs):
         """
-            Descended from Entity.
-            Additional arguments:
-                :param directions: default=None, dictionary. The directions of this Room object:
-                                  {direction: [Entity Instance, description]}
+        Constructor of Room.
+
+        :param args:
+            For the base constructor.
+        :param directions: default = None, dict, keys = strings, values = dicts
+            Contains the possible directions to exit the room from.
+            Keys are directions. Can be either compass directions, up, down, or anything else.
+            Values are dictionaries containing:
+                'room': The key of the room instance in this direction.
+                'desc': A description of the direction.
+        :param kwargs:
+            For the base constructor.
+
         """
         super().__init__(*args, **kwargs)
         if not directions:
@@ -18,23 +53,27 @@ class Room(Entity):
     def string(self, print_parts=True, print_directions=True):
         """
         This method returns a string representation of the object.
-        :param print_parts: Default=True, if True, it prints the objects in self.parts.
-        :param print_directions: Default=True, if True, it prints the objects in self.directions.
-        :return: a string describing the object.
+
+        :param print_parts: Boolean, Default=True
+            if True, it prints the objects in self.parts.
+        :param print_directions: Boolean, Default=True
+            if True, it prints the objects in self.directions.
+        :return: String
+            a string describing the object.
 
         """
         printable = self.display_name + "\n" + self.description + "\n"
         if print_parts:
             for part in self.contents.keys():
-                printable += self.contents[part][1]
+                printable += self.contents[part]['obj'].description
                 printable += " "
             printable += "\n"
 
         if print_directions:
-            for part in self.directions.keys():
-                printable += part
+            for direction in self.directions.keys():
+                printable += direction
                 printable += ": "
-                printable += self.directions[part][1]
+                printable += self.directions[direction]['desc']
                 printable += " "
             printable += "\n"
 
@@ -42,24 +81,27 @@ class Room(Entity):
 
     def __iand__(self, other):
         """
-            This method adds another direction to the directions dictionary of the object.
+        This method adds another direction to the directions dictionary of the object.
 
-            :param other: dictionary, "dir" should be a direction string,
-                                    "room" should be a Room instance,
-                                    "desc" should be the directions description (optional)
-            :return: The object itself.
+        :param other: dictionary,
+            "dir" should be a direction string,
+            "room" should be a Room instance,
+            "desc" should be the directions description (optional)
+        :return: Room
+            The object itself.
+
         """
         if isinstance(other, dict):
             if isinstance(other["room"], Room):
-                room = other["room"]
-                dir_ = other["dir"]
-                room.container = self.container
-                if "desc" not in other.keys():
-                    desc = room.description
-                else:
-                    desc = other["desc"]
+                room = other["room"].key
             else:
                 raise TypeError
+
+            dir_ = other["dir"]
+            if "desc" not in other.keys():
+                desc = room.description
+            else:
+                desc = other["desc"]
         else:
             raise TypeError
 
