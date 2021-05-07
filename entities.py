@@ -17,14 +17,18 @@ class Entity:
         This is the parent class of all Entities (Things, Rooms, Actors).
 
         Args:
-            :param key: This is the name of the object when referenced internally by the game.
-            :param reference_noun: This is the noun by which the object is referenced by the player.
-                                   Must be a single word.
-            :param display_name: This is the string by which the game displays the object.
-            :param description: default="", this is the string by which the object is described by the look method.
-            :param container: default=None, this is key of the container Entity of the object.
-            :param contents: default=None, dictionary. The components of this object:
-                             {key: {obj: Entity Instance, tags: []}}
+            :param key: str
+                This is the name of the object when referenced internally by the game.
+            :param reference_noun: str
+                This is the noun by which the object is referenced by the player. Must be a single word.
+            :param display_name: str
+                This is the string by which the game displays the object.
+            :param description:
+                default="", this is the string by which the object is described by the look method.
+            :param container:
+                default=None, this is key of the container Entity of the object.
+            :param contents:
+                default=None, dictionary. The components of this object: {key: {obj: Entity Instance, tags: []}}
             :param as_indobj: A dictionary of the qualifier types that this entity instance can appear
                                with as an indirect object.
             :param as_dirobj: A dictionary of the verbs that this entity instance can appear with as

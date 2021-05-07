@@ -25,6 +25,10 @@ from chapters import *
 from events import Event
 from conditions import Condition
 from state_updates import StateUpdate
+from dialog_events import DialogEvent
+from convo_nodes import ConvoNode
+from topics import Topic
+from quips import Quip
 
 
 class EncodeCustom(json.JSONEncoder):
@@ -63,6 +67,12 @@ class EncodeCustom(json.JSONEncoder):
         if isinstance(obj, Condition):
             return obj.to_json()
         if isinstance(obj, StateUpdate):
+            return obj.to_json()
+        if isinstance(obj, ConvoNode):
+            return obj.to_json()
+        if isinstance(obj, Quip):
+            return obj.to_json()
+        if isinstance(obj, Topic):
             return obj.to_json()
         return json.JSONEncoder.default(self, obj)
 
