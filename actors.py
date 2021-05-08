@@ -43,6 +43,7 @@ class Actor(Entity):
 
         with open("Grammar/verbs.json", "r") as file:
             verbs = json.load(file)  # Load dict of all verbs
+        file.close()
         for q in verbs.keys():
             verbs[q] = False
 

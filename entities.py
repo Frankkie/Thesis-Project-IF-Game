@@ -55,6 +55,7 @@ class Entity:
 
         with open("Grammar/qualifiers.json", "r") as file:
             qualifier_types = json.load(file)
+        file.close()
         for q in qualifier_types.keys():
             qualifier_types[q] = False
         if not as_indobj:
@@ -64,6 +65,7 @@ class Entity:
 
         with open("Grammar/verbs.json", "r") as file:
             verbs = json.load(file)
+        file.close()
         for q in verbs.keys():
             verbs[q] = False
 

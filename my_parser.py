@@ -26,6 +26,7 @@ class PreParser:
         self.cmd_type = None
         with open("Grammar\\preparse_table.json", "r") as table_file:
             self.preparse_table = json.load(table_file)
+        table_file.close()
 
     def run_preparser(self, text):
         self.text = text
@@ -73,6 +74,7 @@ class Parser:
         self.sent_separators = ('.', '?', '!', ',', 'then', ';')
         with open("Grammar/qualifiers.json", "r") as file:
             self.qualifier_types = json.load(file)
+        file.close()
         # The text given in the prompt by the user.
         self.text = ""
         # A list of the words/tokens in the text

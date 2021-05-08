@@ -90,6 +90,7 @@ def custom_dump(dictionary, json_file_path):
     """
     with open(json_file_path, "w") as file:
         json.dump(dictionary, file, cls=EncodeCustom, indent=4)
+    file.close()
 
 
 class DecodeCustom(json.JSONDecoder):
@@ -154,7 +155,10 @@ def custom_load(json_file_path):
 
     """
     with open(json_file_path, "r") as file:
-        return json.load(file, cls=DecodeCustom)
+        res = json.load(file, cls=DecodeCustom)
+    file.close()
+    return res
+
 
 
 

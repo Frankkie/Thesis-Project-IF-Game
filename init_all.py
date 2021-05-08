@@ -40,6 +40,7 @@ class Initializer:
         folder = "Games\\" + game_name
         with open(folder + "\\load_game.json", "r") as load_file:
             load_info = json.load(load_file)
+        load_file.close()
         self.info = {**self.info, **load_info}
         if self.info["last_save_key"]:
             save_folder = folder + "\\" + self.info["last_save_key"]
@@ -51,6 +52,7 @@ class Initializer:
         path += "\\game.json"
         with open(path, "r") as file:
             dct = json.load(file)
+        file.close()
         self.game = Game(**dct)
 
     def __load_info(self, path):

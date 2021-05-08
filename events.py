@@ -37,6 +37,16 @@ class Event:
                 return False
         return True
 
+    def get_score(self):
+        """
+        Get the specificity score of the Event (number of conditions).
+
+        :return: int
+            The number of the Event's conditions.
+
+        """
+        return len(self.trigger_conditions)
+
     def __change_game_state(self, game):
         for state_update in self.game_state_changes:
             state_update.state_update(game)

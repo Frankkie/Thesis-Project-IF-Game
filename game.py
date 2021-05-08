@@ -32,6 +32,7 @@ class Game:
         self.verbs = {}
         self.rooms = {}
         self.chapters = {}
+        self.topics = {}  # HAVE LOAD TOPICS AS WELL
         start_log(self)
 
     def boot_game(self, actors, verbs, chapters, display, last_save_key):
@@ -59,6 +60,7 @@ class Game:
             self.run_pc_turn()
             self.run_chapter()
             self.save_to_current()
+            self.game_state["turn count"] += 1
 
     def run_pc_turn(self):
         # Get user's command.
