@@ -2,15 +2,10 @@
   "Intro": {
     "key": "Intro",
     "title": "Intro Chapter: Waking up",
-    "previous_chapter": null,
-    "intro_description": {
-      "generic": "You're just waking up from your long slumber."
-    },
+    "intro_description": "You're just waking up from your long slumber.",
     "outro_description": {
       "generic": "You have to journey on for now."
     },
-    "events": null,
-    "room_file": "intro_rooms.json",
     "first_room": "New Room",
     "end_conditions": [
       {
@@ -28,6 +23,8 @@
         "next chapter": "End"
       }
     ],
+    "map_file": "intro_rooms.json",
+    "events_file": "intro_events.json",
     "_class_": "IntroChapter"
   },
 
@@ -35,17 +32,13 @@
   "End": {
     "key": "End",
     "title": "End Chapter: Game over",
-    "previous_chapter": null,
-    "intro_description": {
-      "generic": "Now the game is over."
-      },
+    "intro_description": "Now the game is over.",
     "outro_description": {
       "__END__": "The End..."
       },
-    "events": null,
-    "room_file": "intro_rooms.json",
     "first_room": null,
     "end_conditions": null,
+    "map_file": "intro_rooms.json",
     "_class_": "EndChapter"
   }
 }

@@ -52,8 +52,7 @@ class Event:
             state_update.state_update(game)
 
     def __trigger_next(self, game):
-        chapter = game.chapters[game.game_state["current chapter"]]
-        events = chapter.events
+        events = game.events
         try:
             next_event = events[self.next_event_key]
         except KeyError:

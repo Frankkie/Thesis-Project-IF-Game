@@ -9,7 +9,7 @@
     "win": false,
     "lose": false,
     "new game": true,
-    "round count": 0
+    "turn count": 0
   },
   "last_save_key": null,
   "seed": 0
