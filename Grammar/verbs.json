@@ -124,5 +124,11 @@
         "patterns": [""],
         "_class_": "Verb",
         "name": "Slowdown"
+    },
+    "Ask": {
+        "forms": ["ask", "asks", "tell", "tells"],
+        "patterns": ["OQI"],
+        "_class_": "Verb",
+        "name": "Ask"
     }
 }

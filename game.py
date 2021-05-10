@@ -26,6 +26,7 @@ class Game:
         self.command_handler = CommandHandler(self)
         self.parser = prs.Parser(self)
         self.preparser = prs.PreParser()
+        self.np_parser = prs.NounPhraseParser(self)
         self.loader = Loader(self.title, self)
         self.saver = Saver(self)
         self.actors = {}
@@ -101,6 +102,12 @@ class Game:
         # In case of Error.
         except ParserError as error:
             return str(error)
+
+        try:
+            parts = self.np_parser.run_np_parser(parts)
+        except (ParserError, NPParserError) as error:
+            return str(error)
+
         # DISAMBIGUATE COMMANDS BEFORE THIS POINT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         result = []
         # For all the commands.

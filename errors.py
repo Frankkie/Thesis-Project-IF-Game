@@ -37,6 +37,27 @@ class ParserError(Error):
             return "This object is not here."
 
 
+class NPParserError(Error):
+    def __init__(self, error_type):
+        super().__init__(error_type)
+        self.default_responses = [
+            "'You can't expect me to talk about this right now!'",
+            "'What a bizarre thing to ask me about!'",
+            "'I am not going to entertain this question.'"
+        ]
+
+    def error_message(self):
+        """
+        This function prints an error message.
+        :return: String, error message
+        """
+        if self.error_type == "EntityError":
+            return "This object is not here."
+        if self.error_type == "TopicError":
+            import random
+            return random.choice(self.default_responses)
+
+
 class CheckCommandError(Error):
     def __init__(self, error_type, **kwargs):
         super().__init__(error_type)

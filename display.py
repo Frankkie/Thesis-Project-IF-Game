@@ -37,32 +37,38 @@ class Display:
 
     def __display_error(self):
         print(self.text)
+        print("\n")
 
     def __display_action(self):
         for command in self.text:
             for sentence in command['Descriptions']:
-                print(sentence, end=" ")
+                print(sentence)
             print()
 
     def __display_chapter_event(self):
         if not self.text["Descriptions"]:
             return
         for result in self.text["Descriptions"]:
-            print(result, end=" ")
+            print(result)
         print()
 
     def __display_init(self):
         print(self.game.title)
         print(self.game.credits)
+        print("\n")
 
     def __display_help(self):
         print("No one can help you!")
+        print("\n")
 
     def __display_undo(self):
         print("Mistakes are forever!")
+        print("\n")
 
     def __display_save(self):
         print("Game saved!")
+        print("\n")
 
     def __display_quit(self):
         print("You quit '%s'! Such a shame." % self.game.title)
+        print("\n")
