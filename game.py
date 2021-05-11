@@ -37,9 +37,8 @@ class Game:
         self.convonodes = {}
         self.dialogevents = {}
         self.events = {}
-        start_log(self)
 
-    def boot_game(self, actors, verbs, chapters, display, last_save_key):
+    def boot_game(self, actors, verbs, chapters, display, last_save_key, replay=False):
         self.actors = actors
         self.verbs = verbs
         self.chapters = chapters
@@ -47,6 +46,11 @@ class Game:
         self.last_save_key = last_save_key
         self.loader.load_chapter(self.game_state["current chapter"], start=True)
         self.refresh_things()
+
+        if replay:
+            self.replay_game()
+
+        start_log(self)
         self.display.display("", "Initial")
         # Print boot up description
         # begin = self.get_command("Do you want to begin? (y/n) ")
@@ -66,10 +70,33 @@ class Game:
             self.saver.save_to_current()
             self.game_state["turn count"] += 1
 
-    def run_pc_turn(self):
+    def replay_game(self):
+        commands = self.loader.load_prev_commands(self.title)
+        self.game_state["new game"] = False
+        self.run_chapter(start=True)
+        for command in commands:
+            self.saver.save_to_temp()
+            self.run_pc_turn(command)
+            self.run_chapter()
+            self.saver.save_to_current()
+            self.game_state["turn count"] += 1
+
+        while True:
+            self.saver.save_to_temp()
+            self.run_pc_turn()
+            self.run_chapter()
+            self.saver.save_to_current()
+            self.game_state["turn count"] += 1
+
+    def run_pc_turn(self, command=None):
         # Get user's command.
-        pc_command = self.get_command("")
-        command_text = pc_command
+        if not command:
+            pc_command = self.get_command("")
+            log_command(self, pc_command)
+        else:
+            pc_command = command
+            self.display.display(command, "Replay")
+
         # Preparse command.
         self.preparser.run_preparser(pc_command)
         pc_command = self.preparser.text
@@ -82,7 +109,6 @@ class Game:
                 self.display.display(result, "Error")
                 return
             self.display.display(result, "AfterAction")
-            return
 
         # If this is a quit command
         elif cmd_type == "Quit":
@@ -93,8 +119,6 @@ class Game:
         # If this is any other command type.
         else:
             self.display.display("", cmd_type)
-
-        log_command(self, command_text)
 
     def parsable_command(self, command):
         try:

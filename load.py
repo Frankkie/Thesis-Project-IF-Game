@@ -44,6 +44,14 @@ class Loader:
         self.__load_game_files(self.current_folder)
         return game_dict, self.game_args
 
+    def load_prev_commands(self, title):
+        log_file_path = f"Games\\{title}\\log_commands.log"
+        commands = []
+        with open(log_file_path, "r") as log_file:
+            for line in log_file:
+                commands.append(line.rstrip())
+        return commands
+
     def load_chapter(self, chapter_key, start=False):
         # Save to current folder before the Chapter Change, so that
         # the changes to the rooms are saved.

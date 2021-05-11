@@ -34,6 +34,8 @@ class Display:
             self.__display_undo()
         elif text_type == "Save":
             self.__display_save()
+        elif text_type == "Replay":
+            self.__display_replay()
 
     def fetch(self):
         text = input()
@@ -83,3 +85,6 @@ class Display:
     def __display_quit(self):
         print("You quit '%s'! Such a shame." % self.game.title)
         print("\n")
+
+    def __display_replay(self):
+        print("> " + self.text)
