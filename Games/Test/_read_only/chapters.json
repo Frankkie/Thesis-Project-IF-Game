@@ -26,6 +26,7 @@
     "map_file": "intro_rooms.json",
     "events_file": "intro_events.json",
     "topics_file": "intro_topics.json",
+    "dialogevents_file": "intro.json",
     "_class_": "IntroChapter"
   },
 

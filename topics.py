@@ -8,6 +8,9 @@ Classes:
 """
 
 
+from errors import DialogError
+
+
 class Topic:
     """
     Topics are not Entities, but can be referred to by players during conversations.
@@ -70,6 +73,25 @@ class Topic:
         self.reference_adjectives = reference_adjectives
         self.is_active = is_active
         self.times_invoked = times_invoked
+
+    def on_topic(self, **kwargs):
+        game = kwargs['game']
+        max_score = 0
+        triggered_event = None
+
+        for d_event in game.dialogevents.values():
+            if d_event.eval_topic_conditions(game, self.key):
+                event_score = d_event.get_score()
+                if event_score > max_score:
+                    max_score = event_score
+                    triggered_event = d_event
+
+        if triggered_event:
+            result = [self.topic_quip, triggered_event.trigger(game)]
+            return result
+        else:
+            actor_name = game.actors[self.actor].display_name
+            raise DialogError("NoEventForTopic", actor=actor_name)
 
     def to_json(self):
         """

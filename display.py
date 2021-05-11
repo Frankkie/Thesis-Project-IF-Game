@@ -8,13 +8,20 @@ class Display:
     def display(self, text, text_type):
         self.text = text
         if text_type == "Error":
-            self.__display_error()
+            self.__display_error(text)
         elif text_type == "Initial":
             self.__display_init()
         elif text_type == "Prompt":
             self.__display_prompt()
         elif text_type == "AfterAction":
-            self.__display_action()
+            for sent in self.text:
+                for res in sent:
+                    if res[1] == "action":
+                        self.__display_action(res[0])
+                    elif res[1] == "error":
+                        self.__display_error(res[0])
+                    elif res[1] == "dialog":
+                        self.__display_dialog(res[0])
         elif text_type == "ChapterStart":
             self.__display_chapter_event()
         elif text_type == "ChapterEvent":
@@ -35,15 +42,19 @@ class Display:
     def __display_prompt(self):
         print(self.text, end="> ")
 
-    def __display_error(self):
-        print(self.text)
+    def __display_error(self, error):
+        print(error)
         print("\n")
 
-    def __display_action(self):
-        for command in self.text:
-            for sentence in command['Descriptions']:
-                print(sentence)
-            print()
+    def __display_action(self, text):
+        print(text)
+        print()
+
+    def __display_dialog(self, text):
+        print(text[0])
+        for r in text[1]:
+            print(r)
+        print()
 
     def __display_chapter_event(self):
         if not self.text["Descriptions"]:

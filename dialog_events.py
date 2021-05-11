@@ -22,7 +22,7 @@ class DialogEvent(Event):
             For the base class Event.
         trigger_topic: str
             The key of the Topic Object that may trigger this DialogEvent.
-        quips: List of quip.keys (str)
+        quips: List of Quips
             A list of all the quips that this event may return.
         shuffle_quips: Bool, default False
             If True, the quips in the quips list are shown in a random order.
@@ -62,8 +62,8 @@ class DialogEvent(Event):
 
         :param game: Game object
             The game object that calls this DialogEvent.
-        :param topic: Topic object
-            The topic that is active in the game conversation.
+        :param topic: Topic object.key
+            The key of the topic that is active in the game conversation.
         :return: Boolean
 
         """
@@ -86,9 +86,9 @@ class DialogEvent(Event):
         result = list()
         result.append(self.__pick_quip(game))
         self.done += 1
-        self.__change_game_state(game)
+        self._change_game_state(game)
         if self.next_event_key:
-            res = self.__trigger_next(game)
+            res = self._trigger_next(game)
             if res:
                 result += res
         return result
@@ -97,13 +97,15 @@ class DialogEvent(Event):
         if not self.shuffle_quips:
             for q in self.quips:
                 if not q.is_said or q.is_repeatable:
-                    return q
+                    q.is_said = True
+                    return q.text
 
         elif self.shuffle_quips:
             random.shuffle(self.quips)
             for q in self.quips:
                 if not q.is_said or q.is_repeatable:
-                    return q
+                    q.is_said = True
+                    return q.text
 
-        return f"Stop asking me about the {game.topics[self.trigger_topic].display_name}!!!"
+        return f"'Stop asking me about the {game.topics[self.trigger_topic].display_name}!!!'"
 

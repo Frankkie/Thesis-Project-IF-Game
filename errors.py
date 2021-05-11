@@ -122,6 +122,9 @@ class DialogError(Error):
         if self.error_type == "TopicError":
             import random
             return random.choice(self.default_responses)
+        if self.error_type == "NoEventForTopic":
+            actor = self.kwargs['actor']
+            return f"{actor} stays silent."
         else:
             return self.error_type
 

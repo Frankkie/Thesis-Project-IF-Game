@@ -80,8 +80,9 @@ class Game:
             result = self.parsable_command(pc_command)
             if type(result) == str:
                 self.display.display(result, "Error")
-            else:
-                self.display.display(result, "AfterAction")
+                return
+            self.display.display(result, "AfterAction")
+            return
 
         # If this is a quit command
         elif cmd_type == "Quit":
@@ -116,7 +117,7 @@ class Game:
             # If this command is directed to the Player Character
             try:
                 res = self.command_handler.run_command(sentence, syntax)
-            except (CheckCommandError, PreconditionsError, ActionError) as error:
+            except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
                 return str(error)
             result.append(res)
         return result

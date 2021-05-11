@@ -47,7 +47,7 @@ class CommandHandler:
             self.command = [{"Actor": actor, "Verb": verb, "Object": objects,
                              "Qualifier": qualifier, "Indirect": ind_objects}]
 
-        result = {"Descriptions": []}
+        result = []
 
         # If this command is directed to the Player Character
         if actor == self.game.actors["I"]:
@@ -55,16 +55,19 @@ class CommandHandler:
                 try:
                     res = self.pc_command(sentence, syntax, many_ind_objects)
                 except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
-                    raise error
-                result["Descriptions"].append(res)
+                    res = (error, "error")
+
+                result.append(res)
+
         # If this command is directed to an NPC
         else:
             for sentence in self.command:
                 try:
                     res = self.npc_command(sentence, syntax, many_ind_objects)
                 except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
-                    raise error
-                result["Descriptions"].append(res)
+                    res = (error, "error")
+
+                result.append(res)
         return result
 
     def pc_command(self, sentence, syntax, many_ind_objects):
@@ -162,7 +165,8 @@ class CommandHandler:
 
         if verb.name in ["Ask"]:
             try:
-                result = self.__dialog(actor, verb, obj, ind_obj)
+                result = self.__dialog(ind_obj)
+                result = (result, "dialog")
                 return result
             except DialogError as error:
                 raise error
@@ -187,7 +191,7 @@ class CommandHandler:
                 result = self.__action_oqi(actor, verb, obj, qualifier, ind_obj)
             except ActionError as error:
                 raise error
-        return result
+        return result, "action"
 
     def __check_actor(self, actor, verb):
         verb_name = verb.name
@@ -279,6 +283,10 @@ class CommandHandler:
     def __action_oqi(self, actor, verb, obj, qualifier, indirect):
         return actor, verb, obj, qualifier, indirect
 
-    def __dialog(self, actor_asking, verb, actor_asked, topic):
-        return actor_asking, verb, actor_asked, topic
+    def __dialog(self, topic):
+        try:
+            result = topic.on_topic(game=self.game)
+            return result
+        except DialogError as error:
+            raise error
 
