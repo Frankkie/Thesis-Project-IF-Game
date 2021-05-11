@@ -1,0 +1,11 @@
+{
+  "light": {
+    "key": "light",
+    "display_name": "light",
+    "reference_noun": "light",
+    "topic_quip": "'Oh, shoot! It burnt my hand! What the hell is this?' you ask visibly angry.",
+    "actor": "Lovkiy",
+    "reference_adjectives": ["beeping", "red"],
+    "_class_": "Topic"
+  }
+}

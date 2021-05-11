@@ -1,4 +1,4 @@
-from errors import CheckCommandError, PreconditionsError, ActionError
+from errors import CheckCommandError, PreconditionsError, ActionError, DialogError
 from preconditions import ActionPreconditions
 
 
@@ -54,7 +54,7 @@ class CommandHandler:
             for sentence in self.command:
                 try:
                     res = self.pc_command(sentence, syntax, many_ind_objects)
-                except (CheckCommandError, PreconditionsError, ActionError) as error:
+                except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
                     raise error
                 result["Descriptions"].append(res)
         # If this command is directed to an NPC
@@ -62,7 +62,7 @@ class CommandHandler:
             for sentence in self.command:
                 try:
                     res = self.npc_command(sentence, syntax, many_ind_objects)
-                except (CheckCommandError, PreconditionsError, ActionError) as error:
+                except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
                     raise error
                 result["Descriptions"].append(res)
         return result
@@ -71,9 +71,14 @@ class CommandHandler:
         # Prepare for action
         try:
             self.prepare_execution(sentence, syntax, many_ind_objects)
-        except (CheckCommandError, PreconditionsError, ActionError) as error:
+        except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
             raise error
-        res = self.action_execution(sentence, syntax)
+
+        try:
+            res = self.action_execution(sentence, syntax)
+        except (ActionError, DialogError) as error:
+            raise error
+
         return res
 
     def npc_command(self, sentence, syntax, many_ind_objects):
@@ -92,10 +97,14 @@ class CommandHandler:
         # Prepare for action
         try:
             self.prepare_execution(sentence, syntax, many_ind_objects)
-        except (CheckCommandError, PreconditionsError, ActionError) as error:
+        except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
             raise error
 
-        res = self.action_execution(sentence, syntax)
+        try:
+            res = self.action_execution(sentence, syntax)
+        except (ActionError, DialogError) as error:
+            raise error
+
         return res
 
     def prepare_execution(self, sentence, syntax, many_ind_objects):
@@ -123,11 +132,19 @@ class CommandHandler:
                 self.__check_qualifier(actor, verb, qualifier, ind_obj, many_ind_objects)
             except CheckCommandError as error:
                 raise error
+
         if obj:
             try:
                 self.__check_object(verb, obj)
             except CheckCommandError as error:
                 raise error
+
+        if verb.name in ["Ask"]:
+            try:
+                self.__check_topic(ind_obj, obj)
+            except CheckCommandError as error:
+                raise error
+
         try:
             self.__check_preconditions(syntax, actor, verb, obj, qualifier, ind_obj)
         except PreconditionsError as error:
@@ -142,6 +159,14 @@ class CommandHandler:
         qualifier = sentence["Qualifier"]
         ind_obj = sentence["Indirect"]
         result = None
+
+        if verb.name in ["Ask"]:
+            try:
+                result = self.__dialog(actor, verb, obj, ind_obj)
+                return result
+            except DialogError as error:
+                raise error
+
         if syntax == "":
             try:
                 result = self.__action_(actor, verb)
@@ -178,6 +203,13 @@ class CommandHandler:
                     return
                 else:
                     raise CheckCommandError("VerbQualifierNotValidError", verb=verb.name, qualifier=qualifier)
+
+            if verb.name in ["Ask"]:
+                if qualifier == "About":
+                    return
+                else:
+                    raise CheckCommandError("VerbQualifierNotValidError", verb=verb.name, qualifier=qualifier)
+
             if qualifier in ind_object.as_indobj.keys():
                 if ind_object.as_indobj[qualifier]:
                     if many_ind_objects:
@@ -213,6 +245,10 @@ class CommandHandler:
         else:
             raise CheckCommandError("ObjectNotAbleError", obj=obj.display_name, verb=verb_name.lower())
 
+    def __check_topic(self, topic, actor_asked):
+        # CHECK WITH THE CONVONODE!!!!!!!!!!!!!!!!!!!!!!!
+        pass
+
     def __check_preconditions(self, syntax, actor, verb, obj, qualifier, ind_obj):
         prec = ActionPreconditions(syntax, actor, verb, obj, qualifier, ind_obj)
         try:
@@ -242,3 +278,7 @@ class CommandHandler:
 
     def __action_oqi(self, actor, verb, obj, qualifier, indirect):
         return actor, verb, obj, qualifier, indirect
+
+    def __dialog(self, actor_asking, verb, actor_asked, topic):
+        return actor_asking, verb, actor_asked, topic
+

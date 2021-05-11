@@ -24,7 +24,7 @@ class Topic:
         This is the string that is printed when the topic is invoked.
     actor: str
         The key of the actor object that knows about the topic.
-    reference_adj: list of str, default None
+    reference_adjectives: list of str, default None
         A list of all the adjectives by which this topic can be referred to in player commands.
     is_active: bool, default True
         True, if the topic is active
@@ -37,7 +37,7 @@ class Topic:
         Convert the instance of this class to a serializable object.
 
     """
-    def __init__(self, key, display_name, reference_noun, topic_quip, actor, reference_adj=None,
+    def __init__(self, key, display_name, reference_noun, topic_quip, actor, reference_adjectives=None,
                  is_active=True, times_invoked=0):
         """
         This is the parent class of all topics.
@@ -52,7 +52,7 @@ class Topic:
             This is the string that is printed when the topic is invoked.
         :param actor: str
             The key of the actor object that knows about the topic.
-        :param reference_adj: list of str, default None
+        :param reference_adjectives: list of str, default None
             A list of all the adjectives by which this topic can be referred to in player commands.
         :param is_active: bool, default True
             True, if the topic is active
@@ -65,9 +65,9 @@ class Topic:
         self.reference_noun = reference_noun
         self.topic_quip = topic_quip
         self.actor = actor
-        if not reference_adj:
-            reference_adj = []
-        self.reference_adj = reference_adj
+        if not reference_adjectives:
+            reference_adjectives = []
+        self.reference_adjectives = reference_adjectives
         self.is_active = is_active
         self.times_invoked = times_invoked
 

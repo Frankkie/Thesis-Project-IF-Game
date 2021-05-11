@@ -4,7 +4,6 @@
 """
 
 
-import os
 import sys
 
 import my_parser as prs
@@ -105,7 +104,7 @@ class Game:
 
         try:
             parts = self.np_parser.run_np_parser(parts)
-        except (ParserError, NPParserError) as error:
+        except (ParserError, NPParserError, DialogError) as error:
             return str(error)
 
         # DISAMBIGUATE COMMANDS BEFORE THIS POINT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -171,7 +170,7 @@ class Game:
         self.display.display("Do you want to save this game? (y/n)", "Prompt")
         reply = self.display.fetch()
         if reply in ["y", "yes", "Y", "Yes", "YES"]:
-            self.saver.save_game()
+            self.saver.save_game(quit_=True)
         elif reply in ["n", "N", "No", "NO", "no"]:
             pass
         else:

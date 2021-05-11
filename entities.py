@@ -236,7 +236,7 @@ class Entity:
     def _on_read(self, **kwargs):
         pass
 
-    def _on_talkto(self, **kwargs):
+    def _on_ask(self, **kwargs):
         pass
 
     def _on_use(self, **kwargs):

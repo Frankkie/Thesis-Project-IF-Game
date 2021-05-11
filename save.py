@@ -65,7 +65,7 @@ class Saver:
         copytree(self.current_folder, temp_folder)
         return
 
-    def save_game(self, display=True):
+    def save_game(self, display=True, quit_=False):
         current_time = int(time.time())
         save_folder = os.path.join(self.game_folder, f"save_{current_time}", "")
 
@@ -87,6 +87,11 @@ class Saver:
         copytree(self.current_folder, save_folder)
         if display:
             self.game.display.display("", "Save")
+
+        if quit_:
+            empty_folder(self.current_folder)
+            temp_folder = os.path.join(self.game_folder + "_temp", "")
+            empty_folder(temp_folder)
         return
 
 

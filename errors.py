@@ -33,18 +33,11 @@ class ParserError(Error):
             return "I could not understand this verb."
         if self.error_type == "SyntaxError":
             return "This is the incorrect syntax for this verb."
-        if self.error_type == "EntityError":
-            return "This object is not here."
 
 
 class NPParserError(Error):
     def __init__(self, error_type):
         super().__init__(error_type)
-        self.default_responses = [
-            "'You can't expect me to talk about this right now!'",
-            "'What a bizarre thing to ask me about!'",
-            "'I am not going to entertain this question.'"
-        ]
 
     def error_message(self):
         """
@@ -53,9 +46,8 @@ class NPParserError(Error):
         """
         if self.error_type == "EntityError":
             return "This object is not here."
-        if self.error_type == "TopicError":
-            import random
-            return random.choice(self.default_responses)
+        else:
+            return self.error_type
 
 
 class CheckCommandError(Error):
@@ -87,10 +79,6 @@ class CheckCommandError(Error):
         else:
             return self.error_type
 
-    def __str__(self):
-        message = self.error_message()
-        return message
-
 
 class PreconditionsError(Error):
     def __init__(self, error_type, **kwargs):
@@ -104,10 +92,6 @@ class PreconditionsError(Error):
             return f"The {self.kwargs['obj']} does not have the method {self.kwargs['verb']}."
         else:
             return self.error_type
-
-    def __str__(self):
-        message = self.error_message()
-        return message
 
 
 class ActionError(Error):
@@ -123,7 +107,21 @@ class ActionError(Error):
         else:
             return self.error_type
 
-    def __str__(self):
-        message = self.error_message()
-        return message
+
+class DialogError(Error):
+    def __init__(self, error_type, **kwargs):
+        super().__init__(error_type)
+        self.kwargs = kwargs
+        self.default_responses = [
+            "'You can't expect me to talk about this right now!'",
+            "'What a bizarre thing to ask me about!'",
+            "'I am not going to entertain this question.'"
+        ]
+
+    def error_message(self):
+        if self.error_type == "TopicError":
+            import random
+            return random.choice(self.default_responses)
+        else:
+            return self.error_type
 

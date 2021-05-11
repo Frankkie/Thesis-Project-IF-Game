@@ -53,12 +53,6 @@
         "_class_": "Verb",
         "name": "Use"
     },
-    "Talkto": {
-        "forms": ["talk to"],
-        "patterns": ["O"],
-        "_class_": "Verb",
-        "name": "Talkto"
-    },
     "Read": {
         "forms": ["read", "reads"],
         "patterns": ["O"],

@@ -359,8 +359,8 @@ class NounPhraseParser:
             if not sent:
                 # If a sentence is left without valid trees, raise an Entity Error
                 if v in self.convo_verbs:
-                    raise NPParserError("TopicError")
-                raise ParserError("EntityError")
+                    raise DialogError("TopicError")
+                raise NPParserError("EntityError")
 
             sent = remove_duplicates(sent)
             self.parts[s_index] = sent
@@ -374,19 +374,17 @@ class NounPhraseParser:
         :return:
         """
         for t_index, tree in enumerate(sent):
-            if tree["Object"]:
-                actor = self.disambiguate_actor(tree["Object"])
-                if actor:
-                    sent[t_index]["Object"] = actor
-                else:
-                    sent[t_index] = None
-                    continue
-            if tree["Indirect"]:
-                topic = self.disambiguate_topic(tree["Indirect"])
-                if topic:
-                    sent[t_index]["Indirect"] = topic
-                else:
-                    sent[t_index] = None
+            actor = self.disambiguate_actor(tree["Object"])
+            if actor:
+                sent[t_index]["Object"] = actor
+            else:
+                sent[t_index] = None
+                continue
+            topic = self.disambiguate_topic(tree["Indirect"], actor)
+            if topic:
+                sent[t_index]["Indirect"] = topic
+            else:
+                sent[t_index] = None
 
         return sent
 
@@ -432,23 +430,25 @@ class NounPhraseParser:
         actor_list.reverse()
         return actor_list
 
-    def disambiguate_topic(self, topics_phrase):
+    def disambiguate_topic(self, topics_phrase, actor):
         topics = self.separate_phrases(topics_phrase)
+        actor_keys = [a.key for a in actor]
 
         topic_list = []
         for topic_phrase in topics:
             topic = None
             for g_topic in self.game.topics.keys():
-                if self.game.topics[g_topic].reference_noun == topic_phrase["Noun"]:
+                g_topic_obj = self.game.topics[g_topic]
+                if g_topic_obj.reference_noun == topic_phrase["Noun"] and g_topic_obj.actor in actor_keys:
                     match = True
                     for adj in topic_phrase["Adjectives"]:
-                        if adj not in self.game.topics[g_topic].reference_adjectives:
+                        if adj not in g_topic_obj.reference_adjectives:
                             match = False
                             break
                     if not match:
                         continue
                     else:
-                        topic = self.game.topics[g_topic]
+                        topic = g_topic_obj
                 else:
                     continue
             if not topic:
