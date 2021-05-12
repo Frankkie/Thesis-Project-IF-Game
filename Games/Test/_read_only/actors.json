@@ -24,6 +24,7 @@
                         "Ask": true
                         },
         "as_dirobj": {"Ask": true},
+        "gender": 2,
         "_class_": "Actor"
     },
     "Lovkiy": {
@@ -49,6 +50,7 @@
                         "Swerveoff": true, "Speedup": true, "Slowdown": true, "Ask": true
                         },
         "as_dirobj": {"Ask": true},
+        "gender": 1,
         "_class_": "Actor"
     }
 }

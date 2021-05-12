@@ -4,8 +4,60 @@
     "display_name": "light",
     "reference_noun": "light",
     "topic_quip": "'What the hell is this light on the dog?' you ask curiously.",
-    "actor": "Lovkiy",
+    "actor_key": "Lovkiy",
     "reference_adjectives": ["beeping", "red"],
+    "_class_": "Topic"
+  },
+
+  "hey": {
+    "key": "hey",
+    "display_name": "hey",
+    "reference_noun": "hey",
+    "topic_quip": "'Hey Lovkiy! I need your help. Do you have a minute?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "_class_": "Topic"
+  },
+
+
+  "bye": {
+    "key": "bye",
+    "display_name": "bye",
+    "reference_noun": "bye",
+    "topic_quip": "'Bye Lovkiy!'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "_class_": "Topic"
+  },
+
+  "yes": {
+    "key": "yes",
+    "display_name": "yes",
+    "reference_noun": "yes",
+    "topic_quip": "'Yes.' you reply impatiently.",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "_class_": "Topic"
+  },
+
+  "no": {
+    "key": "no",
+    "display_name": "no",
+    "reference_noun": "no",
+    "topic_quip": "'No!'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "_class_": "Topic"
+  },
+
+  "bomb": {
+    "key": "bomb",
+    "display_name": "bomb",
+    "reference_noun": "bomb",
+    "topic_quip": "'I need to know what that bomb does!'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["experimental"],
+    "is_active": false,
     "_class_": "Topic"
   }
 }

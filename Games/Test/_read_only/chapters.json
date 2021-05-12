@@ -27,6 +27,7 @@
     "events_file": "intro_events.json",
     "topics_file": "intro_topics.json",
     "dialogevents_file": "intro.json",
+    "convonodes_file": "cnodes.json",
     "_class_": "IntroChapter"
   },
 

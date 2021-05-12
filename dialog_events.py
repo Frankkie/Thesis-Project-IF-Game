@@ -20,10 +20,12 @@ class DialogEvent(Event):
     Attributes:
         args:
             For the base class Event.
-        trigger_topic: str
-            The key of the Topic Object that may trigger this DialogEvent.
+        trigger_topics: list of str
+            The keys of the Topic Objects that may trigger this DialogEvent.
         quips: List of Quips
             A list of all the quips that this event may return.
+        trigger_convonode: str, default None
+            the key of the convonode that can trigger the event. If None, all convonodes can trigger this event.
         shuffle_quips: Bool, default False
             If True, the quips in the quips list are shown in a random order.
         kwargs:
@@ -33,16 +35,18 @@ class DialogEvent(Event):
 
 
     """
-    def __init__(self, *args, trigger_topic, quips, shuffle_quips=False, **kwargs):
+    def __init__(self, *args, trigger_topics, quips, trigger_convonode=None, shuffle_quips=False, **kwargs):
         """
         The constructor of DialogEvent.
 
         :param args:
             For the base class Event.
-        :param trigger_topic: str
-            The key of the Topic Object that may trigger this DialogEvent.
+        :param trigger_topic: list of str
+            The keys of the Topic Objects that may trigger this DialogEvent.
         :param quips: List of quip.keys (str)
             A list of all the quips that this event may return.
+        :param trigger_convonode: str, default None
+            the key of the convonode that can trigger the event. If None, all convonodes can trigger this event.
         :param shuffle_quips: Bool, default False
             If True, the quips in the quips list are shown in a random order.
         :param kwargs:
@@ -50,11 +54,12 @@ class DialogEvent(Event):
 
         """
         super().__init__(*args, **kwargs)
-        self.trigger_topic = trigger_topic
+        self.trigger_topics = trigger_topics
         self.quips = quips
+        self.trigger_convonode = trigger_convonode
         self.shuffle_quips = shuffle_quips
 
-    def eval_topic_conditions(self, game, topic):
+    def eval_topic_conditions(self, game, topic, convonode):
         """
         Evaluating whether or not a DialogEvent can be triggered or not.
         First checks if the topic given matches the event's topic. If it does, it calls
@@ -67,8 +72,12 @@ class DialogEvent(Event):
         :return: Boolean
 
         """
-        if topic != self.trigger_topic:
+        if topic not in self.trigger_topics:
             return False
+        if self.trigger_convonode:
+            if convonode != self.trigger_convonode:
+                return False
+
         return self.eval_conditions(game)
 
     def get_score(self):
@@ -80,7 +89,11 @@ class DialogEvent(Event):
             The number of the Event's conditions.
 
         """
-        return len(self.trigger_conditions) + 1
+        score = len(self.trigger_conditions) + 1
+        if self.trigger_convonode:
+            score += 1
+
+        return score
 
     def trigger(self, game):
         result = list()
@@ -107,5 +120,5 @@ class DialogEvent(Event):
                     q.is_said = True
                     return q.text
 
-        return f"'Stop asking me about the {game.topics[self.trigger_topic].display_name}!!!'"
+        return f"'Stop asking me about the {game.topics[self.trigger_topics[0]].display_name}!!!'"
 

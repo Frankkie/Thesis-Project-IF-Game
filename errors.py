@@ -125,6 +125,8 @@ class DialogError(Error):
         if self.error_type == "NoEventForTopic":
             actor = self.kwargs['actor']
             return f"{actor} stays silent."
+        if self.error_type == "ConvoNodeNotFound":
+            return f'Conversation node {self.kwargs["convonode"]} not found!'
         else:
             return self.error_type
 

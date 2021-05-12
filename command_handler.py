@@ -119,6 +119,7 @@ class CommandHandler:
         :param syntax: The syntax of the command.
         :return: True if the action is allowed, an error code (str) if the action is not allowed.
         """
+
         actor = sentence["Actor"]
         verb = sentence["Verb"]
         obj = sentence["Object"]
@@ -165,11 +166,20 @@ class CommandHandler:
 
         if verb.name in ["Ask"]:
             try:
-                result = self.__dialog(ind_obj)
+                result = self.__dialog(obj, ind_obj)
                 result = (result, "dialog")
                 return result
             except DialogError as error:
                 raise error
+
+        else:
+            for a in self.game.actors.values():
+                try:
+                    self.game.dialogevents["goodbye_general"].trigger(self.game)
+                except KeyError:
+                    pass
+                if a.active_convonode != 'ready':
+                    a.active_convonode = 'ready'
 
         if syntax == "":
             try:
@@ -283,9 +293,9 @@ class CommandHandler:
     def __action_oqi(self, actor, verb, obj, qualifier, indirect):
         return actor, verb, obj, qualifier, indirect
 
-    def __dialog(self, topic):
+    def __dialog(self, actor_asked, topic):
         try:
-            result = topic.on_topic(game=self.game)
+            result = topic.on_topic(game=self.game, actor=actor_asked)
             return result
         except DialogError as error:
             raise error

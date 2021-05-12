@@ -441,7 +441,7 @@ class NounPhraseParser:
                 g_topic_obj = self.game.topics[g_topic]
                 if not g_topic_obj.is_active:
                     continue
-                if g_topic_obj.reference_noun == topic_phrase["Noun"] and g_topic_obj.actor in actor_keys:
+                if g_topic_obj.reference_noun == topic_phrase["Noun"] and g_topic_obj.actor_key in actor_keys:
                     match = True
                     for adj in topic_phrase["Adjectives"]:
                         if adj not in g_topic_obj.reference_adjectives:

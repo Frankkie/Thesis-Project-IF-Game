@@ -1,7 +1,75 @@
 {
+  "greeting": {
+    "key": "greeting",
+    "trigger_topics": ["hey"],
+    "trigger_convonode": "hey",
+    "quips": [
+      {
+        "key": "heyq1",
+        "text": "'Hey Captain. How may I assist you?'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      },
+      {
+        "key": "heyq2",
+        "text": "'Hello Captain. What are you searching answers for?'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      },
+      {
+        "key": "heyq3",
+        "text": "'Hey Captain. Is there any manner in which I can render myself useful?'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      }
+    ],
+    "shuffle_quips": true,
+    "_class_": "DialogEvent"
+  },
+  "goodbye": {
+    "key": "goodbye",
+    "trigger_topics": ["bye"],
+    "trigger_convonode": "ready",
+    "quips": [
+      {
+        "key": "byeq1",
+        "text": "'Bye Captain!'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      },
+      {
+        "key": "byeq2",
+        "text": "'I am here whenever you need me', says Lovkiy, as his screen turns black.",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      },
+      {
+        "key": "byeq3",
+        "text": "'Always at your service Captain!'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      }
+    ],
+    "shuffle_quips": true,
+    "_class_": "DialogEvent"
+  },
+  "goodbye_general": {
+    "key": "goodbye_general",
+    "trigger_topics": ["bye"],
+    "quips": [
+      {
+        "key": "byeq1",
+        "text": "Lovkiy's screen turns dark again.",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      }
+    ],
+    "_class_": "DialogEvent"
+  },
+
   "light_event": {
     "key": "light_event",
-    "trigger_topic": "light",
+    "trigger_topics": ["light"],
     "quips": [
       {
         "key": "lightq1",
@@ -9,12 +77,13 @@
         "_class_": "Quip"
       }
     ],
+    "shuffle_quips": true,
     "_class_": "DialogEvent"
   },
 
   "light_event_after_taken": {
     "key": "light_event_after_taken",
-    "trigger_topic": "light",
+    "trigger_topics": ["light"],
     "trigger_conditions": [
       {
         "key": "c1",
@@ -24,6 +93,13 @@
         ],
         "not_": true,
         "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.bomb.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
       }
     ],
     "quips": [
@@ -36,6 +112,59 @@
         "key": "lightq2",
         "text": "Lovkiy finally answers honestly:\n'It's an experimental bomb!' he says.",
         "_class_": "Quip"
+      }
+    ],
+    "_class_": "DialogEvent"
+  },
+  "bomb_event": {
+    "key": "bomb_event",
+    "trigger_topics": ["bomb"],
+    "trigger_convonode": "bomb",
+    "quips": [
+      {
+        "key": "bombq1",
+        "text": "'Do you really want to know about the bomb?' asks Lovkiy, as a weird cunning tone overtakes his robotic voice.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  },
+
+  "yes_bomb_event": {
+    "key": "yes_bomb_event",
+    "trigger_topics": ["yes"],
+    "trigger_convonode": "bomb",
+    "quips": [
+      {
+        "key": "bombyesq1",
+        "text": "'It is a bomb capable of destroying the whole planet! I thought that noone would find it on this dog. But you did!'",
+        "_class_": "Quip"
+      },
+      {
+        "key": "bombyesq2",
+        "text": "'I already told you!'",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  },
+  "no_bomb_event": {
+    "key": "no_bomb_event",
+    "trigger_topics": ["no"],
+    "trigger_convonode": "bomb",
+    "quips": [
+      {
+        "key": "bombnoq1",
+        "text": "'I'll tell you anyway', says Lovkiy. 'It is a bomb capable of destroying the whole planet! I thought that noone would find it on this dog. But you did!'",
+        "_class_": "Quip"
+      },
+      {
+        "key": "bombyesq2",
+        "text": "'I already told you!'",
+        "_class_": "Quip",
+        "is_repeatable": true
       }
     ],
     "_class_": "DialogEvent"
