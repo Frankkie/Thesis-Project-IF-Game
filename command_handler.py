@@ -143,6 +143,8 @@ class CommandHandler:
         except PreconditionsError as error:
             raise error
 
+        self.game.saver.save_to_temp()
+
         return True
 
     def action_execution(self, sentence, syntax):

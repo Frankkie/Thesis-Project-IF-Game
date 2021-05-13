@@ -89,10 +89,13 @@ class Saver:
             self.game.display.queue("", "Save")
 
         if quit_:
-            empty_folder(self.current_folder)
-            temp_folder = os.path.join(self.game_folder + "_temp", "")
-            empty_folder(temp_folder)
+            self.empty_current_temp()
         return
+
+    def empty_current_temp(self):
+        empty_folder(self.current_folder)
+        temp_folder = os.path.join(self.game_folder + "_temp", "")
+        empty_folder(temp_folder)
 
 
 

@@ -58,7 +58,13 @@ class StateUpdate:
                 container = game.things[new_value]
             else:
                 container = game.actors[new_value]
-            old_container = game.things[old_value]
+
+            if old_value in game.rooms.keys():
+                old_container = game.rooms[old_value]
+            elif old_value in game.things.keys():
+                old_container = game.things[old_value]
+            else:
+                old_container = game.actors[old_value]
 
             old_container -= contained
             container += contained

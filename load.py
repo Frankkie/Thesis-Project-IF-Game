@@ -12,6 +12,7 @@ import json
 
 from tools import empty_folder, copytree
 import custom_json as cjson
+from errors import CheckCommandError
 
 
 class Loader:
@@ -52,10 +53,29 @@ class Loader:
                 commands.append(line.rstrip())
         return commands
 
-    def load_chapter(self, chapter_key, start=False):
+    def load_undo(self):
+        temp_folder = os.path.join(self.game_folder + "_temp", "")
+        if not os.listdir(temp_folder):
+            raise CheckCommandError('UndoError')
+        empty_folder(self.current_folder)
+        copytree(temp_folder, self.current_folder)
+        empty_folder(temp_folder)
+        game_dct = self.__load_game_file(self.current_folder)
+        self.game.game_state = game_dct['game_state']
+        # Load game parameters, chapters and actors
+        actors_file = os.path.join(self.current_folder, "actors.json")
+        chapters_file = os.path.join(self.current_folder, "chapters.json")
+
+        self.game.actors = cjson.custom_load(actors_file)
+        self.game.chapters = cjson.custom_load(chapters_file)
+
+        # Load Chapter again
+        self.load_chapter(self.game.game_state['current chapter'], undo=True)
+
+    def load_chapter(self, chapter_key, start=False, undo=False):
         # Save to current folder before the Chapter Change, so that
         # the changes to the rooms are saved.
-        if not start:
+        if not start and not undo:
             self.game.saver.save_to_current()
 
         chapter = self.game.chapters[chapter_key]
@@ -90,10 +110,13 @@ class Loader:
 
         self.game.game_state["current chapter"] = chapter_key
 
-        if chapter.first_room:
+        if chapter.first_room and not undo:
             self.game.game_state["current room"] = chapter.first_room
             for actor in self.game.actors.values():
                 actor.container = chapter.first_room
+
+        if undo:
+            self.game.refresh_things()
 
     def __find_save_folder(self, game_name, from_save):
         self.game_folder = os.path.join("Games", game_name, "")

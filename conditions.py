@@ -29,7 +29,6 @@ class Condition:
         path = q.query()
         if not path:
             return False
-
         for v in self.values:
             res = self.__compare_value(path[-1], v)
             if self.not_:

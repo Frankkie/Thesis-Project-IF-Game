@@ -76,6 +76,8 @@ class CheckCommandError(Error):
             return f"{self.kwargs['actor']} is not in the {self.kwargs['pc_room']} with you.\n" \
                    f"You should direct {self.kwargs['actor']} to return from the {self.kwargs['npc_room']} to fulfill" \
                    f" your command."
+        if self.error_type == "UndoError":
+            return 'You cannot undo twice in a row!'
         else:
             return self.error_type
 
@@ -129,4 +131,9 @@ class DialogError(Error):
             return f'Conversation node {self.kwargs["convonode"]} not found!'
         else:
             return self.error_type
+
+
+class UndoCommand(Error):
+    def __init__(self, error_type):
+        super().__init__(error_type)
 

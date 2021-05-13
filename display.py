@@ -83,11 +83,11 @@ class Display:
         print("\n")
 
     def __display_help(self):
-        print("No one can help you!")
+        print(self.text)
         print("\n")
 
     def __display_undo(self):
-        print("Mistakes are forever!")
+        print("Your mistake has been forgiven!")
         print("\n")
 
     def __display_save(self):

@@ -65,35 +65,38 @@ class Game:
         self.game_state["new game"] = False
         self.run_chapter(start=True)
         while True:
-            self.saver.save_to_temp()
-            self.run_pc_turn()
+            try:
+                self.run_pc_turn()
+            except UndoCommand:
+                continue
             self.display.output()
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
-            self.game_state["turn count"] += 1
 
     def replay_game(self):
         commands = self.loader.load_prev_commands(self.title)
         self.game_state["new game"] = False
         self.run_chapter(start=True)
         for command in commands:
-            self.saver.save_to_temp()
-            self.run_pc_turn(command)
+            try:
+                self.run_pc_turn(command)
+            except UndoCommand:
+                continue
             self.display.output()
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
-            self.game_state["turn count"] += 1
 
         while True:
-            self.saver.save_to_temp()
-            self.run_pc_turn()
+            try:
+                self.run_pc_turn()
+            except UndoCommand:
+                continue
             self.display.output()
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
-            self.game_state["turn count"] += 1
 
     def run_pc_turn(self, command=None):
         # Get user's command.
@@ -113,7 +116,7 @@ class Game:
         # If this is a parsable command
         if cmd_type == "Command":
             self.parsable_command(pc_command)
-            # self.display.display(result, "AfterAction")
+            self.game_state["turn count"] += 1
 
         # If this is a quit command
         elif cmd_type == "Quit":
@@ -121,6 +124,11 @@ class Game:
             return
         elif cmd_type == "Save":
             self.saver.save_game()
+        elif cmd_type == "Undo":
+            self.undo_move()
+            raise UndoCommand('')
+        elif cmd_type == "Help":
+            self.help()
         # If this is any other command type.
         else:
             self.display.queue("", cmd_type)
@@ -191,6 +199,40 @@ class Game:
         else:
             raise ValueError
 
+    def undo_move(self):
+        try:
+            self.loader.load_undo()
+            self.display.queue("", "Undo")
+            self.display.output()
+        except CheckCommandError as error:
+            self.display.queue(str(error), 'Error')
+            self.display.output()
+            return
+
+    def help(self):
+        text = ''
+        text += '\n- Verbs:\n'
+        for verb in self.verbs.values():
+            v_name = verb.name
+            v_forms = verb.forms
+            text += f'{v_name}: {v_forms}. '
+        text += '\n\n- Inventory:\n'
+        for thing in self.actors['I'].contents.values():
+            thing = thing['obj']
+            thing_noun = thing.reference_noun
+            thing_adj = thing.reference_adjectives
+            text += f'{thing_noun}: {thing_adj}. '
+        text += '\n\n- Topics:\n'
+        for topic in self.topics.values():
+            if topic.is_active:
+                topic_noun = topic.reference_noun
+                topic_adj = topic.reference_adjectives
+                text += f'{topic_noun}: {topic_adj}. '
+
+        text += '\n'
+        self.display.queue(text, "Help")
+        self.display.output()
+
     def quit_game(self):
         self.display.queue("", "Quit")
         self.display.output()
@@ -203,7 +245,7 @@ class Game:
         if reply in ["y", "yes", "Y", "Yes", "YES"]:
             self.saver.save_game(quit_=True)
         elif reply in ["n", "N", "No", "NO", "no"]:
-            pass
+            self.saver.empty_current_temp()
         else:
             self.end_game()
         sys.exit(0)
