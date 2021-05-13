@@ -86,7 +86,7 @@ class Saver:
         os.mkdir(save_folder)
         copytree(self.current_folder, save_folder)
         if display:
-            self.game.display.display("", "Save")
+            self.game.display.queue("", "Save")
 
         if quit_:
             empty_folder(self.current_folder)

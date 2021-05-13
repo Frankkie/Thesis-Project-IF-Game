@@ -51,7 +51,8 @@ class Game:
             self.replay_game()
 
         start_log(self)
-        self.display.display("", "Initial")
+        self.display.queue("", "Initial")
+        self.display.output()
         # Print boot up description
         # begin = self.get_command("Do you want to begin? (y/n) ")
         begin = "y"
@@ -66,7 +67,9 @@ class Game:
         while True:
             self.saver.save_to_temp()
             self.run_pc_turn()
+            self.display.output()
             self.run_chapter()
+            self.display.output()
             self.saver.save_to_current()
             self.game_state["turn count"] += 1
 
@@ -77,14 +80,18 @@ class Game:
         for command in commands:
             self.saver.save_to_temp()
             self.run_pc_turn(command)
+            self.display.output()
             self.run_chapter()
+            self.display.output()
             self.saver.save_to_current()
             self.game_state["turn count"] += 1
 
         while True:
             self.saver.save_to_temp()
             self.run_pc_turn()
+            self.display.output()
             self.run_chapter()
+            self.display.output()
             self.saver.save_to_current()
             self.game_state["turn count"] += 1
 
@@ -95,7 +102,8 @@ class Game:
             log_command(self, pc_command)
         else:
             pc_command = command
-            self.display.display(command, "Replay")
+            self.display.queue(command, "Replay")
+            self.display.output()
 
         # Preparse command.
         self.preparser.run_preparser(pc_command)
@@ -104,11 +112,8 @@ class Game:
 
         # If this is a parsable command
         if cmd_type == "Command":
-            result = self.parsable_command(pc_command)
-            if type(result) == str:
-                self.display.display(result, "Error")
-                return
-            self.display.display(result, "AfterAction")
+            self.parsable_command(pc_command)
+            # self.display.display(result, "AfterAction")
 
         # If this is a quit command
         elif cmd_type == "Quit":
@@ -118,33 +123,34 @@ class Game:
             self.saver.save_game()
         # If this is any other command type.
         else:
-            self.display.display("", cmd_type)
+            self.display.queue("", cmd_type)
 
     def parsable_command(self, command):
         try:
             parts = self.parser.run_parser(command)
         # In case of Error.
         except ParserError as error:
-            return str(error)
+            self.display.queue(str(error), "Error")
+            return
 
         try:
             parts = self.np_parser.run_np_parser(parts)
         except (ParserError, NPParserError, DialogError) as error:
-            return str(error)
+            self.display.queue(str(error), "Error")
+            return
 
         # DISAMBIGUATE COMMANDS BEFORE THIS POINT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        result = []
+
         # For all the commands.
         for sentence in parts:
             sentence = sentence[0]
             syntax = self.id_syntax_pattern(sentence)
             # If this command is directed to the Player Character
             try:
-                res = self.command_handler.run_command(sentence, syntax)
+                self.command_handler.run_command(sentence, syntax)
             except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
-                return str(error)
-            result.append(res)
-        return result
+                self.display.queue(str(error), "Error")
+                return
 
     def id_syntax_pattern(self, tree):
         pattern = ""
@@ -157,7 +163,8 @@ class Game:
         return pattern
 
     def get_command(self, text):
-        self.display.display(text, "Prompt")
+        self.display.queue(text, "Prompt")
+        self.display.output()
         command = self.display.fetch()
         return command
 
@@ -165,18 +172,15 @@ class Game:
         active_chapter_key = self.game_state["current chapter"]
         active_chapter = self.chapters[active_chapter_key]
         if start:
-            result = active_chapter.start_chapter()
-            self.display.display(result, "ChapterStart")
-            if result["Next Chapter"]:
-                next_chapter = result["Next Chapter"]
+            next_chapter = active_chapter.start_chapter(self)
+            if next_chapter:
                 if next_chapter == "__END__":
                     self.end_game()
 
         else:
-            result = active_chapter.advance_chapter(self)
-            self.display.display(result, "ChapterEvent")
-            if result["Next Chapter"]:
-                next_chapter = result["Next Chapter"]
+            next_chapter = active_chapter.advance_chapter(self)
+
+            if next_chapter:
                 self.loader.load_chapter(next_chapter)
                 self.refresh_things()
                 self.run_chapter(start=True)
@@ -188,11 +192,13 @@ class Game:
             raise ValueError
 
     def quit_game(self):
-        self.display.display("", "Quit")
+        self.display.queue("", "Quit")
+        self.display.output()
         self.end_game()
 
     def end_game(self):
-        self.display.display("Do you want to save this game? (y/n)", "Prompt")
+        self.display.queue("Do you want to save this game? (y/n)", "Prompt")
+        self.display.output()
         reply = self.display.fetch()
         if reply in ["y", "yes", "Y", "Yes", "YES"]:
             self.saver.save_game(quit_=True)

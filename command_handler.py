@@ -47,28 +47,21 @@ class CommandHandler:
             self.command = [{"Actor": actor, "Verb": verb, "Object": objects,
                              "Qualifier": qualifier, "Indirect": ind_objects}]
 
-        result = []
-
         # If this command is directed to the Player Character
         if actor == self.game.actors["I"]:
             for sentence in self.command:
                 try:
-                    res = self.pc_command(sentence, syntax, many_ind_objects)
+                    self.pc_command(sentence, syntax, many_ind_objects)
                 except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
-                    res = (error, "error")
-
-                result.append(res)
+                    raise error
 
         # If this command is directed to an NPC
         else:
             for sentence in self.command:
                 try:
-                    res = self.npc_command(sentence, syntax, many_ind_objects)
+                    self.npc_command(sentence, syntax, many_ind_objects)
                 except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
-                    res = (error, "error")
-
-                result.append(res)
-        return result
+                    raise error
 
     def pc_command(self, sentence, syntax, many_ind_objects):
         # Prepare for action
@@ -78,11 +71,9 @@ class CommandHandler:
             raise error
 
         try:
-            res = self.action_execution(sentence, syntax)
+            self.action_execution(sentence, syntax)
         except (ActionError, DialogError) as error:
             raise error
-
-        return res
 
     def npc_command(self, sentence, syntax, many_ind_objects):
         # Check npc commandability
@@ -104,11 +95,9 @@ class CommandHandler:
             raise error
 
         try:
-            res = self.action_execution(sentence, syntax)
+            self.action_execution(sentence, syntax)
         except (ActionError, DialogError) as error:
             raise error
-
-        return res
 
     def prepare_execution(self, sentence, syntax, many_ind_objects):
         """
@@ -167,19 +156,20 @@ class CommandHandler:
         if verb.name in ["Ask"]:
             try:
                 result = self.__dialog(obj, ind_obj)
-                result = (result, "dialog")
-                return result
+                self.game.display.queue(result, "Dialog")
+                return
             except DialogError as error:
                 raise error
 
         else:
             for a in self.game.actors.values():
-                try:
-                    self.game.dialogevents["goodbye_general"].trigger(self.game)
-                except KeyError:
-                    pass
                 if a.active_convonode != 'ready':
                     a.active_convonode = 'ready'
+                    try:
+                        res = self.game.dialogevents["goodbye_general"].trigger(self.game)
+                        self.game.display.queue(res, "Dialog")
+                    except KeyError:
+                        pass
 
         if syntax == "":
             try:
@@ -201,7 +191,8 @@ class CommandHandler:
                 result = self.__action_oqi(actor, verb, obj, qualifier, ind_obj)
             except ActionError as error:
                 raise error
-        return result, "action"
+
+        self.game.display.queue(result, 'AfterAction')
 
     def __check_actor(self, actor, verb):
         verb_name = verb.name

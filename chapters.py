@@ -39,14 +39,14 @@ class Chapter:
             chapter_state = {}
         self.chapter_state = chapter_state
 
-    def start_chapter(self):
+    def start_chapter(self, game):
         """
         This method is triggered by the game at the start of a Chapter, and returns the introduction
         description of the chapter, based on the previous Chapter.
-        :return: dictionary of info about the events triggered.
+        :return: None
         """
-        result = {"Descriptions": [self.intro_description], "Next Chapter": None}
-        return result
+        game.display.queue(self.intro_description, "ChapterStart")
+        return None
 
     def advance_chapter(self, game):
         """
@@ -55,22 +55,23 @@ class Chapter:
         :param game: the game object that has triggered the chapter
         :return: dictionary of info about the events triggered.
         """
-        result = {"Descriptions": [], "Next Chapter": None}
+        next_chapter = None
 
         for event in game.events.values():
             if event.eval_conditions(game):
                 res = event.trigger(game)
-                result["Descriptions"] += res
+                game.display.queue(res, "ChapterEvent")
 
         for condition_set in self.end_conditions:
             conditions = condition_set["conditions"]
             chapter_key = condition_set["next chapter"]
             if self.__eval_conditions(game, conditions):
-                result["Descriptions"].append(self._end_chapter(chapter_key))
-                result["Next Chapter"] = chapter_key
-                return result
+                res = self._end_chapter(chapter_key)
+                game.display.queue(res, "ChapterEvent")
+                next_chapter = chapter_key
+                return next_chapter
 
-        return result
+        return next_chapter
 
     def __eval_conditions(self, game, conditions):
         """
@@ -121,17 +122,17 @@ class EndChapter(Chapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def start_chapter(self):
+    def start_chapter(self, game):
         """
         The End Chapter is over before it had a chance to finish.
         Thus, the End Chapter's start_chapter method returns its outro description right away.
         :return: Dictionary with the description of the end of the game.
         """
-        result = {"Descriptions": [], "Next Chapter": "__END__"}
+        next_chapter = "__END__"
 
-        result["Descriptions"].append(self.intro_description)
-        result["Descriptions"].append(self._end_chapter("__END__"))
-        return result
+        game.display.queue(self.intro_description, "ChapterStart")
+        game.display.queue(self._end_chapter("__END__"), "ChapterEvent")
+        return next_chapter
 
 
 class DeathChapter(Chapter):

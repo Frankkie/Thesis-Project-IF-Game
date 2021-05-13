@@ -4,6 +4,18 @@ class Display:
     def __init__(self, game):
         self.game = game
         self.text = None
+        self.output_queue = []
+
+    def queue(self, text, text_type):
+        self.output_queue.append((text, text_type))
+
+    def empty_queue(self):
+        self.output_queue = []
+
+    def output(self):
+        for element in self.output_queue:
+            self.display(element[0], element[1])
+        self.empty_queue()
 
     def display(self, text, text_type):
         self.text = text
@@ -14,14 +26,9 @@ class Display:
         elif text_type == "Prompt":
             self.__display_prompt()
         elif text_type == "AfterAction":
-            for sent in self.text:
-                for res in sent:
-                    if res[1] == "action":
-                        self.__display_action(res[0])
-                    elif res[1] == "error":
-                        self.__display_error(res[0])
-                    elif res[1] == "dialog":
-                        self.__display_dialog(res[0])
+            self.__display_action(text)
+        elif text_type == "Dialog":
+            self.__display_dialog(text)
         elif text_type == "ChapterStart":
             self.__display_chapter_event()
         elif text_type == "ChapterEvent":
@@ -54,16 +61,21 @@ class Display:
 
     def __display_dialog(self, text):
         print(text[0])
-        for r in text[1]:
-            print(r)
-        print()
+        try:
+            for r in text[1]:
+                print(r)
+            print()
+        except IndexError:
+            pass
 
     def __display_chapter_event(self):
-        if not self.text["Descriptions"]:
-            return
-        for result in self.text["Descriptions"]:
-            print(result)
-        print()
+        if type(self.text) == list:
+            for result in self.text:
+                print(result)
+            print()
+        else:
+            print(self.text)
+            print()
 
     def __display_init(self):
         print(self.game.title)
