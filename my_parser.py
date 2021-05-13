@@ -377,16 +377,24 @@ class NounPhraseParser:
         """
         for t_index, tree in enumerate(sent):
             actor = self.disambiguate_actor(tree["Object"])
-            if actor:
-                sent[t_index]["Object"] = actor
-            else:
+            if not actor:
                 sent[t_index] = None
                 continue
-            topic = self.disambiguate_topic(tree["Indirect"], actor)
-            if topic:
-                sent[t_index]["Indirect"] = topic
             else:
+                sent[t_index]["Object"] = actor
+
+            topic = self.disambiguate_topic(tree["Indirect"], actor)
+            if not topic:
                 sent[t_index] = None
+                continue
+            else:
+                topic_list = []
+                for t in topic:
+                    if len(t) == 1:
+                        topic_list.append(t[0])
+                    else:
+                        topic_list.append(self.specify_phrase(t, 'topic'))
+                sent[t_index]['Indirect'] = topic_list
 
         return sent
 
@@ -399,17 +407,31 @@ class NounPhraseParser:
         for t_index, tree in enumerate(sent):
             if tree["Object"]:
                 np = self.disambiguate_noun_phrase(tree["Object"])
-                if np:
-                    sent[t_index]["Object"] = np
-                else:
+                if not np:
                     sent[t_index] = None
                     continue
+                else:
+                    object_list = []
+                    for n in np:
+                        if len(n) == 1:
+                            object_list.append(n[0])
+                        else:
+                            object_list.append(self.specify_phrase(n, 'thing'))
+                    sent[t_index]["Object"] = object_list
+
             if tree["Indirect"]:
                 np = self.disambiguate_noun_phrase(tree["Indirect"])
-                if np:
-                    sent[t_index]["Indirect"] = np
-                else:
+                if not np:
                     sent[t_index] = None
+                    continue
+                else:
+                    object_list = []
+                    for n in np:
+                        if len(n) == 1:
+                            object_list.append(n[0])
+                        else:
+                            object_list.append(self.specify_phrase(n, 'thing'))
+                    sent[t_index]['Indirect'] = object_list
 
         return sent
 
@@ -438,7 +460,7 @@ class NounPhraseParser:
 
         topic_list = []
         for topic_phrase in topics:
-            topic = None
+            topic = []
             for g_topic in self.game.topics.keys():
                 g_topic_obj = self.game.topics[g_topic]
                 if not g_topic_obj.is_active:
@@ -452,7 +474,7 @@ class NounPhraseParser:
                     if not match:
                         continue
                     else:
-                        topic = g_topic_obj
+                        topic.append(g_topic_obj)
                 else:
                     continue
             if not topic:
@@ -472,7 +494,7 @@ class NounPhraseParser:
 
         entity_list = []
         for thing in things:
-            entity = None
+            entity = []
             for g_thing in self.game.things.keys():
                 if self.game.things[g_thing].reference_noun == thing["Noun"] and self.game.things[g_thing].is_known:
                     match = True
@@ -486,7 +508,7 @@ class NounPhraseParser:
                         if not match:
                             continue
                         else:
-                            entity = self.game.things[g_thing]
+                            entity.append(self.game.things[g_thing])
                 else:
                     continue
             if not entity:
@@ -510,3 +532,19 @@ class NounPhraseParser:
                     things[-1]["Adjectives"].append(word[1])
 
         return things
+
+    def specify_phrase(self, object_list, object_type):
+        self.game.display.queue(f'Which {object_type} do you mean?', 'Specify')
+        for i, obj in enumerate(object_list):
+            self.game.display.queue(f'{i}. {obj.reference_noun}: {obj.reference_adjectives}', 'Specify')
+        self.game.display.output()
+        response = self.game.display.fetch()
+        try:
+            response = int(response)
+        except ValueError:
+            return self.specify_phrase(object_list, object_type)
+        if response in range(len(object_list)):
+            return object_list[response]
+        else:
+            return self.specify_phrase(object_list, object_type)
+

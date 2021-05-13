@@ -43,6 +43,8 @@ class Display:
             self.__display_save()
         elif text_type == "Replay":
             self.__display_replay()
+        elif text_type == 'Specify':
+            self.__display_specify()
 
     def fetch(self):
         text = input()
@@ -100,3 +102,6 @@ class Display:
 
     def __display_replay(self):
         print("> " + self.text)
+
+    def __display_specify(self):
+        print(self.text)

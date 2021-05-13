@@ -97,6 +97,26 @@
                     "_class_": "Thing"
                 },
                 "tags": ["Inventory"]
+            },
+            "blue duck": {
+                "obj": {
+                    "key": "blue duck",
+                    "reference_noun": "duck",
+                    "display_name": "blue duck",
+                    "description": "",
+                    "container": "New Room",
+                    "contents": {},
+                    "plural": false,
+                    "reference_adjectives": [
+                        "blue"
+                    ],
+                    "action_description": null,
+                    "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
+                                   "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
+                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true, "Swerveoff": true},
+                    "_class_": "Thing"
+                },
+                "tags": ["Inventory"]
             }
         },
         "plural": false,
@@ -107,7 +127,8 @@
             }
         },
         "_class_": "Room"
-    },
+        },
+
     "North Room": {
         "key": "North Room",
         "reference_noun": "NorthRoom",
