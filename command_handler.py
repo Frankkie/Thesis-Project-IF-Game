@@ -266,7 +266,12 @@ class CommandHandler:
             raise error
 
     def __action_(self, actor, verb):
-        return actor, verb
+        curr_room_key = self.game.game_state['current room']
+        room = self.game.rooms[curr_room_key]
+        try:
+            return room.on_dir_object(verb=verb)
+        except ActionError as error:
+            raise error
 
     def __action_q(self, actor, verb, qualifier):
         if verb.name in ["Go"]:
@@ -278,13 +283,18 @@ class CommandHandler:
 
     def __action_o(self, actor, verb, obj):
         try:
-            result = obj.on_dir_object(verb=verb, actor=actor, game=self.game)
+            result = obj.on_dir_object(verb=verb, actor=actor, game=self.game, indirect=None)
             return result
         except ActionError as error:
             raise error
 
     def __action_oqi(self, actor, verb, obj, qualifier, indirect):
-        return actor, verb, obj, qualifier, indirect
+        try:
+            result = obj.on_dir_object(verb=verb, actor=actor, qualifier=qualifier, indirect=indirect,
+                                       game=self.game)
+            return result
+        except ActionError as error:
+            raise error
 
     def __dialog(self, actor_asked, topic):
         try:

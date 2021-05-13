@@ -13,19 +13,40 @@
                     "display_name": "green tomato",
                     "description": "This is a really plump tomato, but it's still quite green. It's not matured enough yet.",
                     "container": "New Room",
-                    "contents": {},
+                    "contents": {
+                        "tomato seeds": {
+                            "obj": {"key": "tomato seeds",
+                                "display_name": "tomato seeds",
+                                "reference_noun": "seeds",
+                                "description": "This tomato is full of seeds.",
+                                "container": "green tomato",
+                                "contents": {},
+                                "plural": false,
+                                "reference_adjectives": [
+                                    "tomato"
+                                ],
+                                "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Put": true},
+                                "action_description": {},
+                                "_class_": "Thing"
+                            },
+                            "tags": ["In", "Look"]
+                        }
+                    },
                     "plural": false,
                     "reference_adjectives": [
                         "green",
                         "plump"
                     ],
                     "as_indobj": {
-                        "On": true
+                        "On": true,
+                        "In": true
                     },
                     "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
                                    "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
                                    "Landon": true, "Enter": true, "Leave": true, "Setup": true, "Swerveoff": true},
-                    "action_description": null,
+                    "action_description": {
+                        "On Use red beeping light": "The tomato explodes releasing its seeds everywhere!"
+                    },
                     "_class_": "Thing"
                     },
                 "tags": ["Inventory"]
@@ -54,10 +75,11 @@
                                             "beeping"
                                         ],
                                         "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": false,
-                                                       "Close": false, "Push": false, "Use": false, "Read": false, "Put": true, "Send": false,
+                                                       "Close": false, "Push": false, "Use": true, "Read": false, "Put": true, "Send": false,
                                                        "Landon": false, "Enter": false, "Leave": false, "Setup": false, "Swerveoff": false},
                                         "action_description": {
-                                            "Take": "You take the small object that's emitting the light in your hands. It's metallic."
+                                            "Take": "You take the small object that's emitting the light in your hands. It's metallic.",
+                                            "Use": "You throw the light and it bursts in flames mid air."
                                         },
                                         "_class_": "Thing"
                                     },
