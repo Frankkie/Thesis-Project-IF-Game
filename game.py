@@ -214,9 +214,13 @@ class Game:
         current_room = self.rooms[current_room_key]
         for actor in self.actors.keys():
             if self.actors[actor].container == current_room_key:
+                self.actors[actor].is_known = True
                 new_things = {**new_things, **self.actors[actor].get_contents()}
-                new_things[actor] = self.actors[actor]
+            new_things[actor] = self.actors[actor]
         new_things = {**new_things, **current_room.get_contents()}
+        for thing in new_things.values():
+            if thing.container == current_room_key:
+                thing.is_known = True
         self.things = new_things
 
     def to_json(self):

@@ -159,7 +159,9 @@ class Parser:
         for ind, sent in enumerate(sentences):
             sent_words = tok.word_tokenize(sent)
             # If the first word of the sentence is not a game actor, the parser supposes it it "I"
-            if sent_words[0].capitalize() not in self.game.actors:
+            possible_actor = sent_words[0].capitalize()
+            if (possible_actor not in self.game.actors) or \
+                    (possible_actor in self.game.actors and not self.game.actors[possible_actor].is_known):
                 if ind > 0:
                     sent_ = [words[0][0]]
                 else:
@@ -418,7 +420,7 @@ class NounPhraseParser:
         for actor in actors:
             entity = None
             for g_actor in self.game.actors.keys():
-                if self.game.actors[g_actor].reference_noun == actor["Noun"]:
+                if self.game.actors[g_actor].reference_noun == actor["Noun"] and self.game.actors[g_actor].is_known:
                     entity = self.game.actors[g_actor]
                 else:
                     continue
@@ -472,7 +474,7 @@ class NounPhraseParser:
         for thing in things:
             entity = None
             for g_thing in self.game.things.keys():
-                if self.game.things[g_thing].reference_noun == thing["Noun"]:
+                if self.game.things[g_thing].reference_noun == thing["Noun"] and self.game.things[g_thing].is_known:
                     match = True
                     if self.game.things[g_thing].__class__.__name__ == "Actor":
                         entity = self.game.things[g_thing]

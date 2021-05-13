@@ -154,6 +154,8 @@ class Entity:
         for key in self.contents.keys():
             if isinstance(self.contents[key], dict):
                 contents[key] = self.contents[key]['obj']
+                obj_contents = self.contents[key]['obj'].get_contents()
+                contents = {**contents, **obj_contents}
         return contents
 
     def on_dir_object(self, **kwargs):
@@ -174,6 +176,7 @@ class Entity:
             for obj in self.contents.keys():
                 if "Look" in self.contents[obj]['tags']:
                     game.things[obj] = self.contents[obj]['obj']
+                    self.contents[obj]['obj'].is_known = True
         self.already_seen = True
         if self.examine_description:
             return f"The {self.display_name}: " + self.examine_description
@@ -188,6 +191,7 @@ class Entity:
             for obj in self.contents.keys():
                 if "Listen" in self.contents[obj]['tags']:
                     game.things[obj] = self.contents[obj]['obj']
+                    self.contents[obj]['obj'].is_known = True
         if self.audible_description:
             return self.audible_description
         else:

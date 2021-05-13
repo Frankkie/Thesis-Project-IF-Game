@@ -26,7 +26,7 @@ class Thing(Entity):
         Returns a string representing the object.
 
     """
-    def __init__(self, *args, reference_adjectives=None, **kwargs):
+    def __init__(self, *args, reference_adjectives=None, is_known=False, **kwargs):
         """
         The constructor of Thing.
 
@@ -34,11 +34,15 @@ class Thing(Entity):
             For the base constructor.
         :param reference_adjectives: list of string, default None
             The adjectives by which the player can refer to the object in commands.
+        :param is_known: bool, default: False
+            True if the Thing can be interacted with by the player.
         :param kwargs:
             For the base constructor.
 
         """
         super().__init__(*args, **kwargs)
+
+        self.is_known = is_known
         if reference_adjectives is None:
             self.reference_adjectives = []
         else:
