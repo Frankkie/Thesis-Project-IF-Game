@@ -11,20 +11,23 @@ import json
 class Entity:
     def __init__(self, key, reference_noun, display_name, description=None,
                  as_indobj=None, as_dirobj=None, container=None, contents=None, plural=False,
-                 examine_description=None, audible_description=None, action_description=None,
-                 already_seen=None, entity_state=None):
+                 examine_description=None, audible_description=None, action_description=None, entity_state=None):
         """
         This is the parent class of all Entities (Things, Rooms, Actors).
 
         Args:
-            :param key: This is the name of the object when referenced internally by the game.
-            :param reference_noun: This is the noun by which the object is referenced by the player.
-                                   Must be a single word.
-            :param display_name: This is the string by which the game displays the object.
-            :param description: default="", this is the string by which the object is described by the look method.
-            :param container: default=None, this is key of the container Entity of the object.
-            :param contents: default=None, dictionary. The components of this object:
-                             {key: {obj: Entity Instance, tags: []}}
+            :param key: str
+                This is the name of the object when referenced internally by the game.
+            :param reference_noun: str
+                This is the noun by which the object is referenced by the player. Must be a single word.
+            :param display_name: str
+                This is the string by which the game displays the object.
+            :param description:
+                default="", this is the string by which the object is described by the look method.
+            :param container:
+                default=None, this is key of the container Entity of the object.
+            :param contents:
+                default=None, dictionary. The components of this object: {key: {obj: Entity Instance, tags: []}}
             :param as_indobj: A dictionary of the qualifier types that this entity instance can appear
                                with as an indirect object.
             :param as_dirobj: A dictionary of the verbs that this entity instance can appear with as
@@ -36,7 +39,6 @@ class Entity:
                                         by the Listen command.
             :param action_description: default=None, this is a dictionary of the descriptions of various commands.
                                        {verb name: description}
-            :param already_seen: if True the object has already been examined.
         """
 
         self.key = key
@@ -51,6 +53,7 @@ class Entity:
 
         with open("Grammar/qualifiers.json", "r") as file:
             qualifier_types = json.load(file)
+        file.close()
         for q in qualifier_types.keys():
             qualifier_types[q] = False
         if not as_indobj:
@@ -60,6 +63,7 @@ class Entity:
 
         with open("Grammar/verbs.json", "r") as file:
             verbs = json.load(file)
+        file.close()
         for q in verbs.keys():
             verbs[q] = False
 
@@ -74,10 +78,6 @@ class Entity:
             self.action_description = {**verbs, **action_description}
 
         self.plural = plural
-        if not already_seen:
-            self.already_seen = False
-        else:
-            self.already_seen = already_seen
         self.examine_description = examine_description
         self.audible_description = audible_description
         if not entity_state:
@@ -85,8 +85,18 @@ class Entity:
         self.entity_state = entity_state
 
     def __str__(self):
+        try:
+            seen = self.entity_state["Seen"]
+        except KeyError:
+            seen = False
+        if self.examine_description and not seen:
+            printable = f"The {self.display_name}: " + self.examine_description
+        elif self.description:
+            printable = f"The {self.display_name}: " + self.description
+        else:
+            printable = f"There is nothing interesting about the {self.display_name}."
+        printable += '\n'
 
-        printable = self.display_name.capitalize() + "\n" + self.description + "\n"
         return printable
 
     def __iadd__(self, other):
@@ -148,6 +158,8 @@ class Entity:
         for key in self.contents.keys():
             if isinstance(self.contents[key], dict):
                 contents[key] = self.contents[key]['obj']
+                obj_contents = self.contents[key]['obj'].get_contents()
+                contents = {**contents, **obj_contents}
         return contents
 
     def on_dir_object(self, **kwargs):
@@ -168,20 +180,24 @@ class Entity:
             for obj in self.contents.keys():
                 if "Look" in self.contents[obj]['tags']:
                     game.things[obj] = self.contents[obj]['obj']
-        self.already_seen = True
-        if self.examine_description:
-            return f"The {self.display_name}: " + self.examine_description
-        elif self.description:
-            return f"The {self.display_name}: " + self.description
-        else:
-            return f"There is nothing interesting about the {self.display_name}."
+                    self.contents[obj]['obj'].is_known = True
+
+        try:
+            descr = self.string()
+        except AttributeError:
+            descr = str(self)
+
+        self.entity_state["Seen"] = True
+        return descr
 
     def _on_listen(self, **kwargs):
         game = kwargs['game']
+        self.entity_state["Listened"] = True
         if self.contents:
             for obj in self.contents.keys():
                 if "Listen" in self.contents[obj]['tags']:
                     game.things[obj] = self.contents[obj]['obj']
+                    self.contents[obj]['obj'].is_known = True
         if self.audible_description:
             return self.audible_description
         else:
@@ -199,7 +215,7 @@ class Entity:
             container_object = game.things[container_key]
             container_object -= self
 
-        actor += {"obj": self, "tags": ["Inventory"]}
+        actor += {"obj": self, "tags": ["Inventory", "Look"]}
         if self.action_description["Take"]:
             return self.action_description["Take"]
         else:
@@ -217,7 +233,7 @@ class Entity:
         actor -= self
         room_key = actor.container
         room = game.rooms[room_key]
-        room += {"obj": self, "tags": ["Inventory"]}
+        room += {"obj": self, "tags": ["Inventory", "Look"]}
 
         if self.action_description["Drop"]:
             return self.action_description["Drop"]
@@ -225,25 +241,66 @@ class Entity:
             return f"You leave the {self.display_name} in the {room.display_name}."
 
     def _on_put(self, **kwargs):
-        pass
+        ind_object = kwargs['indirect']
+        qualifier = kwargs['qualifier']
+        actor = kwargs['actor']
+        actor -= self
+        ind_object += {'obj': self, 'tags': ['Look', 'Inventory', qualifier]}
+        return f'You put the {self.display_name} {qualifier.lower()} the {ind_object.display_name}.'
 
     def _on_read(self, **kwargs):
-        pass
-
-    def _on_talkto(self, **kwargs):
-        pass
+        self.entity_state["Read"] = True
+        if self.action_description["Read"]:
+            return self.action_description["Read"]
+        else:
+            return f"There's nothing to read on the {self.display_name}."
 
     def _on_use(self, **kwargs):
-        pass
+        self.entity_state["Used"] = True
+        result = self.action_description["Use"]
+        indirect = kwargs["indirect"]
+        if indirect:
+            indirect.entity_state["On Used " + self.key] = True
+            result += "\n"
+            result += indirect.action_description["On Use " + self.key]
+        return result
 
     def _on_push(self, **kwargs):
-        pass
+        self.entity_state["Pushed"] = True
+
+        if self.action_description["Push"]:
+            return self.action_description["Push"]
+        else:
+            return f"You push the {self.display_name}."
 
     def _on_close(self, **kwargs):
-        pass
+        descr = ''
+        if self.action_description["Open"]:
+            descr += self.action_description["Open"]
+        else:
+            descr += f"You close the {self.display_name}."
+        for content in self.contents.values():
+            if 'In' in content["tags"]:
+                content['obj'].is_known = False
+
+        self.entity_state['Open'] = False
+        return descr
 
     def _on_open(self, **kwargs):
-        pass
+        descr = ''
+        if self.action_description["Open"]:
+            descr += self.action_description["Open"]
+        else:
+            descr += f"You open the {self.display_name}."
+
+        descr += '\n'
+        for content in self.contents.values():
+            if 'In' in content["tags"]:
+                descr += f"- {content['obj'].string(print_parts=False)}\n"
+                content['obj'].is_known = True
+
+        self.entity_state['Open'] = True
+        return descr
 
     def _on_leave(self, **kwargs):
         pass

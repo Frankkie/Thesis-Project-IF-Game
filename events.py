@@ -19,9 +19,9 @@ class Event:
         result = list()
         result.append(self.event_description)
         self.done += 1
-        self.__change_game_state(game)
+        self._change_game_state(game)
         if self.next_event_key:
-            res = self.__trigger_next(game)
+            res = self._trigger_next(game)
             if res:
                 result += res
         return result
@@ -37,13 +37,22 @@ class Event:
                 return False
         return True
 
-    def __change_game_state(self, game):
+    def get_score(self):
+        """
+        Get the specificity score of the Event (number of conditions).
+
+        :return: int
+            The number of the Event's conditions.
+
+        """
+        return len(self.trigger_conditions)
+
+    def _change_game_state(self, game):
         for state_update in self.game_state_changes:
             state_update.state_update(game)
 
-    def __trigger_next(self, game):
-        chapter = game.chapters[game.game_state["current chapter"]]
-        events = chapter.events
+    def _trigger_next(self, game):
+        events = game.events
         try:
             next_event = events[self.next_event_key]
         except KeyError:

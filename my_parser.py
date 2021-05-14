@@ -26,6 +26,7 @@ class PreParser:
         self.cmd_type = None
         with open("Grammar\\preparse_table.json", "r") as table_file:
             self.preparse_table = json.load(table_file)
+        table_file.close()
 
     def run_preparser(self, text):
         self.text = text
@@ -73,6 +74,7 @@ class Parser:
         self.sent_separators = ('.', '?', '!', ',', 'then', ';')
         with open("Grammar/qualifiers.json", "r") as file:
             self.qualifier_types = json.load(file)
+        file.close()
         # The text given in the prompt by the user.
         self.text = ""
         # A list of the words/tokens in the text
@@ -100,10 +102,8 @@ class Parser:
 
         # Building the syntactic trees for each sentence.
         for sentence in self.words:
-            sent_pos = self.pos_tagging(sentence)
-            for actor in self.game.actors.values():
-                if actor.reference_noun == sentence[-1]:
-                    sent_pos[-1] = "NNP"
+            new_sent = self.prepare_for_pos_tagging(sentence)
+            sent_pos = self.pos_tagging(new_sent)
             self.pos.append(sent_pos)
             sent_trees = self.build_tree(sent_pos)
             # If the grammar fails to create a tree, there is a GrammarError.
@@ -146,33 +146,6 @@ class Parser:
             sent = remove_duplicates(sent)
             self.parts[s_index] = sent
 
-        # Identify the game entities in the sentences' object and indirect (object)
-        # If there are no valid corresponding entities, delete the tree.
-        for s_index, sent in enumerate(self.parts):
-            for t_index, tree in enumerate(sent):
-                if tree["Object"]:
-                    np = self.disambiguate_noun_phrase(tree["Object"])
-                    if np:
-                        self.parts[s_index][t_index]["Object"] = np
-                    else:
-                        self.parts[s_index][t_index] = None
-                        continue
-                if tree["Indirect"]:
-                    np = self.disambiguate_noun_phrase(tree["Indirect"])
-                    if np:
-                        self.parts[s_index][t_index]["Indirect"] = np
-                    else:
-                        self.parts[s_index][t_index] = None
-
-        # Delete all sentences without any valid trees left, delete all duplicates.
-        for s_index, sent in enumerate(self.parts):
-            sent = [t for t in sent if t]
-            if not sent:
-                # If a sentence is left without valid trees, raise an Entity Error
-                raise ParserError("EntityError")
-            sent = remove_duplicates(sent)
-            self.parts[s_index] = sent
-
         return self.parts
 
     def tokenize(self):
@@ -186,7 +159,9 @@ class Parser:
         for ind, sent in enumerate(sentences):
             sent_words = tok.word_tokenize(sent)
             # If the first word of the sentence is not a game actor, the parser supposes it it "I"
-            if sent_words[0].capitalize() not in self.game.actors:
+            possible_actor = sent_words[0].capitalize()
+            if (possible_actor not in self.game.actors) or \
+                    (possible_actor in self.game.actors and not self.game.actors[possible_actor].is_known):
                 if ind > 0:
                     sent_ = [words[0][0]]
                 else:
@@ -201,6 +176,22 @@ class Parser:
                     sent_.append(word)
             words.append(sent_)
         return words
+
+    def prepare_for_pos_tagging(self, sentence):
+        new_sentence = []
+        actors = self.game.actors.values()
+        actor_names = []
+        for actor in actors:
+            actor_names.append(actor.reference_noun)
+
+        for word in sentence:
+            if word in actor_names:
+                new_sentence.append("actor")
+            elif word in ("hey", "bye", "yes", "no"):
+                new_sentence.append("topic")
+            else:
+                new_sentence.append(word)
+        return new_sentence
 
     def pos_tagging(self, sentence):
         """
@@ -340,29 +331,172 @@ class Parser:
                 return category
         return qualifier.capitalize()
 
+
+class NounPhraseParser:
+    """
+
+    """
+    def __init__(self, game):
+        self.game = game
+        self.parts = None
+        self.convo_verbs = ["Ask"]
+
+    def run_np_parser(self, parts):
+        self.parts = parts
+        sent_verbs = []
+        # Identify the game entities in the sentences' object and indirect (object)
+        # If there are no valid corresponding entities, delete the tree.
+        for s_index, sent in enumerate(self.parts):
+            v = sent[0]["Verb"].name
+            sent_verbs.append(v)
+            if v in self.convo_verbs:
+                self.parts[s_index] = self.dialog_sentence(sent)
+            else:
+                self.parts[s_index] = self.action_sentence(sent)
+
+        # Delete all sentences without any valid trees left, delete all duplicates.
+        for s_index, sent in enumerate(self.parts):
+            v = sent_verbs[s_index]
+            sent = [t for t in sent if t]
+            if not sent:
+                # If a sentence is left without valid trees, raise an Entity Error
+                if v in self.convo_verbs:
+                    raise DialogError("TopicError")
+                raise NPParserError("EntityError")
+
+            sent = remove_duplicates(sent)
+            self.parts[s_index] = sent
+
+        return self.parts
+
+    def dialog_sentence(self, sent):
+        """
+
+        :param sent:
+        :return:
+        """
+        for t_index, tree in enumerate(sent):
+            actor = self.disambiguate_actor(tree["Object"])
+            if not actor:
+                sent[t_index] = None
+                continue
+            else:
+                sent[t_index]["Object"] = actor
+
+            topic = self.disambiguate_topic(tree["Indirect"], actor)
+            if not topic:
+                sent[t_index] = None
+                continue
+            else:
+                topic_list = []
+                for t in topic:
+                    if len(t) == 1:
+                        topic_list.append(t[0])
+                    else:
+                        topic_list.append(self.specify_phrase(t, 'topic'))
+                sent[t_index]['Indirect'] = topic_list
+
+        return sent
+
+    def action_sentence(self, sent):
+        """
+
+        :param sent:
+        :return:
+        """
+        for t_index, tree in enumerate(sent):
+            if tree["Object"]:
+                np = self.disambiguate_noun_phrase(tree["Object"])
+                if not np:
+                    sent[t_index] = None
+                    continue
+                else:
+                    object_list = []
+                    for n in np:
+                        if len(n) == 1:
+                            object_list.append(n[0])
+                        else:
+                            object_list.append(self.specify_phrase(n, 'thing'))
+                    sent[t_index]["Object"] = object_list
+
+            if tree["Indirect"]:
+                np = self.disambiguate_noun_phrase(tree["Indirect"])
+                if not np:
+                    sent[t_index] = None
+                    continue
+                else:
+                    object_list = []
+                    for n in np:
+                        if len(n) == 1:
+                            object_list.append(n[0])
+                        else:
+                            object_list.append(self.specify_phrase(n, 'thing'))
+                    sent[t_index]['Indirect'] = object_list
+
+        return sent
+
+    def disambiguate_actor(self, actor_phrase):
+        actors = self.separate_phrases(actor_phrase)
+
+        actor_list = []
+        for actor in actors:
+            entity = None
+            for g_actor in self.game.actors.keys():
+                if self.game.actors[g_actor].reference_noun == actor["Noun"] and self.game.actors[g_actor].is_known:
+                    entity = self.game.actors[g_actor]
+                else:
+                    continue
+
+            if not entity:
+                return None
+            else:
+                actor_list.append(entity)
+        actor_list.reverse()
+        return actor_list
+
+    def disambiguate_topic(self, topics_phrase, actor):
+        topics = self.separate_phrases(topics_phrase)
+        actor_keys = [a.key for a in actor]
+
+        topic_list = []
+        for topic_phrase in topics:
+            topic = []
+            for g_topic in self.game.topics.keys():
+                g_topic_obj = self.game.topics[g_topic]
+                if not g_topic_obj.is_active:
+                    continue
+                if g_topic_obj.reference_noun == topic_phrase["Noun"] and g_topic_obj.actor_key in actor_keys:
+                    match = True
+                    for adj in topic_phrase["Adjectives"]:
+                        if adj not in g_topic_obj.reference_adjectives:
+                            match = False
+                            break
+                    if not match:
+                        continue
+                    else:
+                        topic.append(g_topic_obj)
+                else:
+                    continue
+            if not topic:
+                return None
+            else:
+                topic_list.append(topic)
+        topic_list.reverse()
+        return topic_list
+
     def disambiguate_noun_phrase(self, noun_phrase):
         """
         This function identifies the game Entity objects in a noun phrase.
         :param noun_phrase: NLTK tree of a noun phrase.
         :return: A list of all Entity objects in the noun phrase.
         """
-        things = [{"Noun": None, "Adjectives": []}]
-        for word in reversed(noun_phrase):
-            if word[0] == 'A':
-                continue
-            elif word[0] == 'L':
-                things.append({"Noun": None, "Adjectives": []})
-            else:
-                if not things[-1]["Noun"]:
-                    things[-1]["Noun"] = word[1]
-                else:
-                    things[-1]["Adjectives"].append(word[1])
+        things = self.separate_phrases(noun_phrase)
 
         entity_list = []
         for thing in things:
-            entity = None
+            entity = []
             for g_thing in self.game.things.keys():
-                if self.game.things[g_thing].reference_noun == thing["Noun"]:
+                if self.game.things[g_thing].reference_noun == thing["Noun"] and self.game.things[g_thing].is_known:
                     match = True
                     if self.game.things[g_thing].__class__.__name__ == "Actor":
                         entity = self.game.things[g_thing]
@@ -374,7 +508,7 @@ class Parser:
                         if not match:
                             continue
                         else:
-                            entity = self.game.things[g_thing]
+                            entity.append(self.game.things[g_thing])
                 else:
                     continue
             if not entity:
@@ -384,4 +518,33 @@ class Parser:
         entity_list.reverse()
         return entity_list
 
+    def separate_phrases(self, phrase):
+        things = [{"Noun": None, "Adjectives": []}]
+        for word in reversed(phrase):
+            if word[0] == 'A':
+                continue
+            elif word[0] == 'L':
+                things.append({"Noun": None, "Adjectives": []})
+            else:
+                if not things[-1]["Noun"]:
+                    things[-1]["Noun"] = word[1]
+                else:
+                    things[-1]["Adjectives"].append(word[1])
+
+        return things
+
+    def specify_phrase(self, object_list, object_type):
+        self.game.display.queue(f'Which {object_type} do you mean?', 'Specify')
+        for i, obj in enumerate(object_list):
+            self.game.display.queue(f'{i}. {obj.reference_noun}: {obj.reference_adjectives}', 'Specify')
+        self.game.display.output()
+        response = self.game.display.fetch()
+        try:
+            response = int(response)
+        except ValueError:
+            return self.specify_phrase(object_list, object_type)
+        if response in range(len(object_list)):
+            return object_list[response]
+        else:
+            return self.specify_phrase(object_list, object_type)
 

@@ -22,5 +22,13 @@
   "h": "help",
   "q": "quit",
   "u": "undo",
-  "oops": "undo"
+  "oops": "undo",
+  "hey lovkiy": "ask lovkiy about hey",
+  "bye lovkiy": "ask lovkiy about bye",
+  "yes lovkiy": "ask lovkiy about yes",
+  "no lovkiy": "ask lovkiy about no",
+  "hey": "ask lovkiy about hey",
+  "bye": "ask lovkiy about bye",
+  "yes": "ask lovkiy about yes",
+  "no": "ask lovkiy about no"
 }

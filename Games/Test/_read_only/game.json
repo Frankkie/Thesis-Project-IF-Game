@@ -8,7 +8,8 @@
     "chapter time": 0,
     "win": false,
     "lose": false,
-    "new game": true
+    "new game": true,
+    "turn count": 0
   },
   "last_save_key": null,
   "seed": 0

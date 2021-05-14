@@ -65,16 +65,13 @@ class Room(Entity):
         printable = self.display_name + "\n" + self.description + "\n"
         if print_parts:
             for part in self.contents.keys():
-                printable += self.contents[part]['obj'].description
-                printable += " "
+                printable += f"- {self.contents[part]['obj'].display_name.capitalize()}:" \
+                             f" {self.contents[part]['obj'].description}\n"
             printable += "\n"
 
         if print_directions:
             for direction in self.directions.keys():
-                printable += direction
-                printable += ": "
-                printable += self.directions[direction]['desc']
-                printable += " "
+                printable += f"- {direction}: {self.directions[direction]['desc']}\n"
             printable += "\n"
 
         return printable
@@ -107,4 +104,18 @@ class Room(Entity):
 
         self.directions[dir_] = {"room": room, "desc": desc}
         return self
+
+    def _on_look(self, **kwargs):
+        if self.examine_description:
+            return f"The {self.display_name}: " + self.examine_description
+        elif self.description:
+            return f"The {self.display_name}: " + self.string()
+        else:
+            return f"There is nothing interesting about the {self.display_name}."
+
+    def _on_listen(self, **kwargs):
+        if self.audible_description:
+            return self.audible_description
+        else:
+            return f"You don't hear anything interesting in the {self.display_name}."
 

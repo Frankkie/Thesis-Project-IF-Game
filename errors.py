@@ -33,8 +33,21 @@ class ParserError(Error):
             return "I could not understand this verb."
         if self.error_type == "SyntaxError":
             return "This is the incorrect syntax for this verb."
+
+
+class NPParserError(Error):
+    def __init__(self, error_type):
+        super().__init__(error_type)
+
+    def error_message(self):
+        """
+        This function prints an error message.
+        :return: String, error message
+        """
         if self.error_type == "EntityError":
             return "This object is not here."
+        else:
+            return self.error_type
 
 
 class CheckCommandError(Error):
@@ -63,12 +76,10 @@ class CheckCommandError(Error):
             return f"{self.kwargs['actor']} is not in the {self.kwargs['pc_room']} with you.\n" \
                    f"You should direct {self.kwargs['actor']} to return from the {self.kwargs['npc_room']} to fulfill" \
                    f" your command."
+        if self.error_type == "UndoError":
+            return 'You cannot undo twice in a row!'
         else:
             return self.error_type
-
-    def __str__(self):
-        message = self.error_message()
-        return message
 
 
 class PreconditionsError(Error):
@@ -81,12 +92,14 @@ class PreconditionsError(Error):
             return f"You have to take the {self.kwargs['obj']} before doing this."
         if self.error_type == "ActionNotInObjectError":
             return f"The {self.kwargs['obj']} does not have the method {self.kwargs['verb']}."
+        if self.error_type == "UseOnObjectError":
+            return f"You cannot use the {self.kwargs['obj']} on the {self.kwargs['ind_obj']}."
+        if self.error_type == 'IndObjectNotOpen':
+            return f'You have to open {self.kwargs["ind_obj"]} first, before you put something in it.'
+        if self.error_type == "UseObjectError":
+            return f"There is no particular use for the {self.kwargs['obj']}."
         else:
             return self.error_type
-
-    def __str__(self):
-        message = self.error_message()
-        return message
 
 
 class ActionError(Error):
@@ -102,7 +115,31 @@ class ActionError(Error):
         else:
             return self.error_type
 
-    def __str__(self):
-        message = self.error_message()
-        return message
+
+class DialogError(Error):
+    def __init__(self, error_type, **kwargs):
+        super().__init__(error_type)
+        self.kwargs = kwargs
+        self.default_responses = [
+            "'You can't expect me to talk about this right now!'",
+            "'What a bizarre thing to ask me about!'",
+            "'I am not going to entertain this question.'"
+        ]
+
+    def error_message(self):
+        if self.error_type == "TopicError":
+            import random
+            return random.choice(self.default_responses)
+        if self.error_type == "NoEventForTopic":
+            actor = self.kwargs['actor']
+            return f"{actor} stays silent."
+        if self.error_type == "ConvoNodeNotFound":
+            return f'Conversation node {self.kwargs["convonode"]} not found!'
+        else:
+            return self.error_type
+
+
+class UndoCommand(Error):
+    def __init__(self, error_type):
+        super().__init__(error_type)
 

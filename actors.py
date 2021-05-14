@@ -26,11 +26,18 @@ class Actor(Entity):
             Triggered by the Go Verb. Changes the Actor's room.
 
     """
-    def __init__(self, *args, abilities=None, on_command=None, **kwargs):
+    def __init__(self, *args, gender, active_convonode='ready', is_known=True,
+                 abilities=None, on_command=None, **kwargs):
         """
         The constructor of actors.
         :param args:
             arguments passed to the Entity constructor
+        :param gender: int, can be 0, 1, 2, 3
+            the gender of the actor. 0 is she/her, 1 is he/him, 2 is they/them, 3 is it/it.
+        :param active_convonode: str, default: 'ready'
+            the key of the convonode active for this actor.
+        :param is_known: bool, default: True
+            True if the Actor can be interacted with by the player.
         :param abilities: dict
             keys: verb names, values: boolean, depending on whether or not this actor can perform this action.
         :param on_command: dict
@@ -41,8 +48,13 @@ class Actor(Entity):
         """
         super().__init__(*args, **kwargs)
 
+        self.gender = gender
+        self.active_convonode = active_convonode
+        self.is_known = is_known
+
         with open("Grammar/verbs.json", "r") as file:
             verbs = json.load(file)  # Load dict of all verbs
+        file.close()
         for q in verbs.keys():
             verbs[q] = False
 

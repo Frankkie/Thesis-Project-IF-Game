@@ -33,4 +33,30 @@ class ActionPreconditions:
     def _put(self):
         if self.obj.key not in self.actor.contents:
             raise PreconditionsError("TakeObjectError", obj=self.obj.display_name)
+
+        if self.qualifier == 'In':
+            try:
+                ind_open = self.ind_obj.entity_state['Open']
+            except KeyError:
+                raise PreconditionsError('IndObjectNotOpen', ind_obj=self.ind_obj.display_name)
+            if not ind_open:
+                raise PreconditionsError('IndObjectNotOpen', ind_obj=self.ind_obj.display_name)
+        return True
+
+    def _use(self):
+        if self.obj.key not in self.actor.contents:
+            raise PreconditionsError("TakeObjectError", obj=self.obj.display_name)
+
+        if not self.obj.action_description['Use']:
+            raise PreconditionsError("UseObjectError", obj=self.obj.display_name)
+
+        if self.ind_obj:
+            if "On Use " + self.obj.key not in self.ind_obj.action_description.keys():
+                raise PreconditionsError("UseOnObjectError", obj=self.obj.display_name,
+                                         ind_obj=self.ind_obj.display_name)
+            else:
+                return True
+        return True
+
+    def _open(self):
         return True

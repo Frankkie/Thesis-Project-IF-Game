@@ -1,4 +1,4 @@
-from errors import CheckCommandError, PreconditionsError, ActionError
+from errors import CheckCommandError, PreconditionsError, ActionError, DialogError
 from preconditions import ActionPreconditions
 
 
@@ -47,34 +47,33 @@ class CommandHandler:
             self.command = [{"Actor": actor, "Verb": verb, "Object": objects,
                              "Qualifier": qualifier, "Indirect": ind_objects}]
 
-        result = {"Descriptions": []}
-
         # If this command is directed to the Player Character
         if actor == self.game.actors["I"]:
             for sentence in self.command:
                 try:
-                    res = self.pc_command(sentence, syntax, many_ind_objects)
-                except (CheckCommandError, PreconditionsError, ActionError) as error:
+                    self.pc_command(sentence, syntax, many_ind_objects)
+                except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
                     raise error
-                result["Descriptions"].append(res)
+
         # If this command is directed to an NPC
         else:
             for sentence in self.command:
                 try:
-                    res = self.npc_command(sentence, syntax, many_ind_objects)
-                except (CheckCommandError, PreconditionsError, ActionError) as error:
+                    self.npc_command(sentence, syntax, many_ind_objects)
+                except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
                     raise error
-                result["Descriptions"].append(res)
-        return result
 
     def pc_command(self, sentence, syntax, many_ind_objects):
         # Prepare for action
         try:
             self.prepare_execution(sentence, syntax, many_ind_objects)
-        except (CheckCommandError, PreconditionsError, ActionError) as error:
+        except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
             raise error
-        res = self.action_execution(sentence, syntax)
-        return res
+
+        try:
+            self.action_execution(sentence, syntax)
+        except (ActionError, DialogError) as error:
+            raise error
 
     def npc_command(self, sentence, syntax, many_ind_objects):
         # Check npc commandability
@@ -92,11 +91,13 @@ class CommandHandler:
         # Prepare for action
         try:
             self.prepare_execution(sentence, syntax, many_ind_objects)
-        except (CheckCommandError, PreconditionsError, ActionError) as error:
+        except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
             raise error
 
-        res = self.action_execution(sentence, syntax)
-        return res
+        try:
+            self.action_execution(sentence, syntax)
+        except (ActionError, DialogError) as error:
+            raise error
 
     def prepare_execution(self, sentence, syntax, many_ind_objects):
         """
@@ -107,6 +108,7 @@ class CommandHandler:
         :param syntax: The syntax of the command.
         :return: True if the action is allowed, an error code (str) if the action is not allowed.
         """
+
         actor = sentence["Actor"]
         verb = sentence["Verb"]
         obj = sentence["Object"]
@@ -123,15 +125,25 @@ class CommandHandler:
                 self.__check_qualifier(actor, verb, qualifier, ind_obj, many_ind_objects)
             except CheckCommandError as error:
                 raise error
+
         if obj:
             try:
                 self.__check_object(verb, obj)
             except CheckCommandError as error:
                 raise error
+
+        if verb.name in ["Ask"]:
+            try:
+                self.__check_topic(ind_obj, obj)
+            except CheckCommandError as error:
+                raise error
+
         try:
             self.__check_preconditions(syntax, actor, verb, obj, qualifier, ind_obj)
         except PreconditionsError as error:
             raise error
+
+        self.game.saver.save_to_temp()
 
         return True
 
@@ -142,6 +154,25 @@ class CommandHandler:
         qualifier = sentence["Qualifier"]
         ind_obj = sentence["Indirect"]
         result = None
+
+        if verb.name in ["Ask"]:
+            try:
+                result = self.__dialog(obj, ind_obj)
+                self.game.display.queue(result, "Dialog")
+                return
+            except DialogError as error:
+                raise error
+
+        else:
+            for a in self.game.actors.values():
+                if a.active_convonode != 'ready':
+                    a.active_convonode = 'ready'
+                    try:
+                        res = self.game.dialogevents["goodbye_general"].trigger(self.game)
+                        self.game.display.queue(res, "Dialog")
+                    except KeyError:
+                        pass
+
         if syntax == "":
             try:
                 result = self.__action_(actor, verb)
@@ -162,7 +193,8 @@ class CommandHandler:
                 result = self.__action_oqi(actor, verb, obj, qualifier, ind_obj)
             except ActionError as error:
                 raise error
-        return result
+
+        self.game.display.queue(result, 'AfterAction')
 
     def __check_actor(self, actor, verb):
         verb_name = verb.name
@@ -178,6 +210,13 @@ class CommandHandler:
                     return
                 else:
                     raise CheckCommandError("VerbQualifierNotValidError", verb=verb.name, qualifier=qualifier)
+
+            if verb.name in ["Ask"]:
+                if qualifier == "About":
+                    return
+                else:
+                    raise CheckCommandError("VerbQualifierNotValidError", verb=verb.name, qualifier=qualifier)
+
             if qualifier in ind_object.as_indobj.keys():
                 if ind_object.as_indobj[qualifier]:
                     if many_ind_objects:
@@ -213,6 +252,10 @@ class CommandHandler:
         else:
             raise CheckCommandError("ObjectNotAbleError", obj=obj.display_name, verb=verb_name.lower())
 
+    def __check_topic(self, topic, actor_asked):
+        # CHECK WITH THE CONVONODE!!!!!!!!!!!!!!!!!!!!!!!
+        pass
+
     def __check_preconditions(self, syntax, actor, verb, obj, qualifier, ind_obj):
         prec = ActionPreconditions(syntax, actor, verb, obj, qualifier, ind_obj)
         try:
@@ -223,7 +266,12 @@ class CommandHandler:
             raise error
 
     def __action_(self, actor, verb):
-        return actor, verb
+        curr_room_key = self.game.game_state['current room']
+        room = self.game.rooms[curr_room_key]
+        try:
+            return room.on_dir_object(verb=verb)
+        except ActionError as error:
+            raise error
 
     def __action_q(self, actor, verb, qualifier):
         if verb.name in ["Go"]:
@@ -235,10 +283,23 @@ class CommandHandler:
 
     def __action_o(self, actor, verb, obj):
         try:
-            result = obj.on_dir_object(verb=verb, actor=actor, game=self.game)
+            result = obj.on_dir_object(verb=verb, actor=actor, game=self.game, indirect=None)
             return result
         except ActionError as error:
             raise error
 
     def __action_oqi(self, actor, verb, obj, qualifier, indirect):
-        return actor, verb, obj, qualifier, indirect
+        try:
+            result = obj.on_dir_object(verb=verb, actor=actor, qualifier=qualifier, indirect=indirect,
+                                       game=self.game)
+            return result
+        except ActionError as error:
+            raise error
+
+    def __dialog(self, actor_asked, topic):
+        try:
+            result = topic.on_topic(game=self.game, actor=actor_asked)
+            return result
+        except DialogError as error:
+            raise error
+

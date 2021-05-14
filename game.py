@@ -4,17 +4,14 @@
 """
 
 
-import os
 import sys
-import time
-import shutil
 
-import custom_json as cjson
 import my_parser as prs
 from command_handler import CommandHandler
 from errors import *
-from tools import empty_folder, copytree
 from log_commands import start_log, log_command
+from load import Loader
+from save import Saver
 
 
 class Game:
@@ -28,21 +25,34 @@ class Game:
         self.command_handler = CommandHandler(self)
         self.parser = prs.Parser(self)
         self.preparser = prs.PreParser()
+        self.np_parser = prs.NounPhraseParser(self)
+        self.loader = Loader(self.title, self)
+        self.saver = Saver(self)
         self.actors = {}
         self.verbs = {}
         self.rooms = {}
         self.chapters = {}
-        start_log(self)
+        self.things = {}
+        self.topics = {}
+        self.convonodes = {}
+        self.dialogevents = {}
+        self.events = {}
 
-    def boot_game(self, actors, verbs, chapters, display, last_save_key):
+    def boot_game(self, actors, verbs, chapters, display, last_save_key, replay=False):
+        self.actors = actors
         self.verbs = verbs
         self.chapters = chapters
-        self.actors = actors
         self.display = display
         self.last_save_key = last_save_key
-        self.load_chapter(self.game_state["current chapter"], start=True)
+        self.loader.load_chapter(self.game_state["current chapter"], start=True)
         self.refresh_things()
-        self.display.display("", "Initial")
+
+        if replay:
+            self.replay_game()
+
+        start_log(self)
+        self.display.queue("", "Initial")
+        self.display.output()
         # Print boot up description
         # begin = self.get_command("Do you want to begin? (y/n) ")
         begin = "y"
@@ -55,15 +65,49 @@ class Game:
         self.game_state["new game"] = False
         self.run_chapter(start=True)
         while True:
-            self.save_to_temp()
-            self.run_pc_turn()
+            try:
+                self.run_pc_turn()
+            except UndoCommand:
+                continue
+            self.display.output()
             self.run_chapter()
-            self.save_to_current()
+            self.display.output()
+            self.saver.save_to_current()
 
-    def run_pc_turn(self):
+    def replay_game(self):
+        commands = self.loader.load_prev_commands(self.title)
+        self.game_state["new game"] = False
+        self.run_chapter(start=True)
+        for command in commands:
+            try:
+                self.run_pc_turn(command)
+            except UndoCommand:
+                continue
+            self.display.output()
+            self.run_chapter()
+            self.display.output()
+            self.saver.save_to_current()
+
+        while True:
+            try:
+                self.run_pc_turn()
+            except UndoCommand:
+                continue
+            self.display.output()
+            self.run_chapter()
+            self.display.output()
+            self.saver.save_to_current()
+
+    def run_pc_turn(self, command=None):
         # Get user's command.
-        pc_command = self.get_command("")
-        command_text = pc_command
+        if not command:
+            pc_command = self.get_command("")
+            log_command(self, pc_command)
+        else:
+            pc_command = command
+            self.display.queue(command, "Replay")
+            self.display.output()
+
         # Preparse command.
         self.preparser.run_preparser(pc_command)
         pc_command = self.preparser.text
@@ -71,43 +115,50 @@ class Game:
 
         # If this is a parsable command
         if cmd_type == "Command":
-            result = self.parsable_command(pc_command)
-            if type(result) == str:
-                self.display.display(result, "Error")
-            else:
-                self.display.display(result, "AfterAction")
+            self.parsable_command(pc_command)
+            self.game_state["turn count"] += 1
 
         # If this is a quit command
         elif cmd_type == "Quit":
             self.quit_game()
             return
         elif cmd_type == "Save":
-            self.save_game()
+            self.saver.save_game()
+        elif cmd_type == "Undo":
+            self.undo_move()
+            raise UndoCommand('')
+        elif cmd_type == "Help":
+            self.help()
         # If this is any other command type.
         else:
-            self.display.display("", cmd_type)
-
-        log_command(self, command_text)
+            self.display.queue("", cmd_type)
 
     def parsable_command(self, command):
         try:
             parts = self.parser.run_parser(command)
         # In case of Error.
         except ParserError as error:
-            return str(error)
+            self.display.queue(str(error), "Error")
+            return
+
+        try:
+            parts = self.np_parser.run_np_parser(parts)
+        except (ParserError, NPParserError, DialogError) as error:
+            self.display.queue(str(error), "Error")
+            return
+
         # DISAMBIGUATE COMMANDS BEFORE THIS POINT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        result = []
+
         # For all the commands.
         for sentence in parts:
             sentence = sentence[0]
             syntax = self.id_syntax_pattern(sentence)
             # If this command is directed to the Player Character
             try:
-                res = self.command_handler.run_command(sentence, syntax)
-            except (CheckCommandError, PreconditionsError, ActionError) as error:
-                return str(error)
-            result.append(res)
-        return result
+                self.command_handler.run_command(sentence, syntax)
+            except (CheckCommandError, PreconditionsError, ActionError, DialogError) as error:
+                self.display.queue(str(error), "Error")
+                return
 
     def id_syntax_pattern(self, tree):
         pattern = ""
@@ -120,53 +171,25 @@ class Game:
         return pattern
 
     def get_command(self, text):
-        self.display.display(text, "Prompt")
+        self.display.queue(text, "Prompt")
+        self.display.output()
         command = self.display.fetch()
         return command
-
-    def load_chapter(self, chapter_key, start=False):
-        current_folder = "Games\\" + self.title + "\\current"
-        chapter_folder = current_folder + "\\_chapter_" + chapter_key
-        events_file_path = chapter_folder + "\\events.json"
-
-        # Save to current folder before the Chapter Change, so that
-        # the changes to the rooms are saved.
-        if not start:
-            self.save_to_current()
-
-        self.game_state["current chapter"] = chapter_key
-        chapter = self.chapters[chapter_key]
-        if chapter.first_room:
-            self.game_state["current room"] = chapter.first_room
-            for actor in self.actors.values():
-                actor.container = chapter.first_room
-
-        rooms_file_name = chapter.room_file
-        rooms_file_path = current_folder + "\\_rooms_\\" + rooms_file_name
-        self.rooms = cjson.custom_load(rooms_file_path)
-        try:
-            events = cjson.custom_load(events_file_path)
-            self.chapters[chapter_key].events = events
-        except FileNotFoundError:
-            pass
 
     def run_chapter(self, start=False):
         active_chapter_key = self.game_state["current chapter"]
         active_chapter = self.chapters[active_chapter_key]
         if start:
-            result = active_chapter.start_chapter()
-            self.display.display(result, "ChapterStart")
-            if result["Next Chapter"]:
-                next_chapter = result["Next Chapter"]
+            next_chapter = active_chapter.start_chapter(self)
+            if next_chapter:
                 if next_chapter == "__END__":
                     self.end_game()
 
         else:
-            result = active_chapter.advance_chapter(self)
-            self.display.display(result, "ChapterEvent")
-            if result["Next Chapter"]:
-                next_chapter = result["Next Chapter"]
-                self.load_chapter(next_chapter)
+            next_chapter = active_chapter.advance_chapter(self)
+
+            if next_chapter:
+                self.loader.load_chapter(next_chapter)
                 self.refresh_things()
                 self.run_chapter(start=True)
 
@@ -176,17 +199,53 @@ class Game:
         else:
             raise ValueError
 
+    def undo_move(self):
+        try:
+            self.loader.load_undo()
+            self.display.queue("", "Undo")
+            self.display.output()
+        except CheckCommandError as error:
+            self.display.queue(str(error), 'Error')
+            self.display.output()
+            return
+
+    def help(self):
+        text = ''
+        text += '\n- Verbs:\n'
+        for verb in self.verbs.values():
+            v_name = verb.name
+            v_forms = verb.forms
+            text += f'{v_name}: {v_forms}. '
+        text += '\n\n- Inventory:\n'
+        for thing in self.actors['I'].contents.values():
+            thing = thing['obj']
+            thing_noun = thing.reference_noun
+            thing_adj = thing.reference_adjectives
+            text += f'{thing_noun}: {thing_adj}. '
+        text += '\n\n- Topics:\n'
+        for topic in self.topics.values():
+            if topic.is_active:
+                topic_noun = topic.reference_noun
+                topic_adj = topic.reference_adjectives
+                text += f'{topic_noun}: {topic_adj}. '
+
+        text += '\n'
+        self.display.queue(text, "Help")
+        self.display.output()
+
     def quit_game(self):
-        self.display.display("", "Quit")
+        self.display.queue("", "Quit")
+        self.display.output()
         self.end_game()
 
     def end_game(self):
-        self.display.display("Do you want to save this game? (y/n)", "Prompt")
+        self.display.queue("Do you want to save this game? (y/n)", "Prompt")
+        self.display.output()
         reply = self.display.fetch()
         if reply in ["y", "yes", "Y", "Yes", "YES"]:
-            self.save_game()
+            self.saver.save_game(quit_=True)
         elif reply in ["n", "N", "No", "NO", "no"]:
-            pass
+            self.saver.empty_current_temp()
         else:
             self.end_game()
         sys.exit(0)
@@ -197,51 +256,29 @@ class Game:
         current_room = self.rooms[current_room_key]
         for actor in self.actors.keys():
             if self.actors[actor].container == current_room_key:
+                self.actors[actor].is_known = True
                 new_things = {**new_things, **self.actors[actor].get_contents()}
-                new_things[actor] = self.actors[actor]
+            new_things[actor] = self.actors[actor]
         new_things = {**new_things, **current_room.get_contents()}
+        for thing in new_things.values():
+            if thing.container == current_room_key:
+                thing.is_known = True
         self.things = new_things
 
-    def save_to_current(self):
-        chapter_key = self.game_state["current chapter"]
-        chapter = self.chapters[chapter_key]
-        room_file_name = chapter.room_file
-        current_folder = f"Games\\{self.title}\\current"
-        chapter_folder = current_folder + "\\_chapter_" + chapter_key
-        rooms_folder = current_folder + "\\_rooms_\\"
-        # Save Actors
-        cjson.custom_dump(self.actors, current_folder+"\\actors.json")
-        # Save Chapters
-        cjson.custom_dump(self.chapters, current_folder+"\\chapters.json")
-        # Save Game
-        cjson.custom_dump(self.chapters, current_folder+"\\game.json")
-        # Save Rooms
-        cjson.custom_dump(self.rooms, rooms_folder+room_file_name)
-        # Save Events
-        if chapter.events:
-            cjson.custom_dump(chapter.events, chapter_folder+"\\events.json")
+    def to_json(self):
+        """
+        Convert the instance of this class to a serializable object.
 
-    def save_to_temp(self):
-        temp_folder = "Games\\" + self.title + "\\_temp"
-        current_folder = "Games\\" + self.title + "\\current"
-        empty_folder(temp_folder)
-        copytree(current_folder, temp_folder)
-        return
+        :return: Dictionary
+            A dictionary of the object's attributes, containing the key '_class_'.
 
-    def save_game(self, display=True):
-        current_time = int(time.time())
-        save_folder = f"Games\\{self.title}\\save_{current_time}"
-        current_folder = f"Games\\{self.title}\\current"
-        for root, subdirs, files in os.walk('Games\\'+self.title):
-            for d in subdirs:
-                if "save_" in d:
-                    shutil.rmtree(os.path.join(root, d))
-        self.save_to_current()
-        os.mkdir(save_folder)
-        copytree(current_folder, save_folder)
-        if display:
-            self.display.display("", "Save")
-        return
-
-
+        """
+        obj_dict = {
+            "title": self.title,
+            "credits_": self.credits,
+            "game_state": self.game_state,
+            "last_save_key": self.last_save_key,
+            "seed": self.seed
+        }
+        return obj_dict
 
