@@ -96,10 +96,7 @@ class Entity:
         else:
             printable = f"There is nothing interesting about the {self.display_name}."
         printable += '\n'
-        for part in self.contents.values():
-            if "Look" in part['tags']:
-                printable += f"- {part['obj'].display_name.capitalize()}:" \
-                             f" {part['obj'].description}\n"
+
         return printable
 
     def __iadd__(self, other):
@@ -185,7 +182,11 @@ class Entity:
                     game.things[obj] = self.contents[obj]['obj']
                     self.contents[obj]['obj'].is_known = True
 
-        descr = str(self)
+        try:
+            descr = self.string()
+        except AttributeError:
+            descr = str(self)
+
         self.entity_state["Seen"] = True
         return descr
 
@@ -295,7 +296,7 @@ class Entity:
         descr += '\n'
         for content in self.contents.values():
             if 'In' in content["tags"]:
-                descr += f"- {content['obj'].display_name.capitalize()}: {content['obj'].description}\n"
+                descr += f"- {content['obj'].string(print_parts=False)}\n"
                 content['obj'].is_known = True
 
         self.entity_state['Open'] = True

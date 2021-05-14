@@ -93,7 +93,11 @@ class PreconditionsError(Error):
         if self.error_type == "ActionNotInObjectError":
             return f"The {self.kwargs['obj']} does not have the method {self.kwargs['verb']}."
         if self.error_type == "UseOnObjectError":
-            return f"You cannot use the {self.kwargs['obj']} on the {self.kwargs['ind_ob']}."
+            return f"You cannot use the {self.kwargs['obj']} on the {self.kwargs['ind_obj']}."
+        if self.error_type == 'IndObjectNotOpen':
+            return f'You have to open {self.kwargs["ind_obj"]} first, before you put something in it.'
+        if self.error_type == "UseObjectError":
+            return f"There is no particular use for the {self.kwargs['obj']}."
         else:
             return self.error_type
 

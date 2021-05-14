@@ -54,18 +54,18 @@ class Display:
         print(self.text, end="> ")
 
     def __display_error(self, error):
-        print(error)
-        print("\n")
+        print(error.rstrip())
+        print()
 
     def __display_action(self, text):
-        print(text)
+        print(text.rstrip())
         print()
 
     def __display_dialog(self, text):
         print(text[0])
         try:
             for r in text[1]:
-                print(r)
+                print(r.rstrip())
             print()
         except IndexError:
             pass
@@ -74,10 +74,9 @@ class Display:
         if type(self.text) == list:
             for result in self.text:
                 print(result)
-            print()
         else:
-            print(self.text)
-            print()
+            print(self.text.rstrip())
+        print()
 
     def __display_init(self):
         print(self.game.title)

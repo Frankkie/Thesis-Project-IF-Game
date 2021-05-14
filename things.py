@@ -58,12 +58,22 @@ class Thing(Entity):
             a string describing the object.
 
         """
-        printable = self.display_name + "\n" + self.description + "\n"
+        printable = str(self)
+
+        try:
+            opened = self.entity_state["Open"]
+        except KeyError:
+            opened = False
+
         if print_parts:
-            for part in self.contents.keys():
-                printable += self.contents[part]['obj']
-                printable += " "
-            printable += "\n"
+            for part in self.contents.values():
+                if "Look" in part['tags'] and not ('In' in part['tags']):
+                    printable += f"- {part['obj'].display_name.capitalize()}:" \
+                                 f" {part['obj'].description}\n"
+
+                if "In" in part["tags"] and opened:
+                    printable += f"- {part['obj'].display_name.capitalize()}:" \
+                                 f" {part['obj'].description}\n"
 
         return printable
 
