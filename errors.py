@@ -112,6 +112,8 @@ class ActionError(Error):
             return f"The {self.kwargs['obj']} does not have the method {self.kwargs['verb']}."
         if self.error_type == "ObjectNotHereError":
             return f"The {self.kwargs['obj']} is not in the {self.kwargs['container']}."
+        if self.error_type == 'DoorClosedError':
+            return f"You have to open the {self.kwargs['door']} before you go {self.kwargs['direction']}."
         else:
             return self.error_type
 

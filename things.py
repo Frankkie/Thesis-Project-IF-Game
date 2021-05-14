@@ -1,8 +1,11 @@
 """
-Contains the Thing class.
+Contains the Thing class and its child classes.
 
 Classes:
     Thing(Entity)
+    Fixture(Thing)
+    OpenableContainer(Thing)
+    Surface(Thing)
 
 """
 
@@ -76,5 +79,105 @@ class Thing(Entity):
                                  f" {part['obj'].description}\n"
 
         return printable
+
+
+class Fixture(Thing):
+    """
+    Fixtures are immovable and unopenable objects.
+    """
+    def __init__(self, *args, **kwargs):
+        try:
+            if not kwargs['as_dirobj']:
+                kwargs['as_dirobj'] = {}
+        except KeyError:
+            kwargs['as_dirobj'] = {}
+
+        try:
+            if not kwargs['as_indobj']:
+                kwargs['as_indobj'] = {}
+        except KeyError:
+            kwargs['as_indobj'] = {}
+
+        as_indobj = {**kwargs['as_indobj'], **{'On': False, 'In': False, "Under": False}}
+        as_dirobj = {**kwargs['as_dirobj'], **{"Look": True, "Take": False, "Drop": False, "Open": False,
+                                               "Close": False, "Push": False, "Use": False, "Put": False, "Send": False,
+                                               "Landon": False, "Enter": False, "Leave": False, "Setup": False,
+                                               "Swerveoff": False}}
+
+        kwargs['as_dirobj'] = as_dirobj
+        kwargs['as_indobj'] = as_indobj
+        super().__init__(*args, **kwargs)
+
+
+class OpenableContainer(Thing):
+    """
+    Openable Containers are openable objects.
+    """
+
+    def __init__(self, *args, **kwargs):
+        try:
+            if not kwargs['as_dirobj']:
+                kwargs['as_dirobj'] = {}
+        except KeyError:
+            kwargs['as_dirobj'] = {}
+
+        try:
+            if not kwargs['as_indobj']:
+                kwargs['as_indobj'] = {}
+        except KeyError:
+            kwargs['as_indobj'] = {}
+
+        as_indobj = {**kwargs['as_indobj'], **{'In': True}}
+        as_dirobj = {**kwargs['as_dirobj'], **{"Look": True, "Open": True, "Close": True}}
+        kwargs['as_dirobj'] = as_dirobj
+        kwargs['as_indobj'] = as_indobj
+        super().__init__(*args, **kwargs)
+
+
+class Surface(Thing):
+    """
+    Surfaces are objects that can be used to lay another object upon.
+    """
+
+    def __init__(self, *args, **kwargs):
+        try:
+            if not kwargs['as_dirobj']:
+                kwargs['as_dirobj'] = {}
+        except KeyError:
+            kwargs['as_dirobj'] = {}
+
+        try:
+            if not kwargs['as_indobj']:
+                kwargs['as_indobj'] = {}
+        except KeyError:
+            kwargs['as_indobj'] = {}
+
+        as_indobj = {**kwargs['as_indobj'], **{'On': True}}
+        as_dirobj = {**kwargs['as_dirobj'], **{"Look": True, "Open": True, "Close": True}}
+
+        kwargs['as_dirobj'] = as_dirobj
+        kwargs['as_indobj'] = as_indobj
+        super().__init__(*args, **kwargs)
+
+
+class Movable(Thing):
+    """
+    Movables are movable objects.
+    """
+    def __init__(self, *args, **kwargs):
+        try:
+            if not kwargs['as_dirobj']:
+                kwargs['as_dirobj'] = {}
+        except KeyError:
+            kwargs['as_dirobj'] = {}
+
+        as_dirobj = {**kwargs['as_dirobj'], **{"Look": True, "Take": True, "Drop": True, "Put": True}}
+        kwargs['as_dirobj'] = as_dirobj
+
+        super().__init__(*args, **kwargs)
+
+
+
+
 
 

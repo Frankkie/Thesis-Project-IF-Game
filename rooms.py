@@ -1,8 +1,9 @@
 """
-Contains the Room class.
+Contains the Room class and its children classes.
 
 Classes:
     Room(Entity)
+    Door(Room)
 
 """
 
@@ -67,12 +68,10 @@ class Room(Entity):
             for part in self.contents.keys():
                 printable += f"- {self.contents[part]['obj'].display_name.capitalize()}:" \
                              f" {self.contents[part]['obj'].description}\n"
-            printable += "\n"
 
         if print_directions:
             for direction in self.directions.keys():
                 printable += f"- {direction}: {self.directions[direction]['desc']}\n"
-            printable += "\n"
 
         return printable
 
@@ -119,3 +118,52 @@ class Room(Entity):
         else:
             return f"You don't hear anything interesting in the {self.display_name}."
 
+
+class Door(Room):
+    """
+
+    """
+    def __init__(self, *args, reference_adjectives=None, is_known=True, active_direction=None, **kwargs):
+        try:
+            entity_state = kwargs['entity_state']
+        except KeyError:
+            entity_state = {}
+
+        entity_state = {**{'Open': False}, **entity_state}
+        kwargs['entity_state'] = entity_state
+        super().__init__(*args, **kwargs)
+
+        self.active_direction = active_direction
+        self.is_known = is_known
+        if not reference_adjectives:
+            reference_adjectives = []
+        self.reference_adjectives = reference_adjectives
+
+    def string(self, print_parts=True, print_directions=True):
+        """
+        This method returns a string representation of the object.
+
+        :param print_parts: Boolean, Default=True
+            if True, it prints the objects in self.parts.
+        :param print_directions: Boolean, Default=True
+            if True, it prints the objects in self.directions.
+        :return: String
+            a string describing the object.
+
+        """
+        printable = self.display_name + "\n" + self.description + "\n"
+        if print_parts:
+            for part in self.contents.keys():
+                printable += f"- {self.contents[part]['obj'].display_name.capitalize()}:" \
+                             f" {self.contents[part]['obj'].description}\n"
+            printable += "\n"
+
+        if print_directions:
+            if self.entity_state["Open"]:
+                for direction in self.directions.keys():
+                    printable += f"- {direction}: {self.directions[direction]['desc']}\n"
+
+            else:
+                printable += f"- {self.active_direction}: {self.directions[self.active_direction]['desc']}\n"
+
+        return printable

@@ -259,6 +259,19 @@ class Game:
                 self.actors[actor].is_known = True
                 new_things = {**new_things, **self.actors[actor].get_contents()}
             new_things[actor] = self.actors[actor]
+
+        if current_room.__class__.__name__ == "Door":
+            new_things[current_room_key] = current_room
+
+        # Add the doors of the current room into self.things.
+        for room in self.rooms.values():
+            if room.__class__.__name__ == "Door":
+                door = room
+                for direction in door.directions.keys():
+                    if current_room_key == door.directions[direction]['room']:
+                        new_things[door.key] = door
+                        door.active_direction = direction
+
         new_things = {**new_things, **current_room.get_contents()}
         for thing in new_things.values():
             if thing.container == current_room_key:
