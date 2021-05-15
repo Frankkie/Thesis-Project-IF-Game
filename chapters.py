@@ -126,7 +126,10 @@ class EndChapter(Chapter):
         """
         The End Chapter is over before it had a chance to finish.
         Thus, the End Chapter's start_chapter method returns its outro description right away.
-        :return: Dictionary with the description of the end of the game.
+
+        :return: str, Chapter Key
+            The next chapter of the game.
+
         """
         next_chapter = "__END__"
 
@@ -142,6 +145,19 @@ class DeathChapter(Chapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    def start_chapter(self, game):
+        """
+        The Death Chapter is over before it had a chance to finish.
+
+        :return: str, Chapter Key
+            The next chapter of the game.
+
+        """
+        next_chapter = "End"
+
+        game.display.queue(self.intro_description, "ChapterStart")
+        return next_chapter
+
 
 class WinChapter(Chapter):
     """
@@ -150,6 +166,19 @@ class WinChapter(Chapter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def start_chapter(self, game):
+        """
+        The Win Chapter is over before it had a chance to finish.
+
+        :return: str, Chapter Key
+            The next chapter of the game.
+
+        """
+        next_chapter = "End"
+
+        game.display.queue(self.intro_description, "ChapterStart")
+        return next_chapter
 
 
 class SpaceChapter(Chapter):
@@ -163,7 +192,7 @@ class SpaceChapter(Chapter):
 
 class SolarSystemChapter(Chapter):
     """
-    This is a chapter type that is triggered when the PC's fleet approaches a solar system.
+    This is a chapter type that is triggered when the PC's fleet enters a solar system.
     """
 
     def __init__(self, *args, **kwargs):
@@ -172,7 +201,16 @@ class SolarSystemChapter(Chapter):
 
 class PlanetChapter(Chapter):
     """
-    This is a chapter type that is triggered when the PC's fleet approaches a planet in a solar system.
+    This is a chapter type that is triggered when the PC's fleet lands on a planet in a solar system.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class ColonyChapter(Chapter):
+    """
+    This is a chapter type that is triggered when the PC sets up a Colony on a planet.
     """
 
     def __init__(self, *args, **kwargs):

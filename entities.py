@@ -308,9 +308,6 @@ class Entity:
     def _on_setup(self, **kwargs):
         pass
 
-    def _on_swerveoff(self, **kwargs):
-        pass
-
     def _on_enter(self, **kwargs):
         pass
 

@@ -101,8 +101,7 @@ class Fixture(Thing):
         as_indobj = {**kwargs['as_indobj'], **{'On': False, 'In': False, "Under": False}}
         as_dirobj = {**kwargs['as_dirobj'], **{"Look": True, "Take": False, "Drop": False, "Open": False,
                                                "Close": False, "Push": False, "Use": False, "Put": False, "Send": False,
-                                               "Landon": False, "Enter": False, "Leave": False, "Setup": False,
-                                               "Swerveoff": False}}
+                                               "Landon": False, "Enter": False, "Leave": False, "Setup": False}}
 
         kwargs['as_dirobj'] = as_dirobj
         kwargs['as_indobj'] = as_indobj
