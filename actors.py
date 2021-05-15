@@ -7,6 +7,7 @@ Classes:
 """
 
 from entities import Entity
+from errors import ActionError
 import json
 
 
@@ -82,11 +83,16 @@ class Actor(Entity):
             or a generic result string (if NPC)
         """
         game = kwargs['game']
-        direction = kwargs['qualifier']
+        direction_key = kwargs['qualifier']
         actor = kwargs['actor']
         room = game.rooms[self.container]
-        direction = room.directions[direction]
+        direction = room.directions[direction_key]
         new_room_key = direction["room"]
+
+        if room.__class__.__name__ == "Door":
+            if room.entity_state['Open'] is False and room.active_direction != direction_key:
+                raise ActionError('DoorClosedError', direction=direction_key, door=room.display_name)
+
         direction_desc = direction["desc"]
         actor.container = new_room_key
         if self.key == "I":

@@ -43,7 +43,7 @@
                     },
                     "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
                                    "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
-                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true, "Swerveoff": true},
+                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true},
                     "action_description": {
                         "On Use red beeping light": "The tomato explodes releasing its seeds everywhere!"
                     },
@@ -76,7 +76,7 @@
                                         ],
                                         "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": false,
                                                        "Close": false, "Push": false, "Use": true, "Read": false, "Put": true, "Send": false,
-                                                       "Landon": false, "Enter": false, "Leave": false, "Setup": false, "Swerveoff": false},
+                                                       "Landon": false, "Enter": false, "Leave": false, "Setup": false},
                                         "action_description": {
                                             "Take": "You take the small object that's emitting the light in your hands. It's metallic.",
                                             "Use": "You throw the light and it bursts in flames mid air."
@@ -93,7 +93,7 @@
                     ],
                     "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
                                    "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
-                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true, "Swerveoff": true},
+                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true},
                     "action_description": null,
                     "_class_": "Thing"
                 },
@@ -115,7 +115,7 @@
                     "action_description": null,
                     "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
                                    "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
-                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true, "Swerveoff": true},
+                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true},
                     "_class_": "Thing"
                 },
                 "tags": ["Inventory"]
@@ -135,7 +135,7 @@
                     "action_description": null,
                     "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
                                    "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
-                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true, "Swerveoff": true},
+                                   "Landon": true, "Enter": true, "Leave": true, "Setup": true},
                     "_class_": "Thing"
                 },
                 "tags": ["Inventory"]
@@ -146,17 +146,136 @@
             "North": {
                 "room": "North Room",
                 "desc": "To the north of the New Room, there is the North Room."
+            },
+            "South": {
+                "room": "south door",
+                "desc": "To the south of the New Room, there is the south door."
             }
         },
         "_class_": "Room"
         },
+
+    "South Room": {
+        "key": "South Room",
+        "reference_noun": "SouthRoom",
+        "display_name": "South Room",
+        "description": "This is the South Room, south of the New Room.",
+        "container": null,
+        "contents": {
+            "wall": {
+                "obj": {
+                    "key": "wall",
+                    "reference_noun": "wall",
+                    "display_name": "wall",
+                    "description": "This is a grey wall.",
+                    "container": "South Room",
+                    "contents": null,
+                    "plural": false,
+                    "reference_adjectives": ["grey"],
+                    "_class_": "Fixture"
+                    },
+                "tags": ["Look"]
+            },
+            "ball": {
+                "obj": {
+                    "key": "ball",
+                    "reference_noun": "ball",
+                    "display_name": "ball",
+                    "description": "This is a grey ball.",
+                    "container": "South Room",
+                    "contents": null,
+                    "plural": false,
+                    "reference_adjectives": ["grey"],
+                    "_class_": "Movable"
+                    },
+                "tags": ["Look", "Inventory"]
+            },
+            "table": {
+                "obj": {
+                    "key": "table",
+                    "reference_noun": "table",
+                    "display_name": "table",
+                    "description": "This is a grey table.",
+                    "container": "South Room",
+                    "contents": {
+                        "vase": {
+                            "obj": {
+                                "key": "vase",
+                                "reference_noun": "vase",
+                                "display_name": "vase",
+                                "description": "This is a grey vase on the table.",
+                                "container": "table",
+                                "contents": {
+                                    "flower": {
+                                        "obj": {
+                                            "key": "flower",
+                                            "reference_noun": "flower",
+                                            "display_name": "flower",
+                                            "description": "This is a grey flower.",
+                                            "container": "vase",
+                                            "contents": null,
+                                            "plural": false,
+                                            "reference_adjectives": ["flower"],
+                                            "_class_": "Movable"
+                                            },
+                                        "tags": ["Look", "Inventory", "In"]
+                                    }
+                                },
+                                "plural": false,
+                                "reference_adjectives": ["grey"],
+                                "_class_": "OpenableContainer"
+                                },
+                            "tags": ["Look", "Inventory", "On"]
+                        }
+                    },
+                    "plural": false,
+                    "reference_adjectives": ["grey"],
+                    "_class_": "Surface"
+                    },
+                "tags": ["Look", "Inventory"]
+            }
+        },
+        "plural": false,
+        "directions": {
+            "North": {
+                "room": "south door",
+                "desc": "To the north of the South Room, there is the south door."
+            }
+        },
+        "_class_": "Room"
+    },
+
+    "south door": {
+        "key": "south door",
+        "reference_noun": "door",
+        "display_name": "south door",
+        "description": "This is the south door, south of the New Room.",
+        "reference_adjectives": ["south"],
+        "container": null,
+        "contents": null,
+        "plural": false,
+        "as_dirobj": {
+            "Open": true, "Close": true
+        },
+        "directions": {
+            "South": {
+                "room": "South Room",
+                "desc": "To the south of the south door, there is the South Room."
+            },
+            "North": {
+                "room": "New Room",
+                "desc": "To the north of the south door, there is the New Room."
+            }
+        },
+        "_class_": "Door"
+    },
 
     "North Room": {
         "key": "North Room",
         "reference_noun": "NorthRoom",
         "display_name": "North Room",
         "description": "This is the North Room, north of the New Room.",
-        "container": "New Room",
+        "container": null,
         "contents": null,
         "plural": false,
         "directions": {

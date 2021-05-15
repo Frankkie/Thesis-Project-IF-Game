@@ -101,24 +101,6 @@
         "_class_": "Verb",
         "name": "Setup"
     },
-    "Swerveoff": {
-        "forms": ["swerve off", "swerves off"],
-        "patterns": ["O"],
-        "_class_": "Verb",
-        "name": "Swerveoff"
-    },
-    "Speedup": {
-        "forms": ["speed up", "speeds up"],
-        "patterns": [""],
-        "_class_": "Verb",
-        "name": "Speedup"
-    },
-    "Slowdown": {
-        "forms": ["slow down", "slows down"],
-        "patterns": [""],
-        "_class_": "Verb",
-        "name": "Slowdown"
-    },
     "Ask": {
         "forms": ["ask", "asks", "tell", "tells"],
         "patterns": ["OQI"],

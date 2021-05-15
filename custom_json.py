@@ -18,8 +18,8 @@ import json
 
 from verbs import Verb
 from entities import Entity
-from rooms import Room
-from things import Thing
+from rooms import Room, Door
+from things import *
 from actors import Actor
 from chapters import *
 from events import Event

@@ -275,8 +275,8 @@ class Entity:
 
     def _on_close(self, **kwargs):
         descr = ''
-        if self.action_description["Open"]:
-            descr += self.action_description["Open"]
+        if self.action_description["Close"]:
+            descr += self.action_description["Close"]
         else:
             descr += f"You close the {self.display_name}."
         for content in self.contents.values():
@@ -306,9 +306,6 @@ class Entity:
         pass
 
     def _on_setup(self, **kwargs):
-        pass
-
-    def _on_swerveoff(self, **kwargs):
         pass
 
     def _on_enter(self, **kwargs):

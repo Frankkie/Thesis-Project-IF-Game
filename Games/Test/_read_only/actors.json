@@ -11,17 +11,13 @@
                         "Take": true, "Drop": true, "Open": true,
                         "Close": true, "Push": true, "Use": true, "Read": true, "Put": true,
                         "Send": false, "Landon": false, "Takeoff": false,
-                        "Enter": false, "Leave": false, "Setup": false,
-                        "Swerveoff": false, "Speedup": false, "Slowdown": false,
-                        "Ask": true
+                        "Enter": false, "Leave": false, "Setup": false, "Ask": true
                         },
         "on_command": {  "Go": true, "Look": true, "Listen": true,
                         "Take": true, "Drop": true, "Open": true,
                         "Close": true, "Push": true, "Use": true, "Read": true, "Put": true,
                         "Send": true, "Landon": true, "Takeoff": true,
-                        "Enter": true, "Leave": true, "Setup": true,
-                        "Swerveoff": true, "Speedup": true, "Slowdown": true,
-                        "Ask": true
+                        "Enter": true, "Leave": true, "Setup": true, "Ask": true
                         },
         "as_dirobj": {"Ask": true},
         "gender": 2,
@@ -39,15 +35,13 @@
                         "Take": false, "Drop": false, "Open": false,
                         "Close": false, "Push": false, "Use": false,
                         "Read": true, "Put": false, "Send": true, "Landon": true, "Takeoff": true,
-                        "Enter": true, "Leave": true, "Setup": true,
-                        "Swerveoff": true, "Speedup": true, "Slowdown": true, "Ask": false
+                        "Enter": true, "Leave": true, "Setup": true, "Ask": false
                         },
         "on_command": {  "Go": true, "Look": true, "Listen": true,
                         "Take": true, "Drop": true, "Open": true,
                         "Close": true, "Push": true, "Use": true,
                         "Read": true, "Put": true, "Send": true, "Landon": true, "Takeoff": true,
-                        "Enter": true, "Leave": true, "Setup": true,
-                        "Swerveoff": true, "Speedup": true, "Slowdown": true, "Ask": true
+                        "Enter": true, "Leave": true, "Setup": true, "Ask": true
                         },
         "as_dirobj": {"Ask": true},
         "gender": 1,
