@@ -22,7 +22,7 @@ class NameGenerator:
 
     def generate_name(self, seed):
         name = self.generate_sample(seed)
-        name[0] = name[0].upper()
+        name[0] = name[0].capitalize()
         name = ''.join(name)
         name = self.prefix + name
         if name in self.generated:
