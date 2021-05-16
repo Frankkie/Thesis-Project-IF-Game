@@ -1,0 +1,27 @@
+{
+    "key": "goodbye",
+    "trigger_topics": ["bye"],
+    "trigger_convonode": "ready",
+    "quips": [
+      {
+        "key": "byeq1",
+        "text": "'Bye Captain!'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      },
+      {
+        "key": "byeq2",
+        "text": "'I am here whenever you need me', says Lovkiy, as his screen turns black.",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      },
+      {
+        "key": "byeq3",
+        "text": "'Always at your service Captain!'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      }
+    ],
+    "shuffle_quips": true,
+    "_class_": "DialogEvent"
+}

@@ -1,0 +1,35 @@
+{
+    "key": "light_event_after_taken",
+    "trigger_topics": ["light"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "things.red beeping light.container",
+        "values": [
+          "yellow dog"
+        ],
+        "not_": true,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.bomb.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "quips": [
+      {
+        "key": "lightq1",
+        "text": "'It's just a beeping red light!!!' Lovkiy replies, noticeably irritated.",
+        "_class_": "Quip"
+      },
+      {
+        "key": "lightq2",
+        "text": "Lovkiy finally answers honestly:\n'It's an experimental bomb!' he says.",
+        "_class_": "Quip"
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

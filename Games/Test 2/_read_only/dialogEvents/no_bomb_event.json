@@ -1,0 +1,19 @@
+{
+    "key": "no_bomb_event",
+    "trigger_topics": ["no"],
+    "trigger_convonode": "bomb",
+    "quips": [
+      {
+        "key": "bombnoq1",
+        "text": "'I'll tell you anyway', says Lovkiy. 'It is a bomb capable of destroying the whole planet! I thought that noone would find it on this dog. But you did!'",
+        "_class_": "Quip"
+      },
+      {
+        "key": "bombyesq2",
+        "text": "'I already told you!'",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

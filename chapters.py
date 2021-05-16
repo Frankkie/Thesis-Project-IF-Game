@@ -1,8 +1,8 @@
 
 
 class Chapter:
-    def __init__(self, key, title, intro_description, outro_description, map_file, first_room,
-                 convonodes_file=None, dialogevents_file=None, events_file=None, topics_file=None,
+    def __init__(self, key, title, intro_description, outro_description, map_files, first_room,
+                 convonodes_files=None, dialogevents_files=None, events_files=None, topics_files=None,
                  end_conditions=None, chapter_state=None):
         """
 
@@ -10,12 +10,12 @@ class Chapter:
         :param title:
         :param intro_description:
         :param outro_description:
-        :param map_file:
+        :param map_files:
         :param first_room:
-        :param convonodes_file:
-        :param dialogevents_file:
-        :param events_file:
-        :param topics_file:
+        :param convonodes_files:
+        :param dialogevents_files:
+        :param events_files:
+        :param topics_files:
         :param end_conditions:
         :param chapter_state:
         """
@@ -25,11 +25,22 @@ class Chapter:
         self.outro_description = outro_description
         self.first_room = first_room
 
-        self.convonodes_file = convonodes_file
-        self.dialogevents_file = dialogevents_file
-        self.events_file = events_file
-        self.map_file = map_file
-        self.topics_file = topics_file
+        if not convonodes_files:
+            convonodes_files = []
+        if not dialogevents_files:
+            dialogevents_files = []
+        if not events_files:
+            events_files = []
+        if not map_files:
+            map_files = []
+        if not topics_files:
+            topics_files = []
+
+        self.convonodes_files = convonodes_files
+        self.dialogevents_files = dialogevents_files
+        self.events_files = events_files
+        self.map_files = map_files
+        self.topics_files = topics_files
 
         if not end_conditions:
             end_conditions = {}

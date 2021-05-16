@@ -1,0 +1,16 @@
+{
+  "title": "Test 2",
+  "credits_": "by Christos Frantzolas",
+  "game_state": {
+    "current room": "New Room",
+    "current chapter": "Intro",
+    "game time": 0,
+    "chapter time": 0,
+    "win": false,
+    "lose": false,
+    "new game": true,
+    "turn count": 0
+  },
+  "last_save_key": null,
+  "seed": 0
+}

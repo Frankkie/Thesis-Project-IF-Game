@@ -1,0 +1,48 @@
+{
+  "Intro": {
+    "key": "Intro",
+    "title": "Intro Chapter: Waking up",
+    "intro_description": "You're just waking up from your long slumber.",
+    "outro_description": {
+      "generic": "You have to journey on for now."
+    },
+    "first_room": "New Room",
+    "end_conditions": [
+      {
+        "conditions": [
+          {
+            "key": "IntroEnd1",
+            "attribute_path": "game_state.current room",
+            "values": [
+              "North Room"
+            ],
+            "not_": false,
+            "_class_": "Condition"
+          }
+        ],
+        "next chapter": "End"
+      }
+    ],
+    "map_files": ["New Room", "South Room", "south door", "North Room"],
+    "events_files": ["light_event"],
+    "topics_files": ["light", "hey", "bye", "yes", "no", "bomb"],
+    "dialogevents_files": ["greeting", "goodbye", "goodbye_general", "light_event", "light_event_after_taken",
+    "bomb_event", "yes_bomb_event", "no_bomb_event"],
+    "convonodes_files": ["Lovkiy"],
+    "_class_": "IntroChapter"
+  },
+
+
+  "End": {
+    "key": "End",
+    "title": "End Chapter: Game over",
+    "intro_description": "Now the game is over.",
+    "outro_description": {
+      "__END__": "The End..."
+      },
+    "first_room": null,
+    "end_conditions": null,
+    "map_files": ["New Room", "South Room", "south door", "North Room"],
+    "_class_": "EndChapter"
+  }
+}

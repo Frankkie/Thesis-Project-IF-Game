@@ -1,0 +1,30 @@
+{
+    "key": "light_event",
+    "trigger_conditions": [
+      {
+        "key": "light_event_c1",
+        "attribute_path": "things.red beeping light.container",
+        "values": [
+          "yellow dog"
+        ],
+        "not_": true,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "things.red beeping light.container",
+        "new_value_expression": "'New Room'",
+        "_class_": "StateUpdate"
+      },
+      {
+        "attribute_path": "chapters.Intro.events.light_event.done",
+        "new_value_expression": "x + 40",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "event_description": "The weird light scorches your hand.\nTerrified, you drop it immediately on the floor.",
+    "done": 0,
+    "repeatable": 1,
+    "_class_": "Event"
+  }
