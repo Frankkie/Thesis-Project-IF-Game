@@ -35,7 +35,8 @@ class Saver:
 
         for file in chapter.convonodes_files:
             f = os.path.join(self.current_folder, "convoNodes", (file + ".json"))
-            cjson.custom_dump(self.game.convonodes[file], f)
+            file = file.split('.')
+            cjson.custom_dump(self.game.convonodes[file[0]][file[1]], f)
 
         for file in chapter.dialogevents_files:
             f = os.path.join(self.current_folder, "dialogEvents", (file + ".json"))

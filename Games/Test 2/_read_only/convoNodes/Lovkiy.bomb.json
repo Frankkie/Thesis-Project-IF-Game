@@ -1,0 +1,10 @@
+{
+  "key": "bomb",
+  "actor": "Lovkiy",
+  "next_nodes": {
+    "bomb": ["bomb", "yes", "no"]
+  },
+  "to_generic_allowed": false,
+  "generic_not_allowed_desc": "'Answer me! Do you want to know, yes or no?'",
+  "_class_": "ConvoNode"
+}

@@ -28,7 +28,7 @@
     "topics_files": ["light", "hey", "bye", "yes", "no", "bomb"],
     "dialogevents_files": ["greeting", "goodbye", "goodbye_general", "light_event", "light_event_after_taken",
     "bomb_event", "yes_bomb_event", "no_bomb_event"],
-    "convonodes_files": ["Lovkiy"],
+    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic", "Lovkiy.bomb"],
     "_class_": "IntroChapter"
   },
 

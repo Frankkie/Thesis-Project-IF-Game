@@ -88,10 +88,16 @@ class Loader:
         map_files = [os.path.join(self.current_folder, "maps", (file + ".json")) for file in chapter.map_files]
         topics_files = [os.path.join(self.current_folder, "topics", (file + ".json")) for file in chapter.topics_files]
 
-        for file in convonodes_files:
+        for i, file in enumerate(convonodes_files):
+            f = chapter.convonodes_files[i].split('.')
+            actor = f[0]
+            node = f[1]
             obj = cjson.custom_load(file)
-            for k in obj.keys():
-                self.game.convonodes[k] = obj[k]
+            if actor in self.game.convonodes.keys():
+                self.game.convonodes[actor][node] = obj
+            else:
+                self.game.convonodes[actor] = {}
+                self.game.convonodes[actor][node] = obj
 
         for file in dialogevents_files:
             obj = cjson.custom_load(file)
