@@ -13,6 +13,7 @@ class Display:
         self._output_queue = []
 
     def output(self):
+        print()
         for element in self._output_queue:
             self.display(element[0], element[1])
         self.empty_queue()
@@ -55,18 +56,15 @@ class Display:
 
     def __display_error(self, error):
         print(error.rstrip())
-        print()
 
     def __display_action(self, text):
         print(text.rstrip())
-        print()
 
     def __display_dialog(self, text):
         print(text[0])
         try:
             for r in text[1]:
                 print(r.rstrip())
-            print()
         except IndexError:
             pass
 
@@ -75,29 +73,25 @@ class Display:
             for result in self.text:
                 print(result)
         else:
-            print(self.text.rstrip())
-        print()
+            print(self.text)
 
     def __display_init(self):
+        print()
         print(self.game.title)
         print(self.game.credits)
-        print("\n")
+        print()
 
     def __display_help(self):
         print(self.text)
-        print("\n")
 
     def __display_undo(self):
         print("Your mistake has been forgiven!")
-        print("\n")
 
     def __display_save(self):
         print("Game saved!")
-        print("\n")
 
     def __display_quit(self):
         print("You quit '%s'! Such a shame." % self.game.title)
-        print("\n")
 
     def __display_replay(self):
         print("> " + self.text)

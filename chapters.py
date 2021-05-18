@@ -146,14 +146,8 @@ class IntroChapterUnionColonizer(IntroChapter):
             game.display.output()
             answer = game.display.fetch()
             if answer != 'y':
-                game.display.queue(self.intro_description, "ChapterStart")
-                game.display.output()
-
-            game.display.queue('Skip help? (y/n)', 'Prompt')
-            game.display.output()
-            answer = game.display.fetch()
-            if answer != 'y':
-                game.display.queue(self.help_description, 'Help')
+                for sentence in self.intro_description:
+                    game.display.queue(sentence, "ChapterStart")
                 game.display.output()
 
             import re
@@ -184,6 +178,14 @@ class IntroChapterUnionColonizer(IntroChapter):
                     year = answer
 
             game.seed = self.__hash_answers(name, year)
+
+            game.display.queue('Skip help? (y/n)', 'Prompt')
+            game.display.output()
+            answer = game.display.fetch()
+            if answer != 'y':
+                for sentence in self.help_description:
+                    game.display.queue(sentence, 'Help')
+                game.display.output()
 
         return "Deep Space"
 

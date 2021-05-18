@@ -2,11 +2,43 @@
   "Intro": {
     "key": "Intro",
     "title": "Intro: Waking up.",
-    "intro_description": "",
-    "help_description": "",
-    "outro_description": {
-      "generic": ""
-    },
+    "intro_description": [
+      "You take an agonizing deep breath as your body comes back to life.",
+      "Shivering, you open your eyes to see a red-lit flickering computer screen glued to your face.",
+      "You hear a robotic voice with a strange deep accent, as if a relic of the 20th century.",
+      "'Admiral! AI Agent Lovkiy here, reporting from the 'Ostatok 1' vessel of the Union's Survival Fleet!'",
+      "'I want to welcome you back on board sir! You must still be awfully disoriented from the Cryo Sleep...'",
+      "You look back at Lovkiy dizzily. You try to respond to his concern,\nbut you realize you cannot utter a single word.",
+      "'You don't have to speak if you cannot yet, Sir. I will perform some tests to make sure your vitals are okay.'",
+      "'I already see there is some slight memory loss, but you will recover swiftly.'",
+      "\nStill dizzy, you try to recollect everything you can remember before falling asleep.",
+      "The word treason comes to mind, the sounds of bombs tearing through the atmosphere,\nthe hasty calls for evacuation.",
+      "'I also have to report that the crew members' vitals are looking okay, considering the long period\nof the Cryo Sleep', Lovkiy continues.",
+      "'It's been 200 years since we left Earth!'",
+      "'I woke you up, as we are finally approaching some of our target Solar Systems for colonization.'",
+      "'And, as you know Sir, I cannot make the all important decision of where to settle the Union's future\nwithout you.'",
+      "'Now I will have to ask you some questions to check your cognitive functions. Please, lean back Sir.'",
+      "You comply, as you stare at the screen."
+    ],
+    "help_description": [
+      "'Your cognitive functions seem to be excellent Admiral! Now, if you need any extra help to recount any",
+      "of our vessel's instructions, I want to point you to my instruction manual. Just press here'",
+      "A red button lights up on Lovkiy's screen. You press it and start reading the manual:",
+      "\t~ You can give instructions by typing whenever the Prompt Symbol (>) is presented.",
+      "\t~ The Prompt is case INsensitive.",
+      "\t~ Some of the game's Verbs are: Look, Listen, Take, Drop, Put, Go, Ask.",
+      "\t~ You can navigate through the game by typing the command Go + a compass direction.",
+      "\t~ Some things may be hidden in plain sight! To examine an object you just type 'look', or 'x' and its name.",
+      "\t~ You can always ask for help by typing 'help', save the game by 'save', 'undo' a move or 'quit'.",
+      "\t~ Lovkiy is your AI Companion. He will help you throughout your mission, and you can talk to him:",
+      "\t\t~ Type 'ask Lovkiy about' + a valid topic to ask a question.",
+      "\t\t~ Lovkiy also understands the words 'hey', 'bye', 'yes', 'no'.",
+      "\t~ You ultimate goal is to explore various solar systems and find a safe planet to colonize,",
+      "\t   and perpetuate the utopia of the Union, despite its doom on Earth.",
+      "\t~ That's all for now! Type 'help' if you need to see the games allowed Verbs,\ncurrent Topics or your Inventory.",
+      "\nGood luck, and may the odds be with you!!!\n"
+    ],
+    "outro_description": {},
     "first_room": "Cryo Chambers",
     "end_conditions": [],
     "map_files": ["Cryo Chambers"],
@@ -21,7 +53,7 @@
   "Deep Space": {
     "key": "Deep Space",
     "title": "Deep Space",
-    "intro_description": "It is only the beginning of the Great Journey for restoring the Union.",
+    "intro_description": "It is only the beginning of the Great Journey for restoring the Union.\n",
     "outro_description": {
       "generic": "You have to journey on for now."
     },
