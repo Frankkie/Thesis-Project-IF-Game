@@ -1,0 +1,27 @@
+{
+    "key": "greeting",
+    "trigger_topics": ["hey"],
+    "trigger_convonode": "hey",
+    "quips": [
+      {
+        "key": "heyq1",
+        "text": "'Hey Captain. How may I assist you?'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      },
+      {
+        "key": "heyq2",
+        "text": "'Hello Captain. What are you searching answers for?'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      },
+      {
+        "key": "heyq3",
+        "text": "'Hey Captain. Is there any manner in which I can render myself useful?'",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      }
+    ],
+    "shuffle_quips": true,
+    "_class_": "DialogEvent"
+}

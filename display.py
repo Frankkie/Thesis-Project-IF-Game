@@ -4,16 +4,16 @@ class Display:
     def __init__(self, game):
         self.game = game
         self.text = None
-        self.output_queue = []
+        self._output_queue = []
 
     def queue(self, text, text_type):
-        self.output_queue.append((text, text_type))
+        self._output_queue.append((text, text_type))
 
     def empty_queue(self):
-        self.output_queue = []
+        self._output_queue = []
 
     def output(self):
-        for element in self.output_queue:
+        for element in self._output_queue:
             self.display(element[0], element[1])
         self.empty_queue()
 

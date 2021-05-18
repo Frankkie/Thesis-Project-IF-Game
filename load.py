@@ -46,12 +46,25 @@ class Loader:
         return game_dict, self.game_args
 
     def load_prev_commands(self, title):
-        log_file_path = f"Games\\{title}\\log_commands.log"
+        log_file_path = os.path.join('Games', title, "log_commands.log")
         commands = []
+        times = []
         with open(log_file_path, "r") as log_file:
             for line in log_file:
-                commands.append(line.rstrip())
-        return commands
+                try:
+                    time = float(line.rstrip())
+                    times.append(time)
+                except ValueError:
+                    commands.append(line.rstrip())
+        return commands, times
+
+    def load_prev_seed(self, title):
+        log_file_path = os.path.join('Games', title, "log_seed.log")
+
+        with open(log_file_path, "r") as log_file:
+            for line in log_file:
+                seed = int(line.rstrip())
+        return seed
 
     def load_undo(self):
         temp_folder = os.path.join(self.game_folder + "_temp", "")

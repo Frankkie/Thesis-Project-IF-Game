@@ -20,6 +20,7 @@ from verbs import Verb
 from entities import Entity
 from rooms import Room, Door
 from things import *
+from space_things import *
 from actors import Actor
 from chapters import *
 from events import Event

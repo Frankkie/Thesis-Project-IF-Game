@@ -1,0 +1,40 @@
+{
+  "Lovkiy": {
+    "hey": {
+      "key": "hey",
+      "actor": "Lovkiy",
+      "next_nodes": {
+        "ready": ["bye"]
+      },
+      "_class_": "ConvoNode"
+    },
+    "ready": {
+      "key": "ready",
+      "actor": "Lovkiy",
+      "next_nodes": {
+        "hey": ["hey"]
+      },
+      "switch_to_generic_desc": "'Hey, I didn't see you there!'",
+      "_class_": "ConvoNode"
+    },
+    "generic": {
+      "key": "generic",
+      "actor": "Lovkiy",
+      "next_nodes": {
+        "bomb": ["bomb"],
+        "ready": ["bye"]
+      },
+      "_class_": "ConvoNode"
+    },
+    "bomb": {
+      "key": "bomb",
+      "actor": "Lovkiy",
+      "next_nodes": {
+        "bomb": ["bomb", "yes", "no"]
+      },
+      "to_generic_allowed": false,
+      "generic_not_allowed_desc": "'Answer me! Do you want to know, yes or no?'",
+      "_class_": "ConvoNode"
+    }
+  }
+}

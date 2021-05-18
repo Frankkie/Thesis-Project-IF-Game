@@ -1,0 +1,67 @@
+{
+  "Intro": {
+    "key": "Intro",
+    "title": "Intro: Waking up.",
+    "intro_description": "",
+    "help_description": "",
+    "outro_description": {
+      "generic": ""
+    },
+    "first_room": "Cryo Chambers",
+    "end_conditions": [],
+    "map_files": ["Cryo Chambers"],
+    "events_files": [],
+    "topics_files": [],
+    "dialogevents_files": [],
+    "convonodes_files": [],
+    "_class_": "IntroChapterUnionColonizer"
+  },
+
+
+  "Deep Space": {
+    "key": "Deep Space",
+    "title": "Deep Space",
+    "intro_description": "It is only the beginning of the Great Journey for restoring the Union.",
+    "outro_description": {
+      "generic": "You have to journey on for now."
+    },
+    "first_room": "Cryo Chambers",
+    "end_conditions": [
+      {
+        "conditions": [
+          {
+            "key": "IntroEnd1",
+            "attribute_path": "game_state.current room",
+            "values": [
+              "North Room"
+            ],
+            "not_": false,
+            "_class_": "Condition"
+          }
+        ],
+        "next chapter": "End"
+      }
+    ],
+    "map_files": ["Cryo Chambers", "South Room", "south door", "North Room"],
+    "events_files": ["light_event"],
+    "topics_files": ["light", "hey", "bye", "yes", "no", "bomb"],
+    "dialogevents_files": ["greeting", "goodbye", "goodbye_general", "light_event", "light_event_after_taken",
+    "bomb_event", "yes_bomb_event", "no_bomb_event"],
+    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic", "Lovkiy.bomb"],
+    "_class_": "Chapter"
+  },
+
+
+  "End": {
+    "key": "End",
+    "title": "End Chapter: Game over",
+    "intro_description": "Now the game is over.",
+    "outro_description": {
+      "__END__": "The End..."
+      },
+    "first_room": null,
+    "end_conditions": null,
+    "map_files": ["Cryo Chambers", "South Room", "south door", "North Room"],
+    "_class_": "EndChapter"
+  }
+}

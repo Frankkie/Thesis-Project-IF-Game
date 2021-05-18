@@ -1,0 +1,24 @@
+{
+    "key": "south door",
+    "reference_noun": "door",
+    "display_name": "south door",
+    "description": "This is the south door, south of the Cryo Chambers.",
+    "reference_adjectives": ["south"],
+    "container": null,
+    "contents": null,
+    "plural": false,
+    "as_dirobj": {
+        "Open": true, "Close": true
+    },
+    "directions": {
+        "South": {
+            "room": "South Room",
+            "desc": "To the south of the south door, there is the South Room."
+        },
+        "North": {
+            "room": "Cryo Chambers",
+            "desc": "To the north of the south door, there is the Cryo Chambers."
+        }
+    },
+    "_class_": "Door"
+}

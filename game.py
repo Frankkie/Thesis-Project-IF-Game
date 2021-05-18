@@ -9,9 +9,10 @@ import sys
 import my_parser as prs
 from command_handler import CommandHandler
 from errors import *
-from log_commands import start_log, log_command
+from log_commands import start_log, log_command, log_time, log_seed
 from load import Loader
 from save import Saver
+from timer import CustomTimer
 
 
 class Game:
@@ -28,6 +29,7 @@ class Game:
         self.np_parser = prs.NounPhraseParser(self)
         self.loader = Loader(self.title, self)
         self.saver = Saver(self)
+        self.timer = CustomTimer(self)
         self.actors = {}
         self.verbs = {}
         self.rooms = {}
@@ -64,36 +66,51 @@ class Game:
     def start_game(self):
         self.game_state["new game"] = False
         self.run_chapter(start=True)
+        log_seed(self)
+        self.timer.pause = False
+        self.timer.start()
         while True:
+            log_time(self)
             try:
                 self.run_pc_turn()
             except UndoCommand:
                 continue
             self.display.output()
+            log_time(self)
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
 
     def replay_game(self):
-        commands = self.loader.load_prev_commands(self.title)
+        commands, times = self.loader.load_prev_commands(self.title)
         self.game_state["new game"] = False
-        self.run_chapter(start=True)
+        self.run_chapter(start=True, replay=True)
+        self.seed = self.loader.load_prev_seed(self.title)
+        t = 0
         for command in commands:
+            self.game_state['game time'] = times[t]
+            self.game_state['chapter time'] = times[t+1]
+            t += 2
             try:
                 self.run_pc_turn(command)
             except UndoCommand:
                 continue
             self.display.output()
+            self.game_state['game time'] = times[t]
+            self.game_state['chapter time'] = times[t + 1]
+            t += 2
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
 
         while True:
+            log_time(self)
             try:
                 self.run_pc_turn()
             except UndoCommand:
                 continue
             self.display.output()
+            log_time(self)
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
@@ -176,14 +193,18 @@ class Game:
         command = self.display.fetch()
         return command
 
-    def run_chapter(self, start=False):
+    def run_chapter(self, start=False, replay=False):
         active_chapter_key = self.game_state["current chapter"]
         active_chapter = self.chapters[active_chapter_key]
         if start:
-            next_chapter = active_chapter.start_chapter(self)
+            next_chapter = active_chapter.start_chapter(self, replay)
             if next_chapter:
                 if next_chapter == "__END__":
                     self.end_game()
+                else:
+                    self.loader.load_chapter(next_chapter)
+                    self.refresh_things()
+                    self.run_chapter(start=True)
 
         else:
             next_chapter = active_chapter.advance_chapter(self)
@@ -248,6 +269,8 @@ class Game:
             self.saver.empty_current_temp()
         else:
             self.end_game()
+
+        self.timer.stopped = True
         sys.exit(0)
 
     def refresh_things(self):
@@ -286,6 +309,7 @@ class Game:
             A dictionary of the object's attributes, containing the key '_class_'.
 
         """
+
         obj_dict = {
             "title": self.title,
             "credits_": self.credits,

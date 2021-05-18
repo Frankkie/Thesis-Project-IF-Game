@@ -1,0 +1,155 @@
+{
+"key": "Cryo Chambers",
+"reference_noun": "CryoChambers",
+"display_name": "Cryo Chambers",
+"description": "You are now in the Cryo Chambers.",
+"container": null,
+"contents": {
+    "green tomato": {
+        "obj": {
+            "key": "green tomato",
+            "reference_noun": "tomato",
+            "display_name": "green tomato",
+            "description": "This is a really plump tomato, but it's still quite green. It's not matured enough yet.",
+            "container": "Cryo Chambers",
+            "contents": {
+                "tomato seeds": {
+                    "obj": {"key": "tomato seeds",
+                        "display_name": "tomato seeds",
+                        "reference_noun": "seeds",
+                        "description": "This tomato is full of seeds.",
+                        "container": "green tomato",
+                        "contents": {},
+                        "plural": false,
+                        "reference_adjectives": [
+                            "tomato"
+                        ],
+                        "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Put": true},
+                        "action_description": {},
+                        "_class_": "Thing"
+                    },
+                    "tags": ["In", "Look"]
+                }
+            },
+            "plural": false,
+            "reference_adjectives": [
+                "green",
+                "plump"
+            ],
+            "as_indobj": {
+                "On": true,
+                "In": true
+            },
+            "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
+                           "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
+                           "Landon": true, "Enter": true, "Leave": true, "Setup": true},
+            "action_description": {
+                "On Use red beeping light": "The tomato explodes releasing its seeds everywhere!"
+            },
+            "_class_": "Thing"
+            },
+        "tags": ["Inventory"]
+    },
+    "yellow dog": {
+        "obj": {
+            "key": "yellow dog",
+            "reference_noun": "dog",
+            "display_name": "yellow dog",
+            "description": "",
+            "examine_description": "The dog is wagging his tail with joy. It's a Golden Retriever. She's quite old, but seems just as energetic as a young puppy.\nOn her you see a small red light beeping. Curious, you think.",
+            "container": "Cryo Chambers",
+            "contents": {
+                        "red beeping light": {
+                            "obj": {
+                                "key": "red beeping light",
+                                "reference_noun": "light",
+                                "display_name": "red light",
+                                "description": "This is a small beeping light.",
+                                "examine_description": null,
+                                "container": "yellow dog",
+                                "contents": {},
+                                "plural": false,
+                                "reference_adjectives": [
+                                    "red",
+                                    "beeping"
+                                ],
+                                "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": false,
+                                               "Close": false, "Push": false, "Use": true, "Read": false, "Put": true, "Send": false,
+                                               "Landon": false, "Enter": false, "Leave": false, "Setup": false},
+                                "action_description": {
+                                    "Take": "You take the small object that's emitting the light in your hands. It's metallic.",
+                                    "Use": "You throw the light and it bursts in flames mid air."
+                                },
+                                "_class_": "Thing"
+                            },
+                            "tags": ["Inventory", "Look", "Listen"]
+                        }
+            },
+            "plural": false,
+            "reference_adjectives": [
+                "yellow",
+                "big"
+            ],
+            "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
+                           "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
+                           "Landon": true, "Enter": true, "Leave": true, "Setup": true},
+            "action_description": null,
+            "_class_": "Thing"
+        },
+        "tags": ["Inventory"]
+    },
+    "golden duck": {
+        "obj": {
+            "key": "golden duck",
+            "reference_noun": "duck",
+            "display_name": "golden duck",
+            "description": "",
+            "container": "Cryo Chambers",
+            "contents": {},
+            "plural": false,
+            "reference_adjectives": [
+                "gold",
+                "golden"
+            ],
+            "action_description": null,
+            "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
+                           "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
+                           "Landon": true, "Enter": true, "Leave": true, "Setup": true},
+            "_class_": "Thing"
+        },
+        "tags": ["Inventory"]
+    },
+    "blue duck": {
+        "obj": {
+            "key": "blue duck",
+            "reference_noun": "duck",
+            "display_name": "blue duck",
+            "description": "",
+            "container": "Cryo Chambers",
+            "contents": {},
+            "plural": false,
+            "reference_adjectives": [
+                "blue"
+            ],
+            "action_description": null,
+            "as_dirobj": {"Look": true, "Listen": true, "Take": true, "Drop": true, "Open": true,
+                           "Close": true, "Push": true, "Use": true, "Read": true, "Put": true, "Send": true,
+                           "Landon": true, "Enter": true, "Leave": true, "Setup": true},
+            "_class_": "Thing"
+        },
+        "tags": ["Inventory"]
+    }
+},
+"plural": false,
+"directions": {
+    "North": {
+        "room": "North Room",
+        "desc": "To the north of the Cryo Chambers, there is the North Room."
+    },
+    "South": {
+        "room": "south door",
+        "desc": "To the south of the Cryo Chambers, there is the south door."
+    }
+},
+"_class_": "Room"
+}

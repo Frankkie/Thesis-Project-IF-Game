@@ -50,7 +50,7 @@ class Chapter:
             chapter_state = {}
         self.chapter_state = chapter_state
 
-    def start_chapter(self, game):
+    def start_chapter(self, game, replay=False):
         """
         This method is triggered by the game at the start of a Chapter, and returns the introduction
         description of the chapter, based on the previous Chapter.
@@ -126,6 +126,76 @@ class IntroChapter(Chapter):
         super().__init__(*args, **kwargs)
 
 
+class IntroChapterUnionColonizer(IntroChapter):
+    """
+        This is always the first Chapter of the Union Colonizer game.
+        """
+
+    def __init__(self, *args, help_description, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.help_description = help_description
+
+    def start_chapter(self, game, replay=False):
+        """
+        This method is triggered by the game at the start of the Union Colonizer game.
+        :return: None
+        """
+
+        if not replay:
+            game.display.queue('Skip intro? (y/n)', 'Prompt')
+            game.display.output()
+            answer = game.display.fetch()
+            if answer != 'y':
+                game.display.queue(self.intro_description, "ChapterStart")
+                game.display.output()
+
+            game.display.queue('Skip help? (y/n)', 'Prompt')
+            game.display.output()
+            answer = game.display.fetch()
+            if answer != 'y':
+                game.display.queue(self.help_description, 'Help')
+                game.display.output()
+
+            import re
+            name = None
+            year = None
+            while name is None:
+                game.display.queue('What is your name? ', 'Prompt')
+                game.display.output()
+                answer = game.display.fetch()
+                if re.match("^[a-zA-Z ,.'-]+$", answer):
+                    name = answer
+
+            while year is None:
+                game.display.queue(f'What year where you born in, Admiral {name}? ', 'Prompt')
+                game.display.output()
+                answer = game.display.fetch()
+                try:
+                    answer = int(answer)
+                except ValueError:
+                    continue
+                if answer > 2040:
+                    game.display.queue('Please give me a year before 2040.', 'Error')
+                    game.display.output()
+                elif answer < 2000:
+                    game.display.queue('Please give me a year after 1999.', 'Error')
+                    game.display.output()
+                else:
+                    year = answer
+
+            game.seed = self.__hash_answers(name, year)
+
+        return "Deep Space"
+
+    def __hash_answers(self, name, year):
+        res = 1
+        for c in list(name):
+            res *= (ord(c) + 1)
+        res = int(res/year)
+        res = res % (10**8)
+        return res
+
+
 class EndChapter(Chapter):
     """
     This is always the last Chapter of a game. Only one EndChapter can exist in the Game Folder.
@@ -133,7 +203,7 @@ class EndChapter(Chapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def start_chapter(self, game):
+    def start_chapter(self, game, replay=False):
         """
         The End Chapter is over before it had a chance to finish.
         Thus, the End Chapter's start_chapter method returns its outro description right away.
@@ -156,7 +226,7 @@ class DeathChapter(Chapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def start_chapter(self, game):
+    def start_chapter(self, game, replay=False):
         """
         The Death Chapter is over before it had a chance to finish.
 
@@ -178,7 +248,7 @@ class WinChapter(Chapter):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def start_chapter(self, game):
+    def start_chapter(self, game, replay=False):
         """
         The Win Chapter is over before it had a chance to finish.
 
