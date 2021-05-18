@@ -35,7 +35,8 @@
       "\t\t~ Lovkiy also understands the words 'hey', 'bye', 'yes', 'no'.",
       "\t~ You ultimate goal is to explore various solar systems and find a safe planet to colonize,",
       "\t   and perpetuate the utopia of the Union, despite its doom on Earth.",
-      "\t~ That's all for now! Type 'help' if you need to see the games allowed Verbs,\ncurrent Topics or your Inventory.",
+      "\t~ That's all for now! Type 'help' if you need to see the games allowed Verbs,",
+      "\t   current Topics or your Inventory.",
       "\nGood luck, and may the odds be with you!!!\n"
     ],
     "outro_description": {},
@@ -74,13 +75,15 @@
         "next chapter": "End"
       }
     ],
-    "map_files": ["Cryo Chambers", "South Room", "south door", "North Room"],
+    "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
+    "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
+    "Reactor Door South", "Telescope"],
     "events_files": ["light_event"],
     "topics_files": ["light", "hey", "bye", "yes", "no", "bomb"],
     "dialogevents_files": ["greeting", "goodbye", "goodbye_general", "light_event", "light_event_after_taken",
     "bomb_event", "yes_bomb_event", "no_bomb_event"],
     "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic", "Lovkiy.bomb"],
-    "_class_": "Chapter"
+    "_class_": "SpaceChapter"
   },
 
 

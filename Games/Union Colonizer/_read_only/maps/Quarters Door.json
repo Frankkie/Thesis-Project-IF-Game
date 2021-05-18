@@ -1,0 +1,21 @@
+{
+    "key": "Quarters Door",
+    "reference_noun": "door",
+    "display_name": "living quarters door",
+    "description": "The room you open each morning and close each night,\nwhatever day and night mean anymore.",
+    "reference_adjectives": ["living", "quarters"],
+    "as_dirobj": {
+        "Open": true, "Close": true
+    },
+    "directions": {
+        "Southwest": {
+            "room": "Quarters",
+            "desc": "This is the place where you spend most of your time, barely getting any sleep."
+        },
+        "Northeast": {
+            "room": "Bridge",
+            "desc": "The Bridge lights up as you enter the room. All the buttons and the stars lay before you."
+        }
+    },
+    "_class_": "Door"
+}

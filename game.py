@@ -318,4 +318,3 @@ class Game:
             "seed": self.seed
         }
         return obj_dict
-

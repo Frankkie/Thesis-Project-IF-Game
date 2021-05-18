@@ -1,0 +1,21 @@
+{
+    "key": "Cryo Chambers Door",
+    "reference_noun": "door",
+    "display_name": "cryo-chambers door",
+    "description": "A heavy metal door blocks the entrance to the Cryo Chambers.",
+    "reference_adjectives": ["cryo", "chambers", "heavy", "metal"],
+    "as_dirobj": {
+        "Open": true, "Close": true
+    },
+    "directions": {
+        "West": {
+            "room": "Cryo Chambers",
+            "desc": "You will never get used to the eerie darkness and cold of the Cryo Chambers."
+        },
+        "East": {
+            "room": "Bridge",
+            "desc": "The Bridge lights up as you enter the room. All the buttons and the stars lay before you."
+        }
+    },
+    "_class_": "Door"
+}

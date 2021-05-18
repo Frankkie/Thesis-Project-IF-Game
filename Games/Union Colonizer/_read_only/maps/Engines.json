@@ -1,0 +1,16 @@
+{
+  "key": "Engines",
+  "reference_noun": "engines",
+  "display_name": "engines room",
+  "description": "The sound is deafening, as this is the place where your propellers through the Cosmos are.",
+  "examine_description": "",
+  "audible_description": "",
+  "contents": {},
+  "directions": {
+    "East": {
+          "room": "Engines Door",
+          "desc": "The reactor lies behind those doors."
+      }
+  },
+  "_class_": "Room"
+}

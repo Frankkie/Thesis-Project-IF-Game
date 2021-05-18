@@ -1,0 +1,21 @@
+{
+    "key": "Life Support Door",
+    "reference_noun": "door",
+    "display_name": "life support door",
+    "description": "The door separating the bridge from the life support is the rustiest.",
+    "reference_adjectives": ["life", "support", "rusty"],
+    "as_dirobj": {
+        "Open": true, "Close": true
+    },
+    "directions": {
+        "Northwest": {
+            "room": "Life Support",
+            "desc": "The life support room is not only filled with filters and machines,\nbut also the only plants and soil away from home."
+        },
+        "Southeast": {
+            "room": "Bridge",
+            "desc": "The Bridge lights up as you enter the room. All the buttons and the stars lay before you."
+        }
+    },
+    "_class_": "Door"
+}

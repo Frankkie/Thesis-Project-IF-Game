@@ -1,0 +1,32 @@
+{
+  "key": "Bridge",
+  "reference_noun": "bridge",
+  "display_name": "bridge",
+  "description": "",
+  "examine_description": "",
+  "audible_description": "",
+  "contents": {},
+  "directions": {
+    "North": {
+        "room": "Telescope",
+        "desc": ""
+      },
+    "South": {
+          "room": "Comm Room",
+          "desc": ""
+      },
+    "West": {
+          "room": "Cryo Chambers Door",
+          "desc": ""
+      },
+    "Northwest": {
+          "room": "Life Support Door",
+          "desc": ""
+      },
+    "Southwest": {
+          "room": "Quarters Door",
+          "desc": ""
+      }
+  },
+  "_class_": "Room"
+}

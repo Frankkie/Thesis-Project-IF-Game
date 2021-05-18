@@ -37,4 +37,3 @@ def log_seed(game):
         file.write(str(game.seed))
     file.close()
     return
-

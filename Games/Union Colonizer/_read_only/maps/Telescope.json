@@ -1,0 +1,16 @@
+{
+  "key": "Telescope",
+  "reference_noun": "telescope",
+  "display_name": "telescope room",
+  "description": "",
+  "examine_description": "",
+  "audible_description": "",
+  "contents": {},
+  "directions": {
+      "South": {
+          "room": "Bridge",
+          "desc": ""
+      }
+  },
+  "_class_": "Room"
+}

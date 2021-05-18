@@ -1,0 +1,16 @@
+{
+  "key": "Comm Room",
+  "reference_noun": "communications",
+  "display_name": "communications room",
+  "description": "",
+  "examine_description": "",
+  "audible_description": "",
+  "contents": {},
+  "directions": {
+    "North": {
+          "room": "Bridge",
+          "desc": ""
+      }
+  },
+  "_class_": "Room"
+}

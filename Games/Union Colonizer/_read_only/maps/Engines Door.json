@@ -1,0 +1,21 @@
+{
+    "key": "Engines Door",
+    "reference_noun": "door",
+    "display_name": "engines door",
+    "description": "The most forbidden part of the ship lies behind those doors.",
+    "reference_adjectives": ["engines", "west"],
+    "as_dirobj": {
+        "Open": true, "Close": true
+    },
+    "directions": {
+        "East": {
+            "room": "Reactor",
+            "desc": "Radiation tickles your tongue every time you enter the room."
+        },
+        "West": {
+            "room": "Engines",
+            "desc": "The sound is deafening, as this is the place where your propellers through the Cosmos are."
+        }
+    },
+    "_class_": "Door"
+}
