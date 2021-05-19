@@ -93,7 +93,8 @@ class Actor(Entity):
             if room.entity_state['Open'] is False and room.active_direction != direction_key:
                 raise ActionError('DoorClosedError', direction=direction_key, door=room.display_name)
 
-        direction_desc = direction["desc"]
+        new_room = game.rooms[new_room_key]
+        direction_desc = f'{new_room.display_name.capitalize()}:\n{new_room.description}'
         actor.container = new_room_key
         if self.key == "I":
             game.change_game_state("current room", new_room_key)

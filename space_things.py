@@ -13,15 +13,12 @@ class SolarSystem(Thing):
         self.star_types = star_types
         self.habitable = habitable
         self.distance = distance
-
-    def __str__(self):
-        # CHAGE THIS
-        return self.display_name + '\n'
+        self.as_dirobj = {"Enter": True, "Leave": True, "Look": True}
 
     def string(self, print_parts=True):
         # CHANGE THIS!!!
 
-        printable = str(self)
+        printable = self.display_name + '\n'
         printable += f'Distance from Earth: {round(self.distance, 2)} light years.\n'
         printable += f'{len(self.star_names)} star{"" if len(self.star_names) == 1 else "s"}: '
         for i, star in enumerate(self.star_names):
@@ -35,14 +32,16 @@ class SolarSystem(Thing):
                 printable += '\n'
         return printable
 
-    def _on_look(self, **kwargs):
-        pass
-
     def _on_enter(self, **kwargs):
-        pass
+        self.entity_state["Entered"] = True
+        if self.action_description["Enter"]:
+            return self.action_description["Enter"]
+        else:
+            return f'You just entered the System {self.display_name}.'
 
     def _on_leave(self, **kwargs):
-        pass
+        self.is_known = False
+        return f"You're leaving behind {self.display_name}, as you look for other worlds to settle!"
 
 
 class Planet(Thing):

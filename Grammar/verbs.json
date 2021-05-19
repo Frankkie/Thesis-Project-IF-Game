@@ -3,108 +3,126 @@
         "forms": ["go", "goes"],
         "patterns": ["Q"],
         "_class_": "Verb",
-        "name": "Go"
+        "name": "Go",
+        "description": "Go to a certain direction."
     },
     "Look": {
         "forms": ["look", "looks", "look at", "looks at", "examine", "examines", "look around", "looks around", "x"],
         "patterns": ["", "O"],
         "_class_": "Verb",
-        "name": "Look"
+        "name": "Look",
+        "description": "Examine an object/room in detail."
     },
     "Listen": {
         "forms": ["listen", "listens", "listen to", "listens to"],
         "patterns": ["O", ""],
         "_class_": "Verb",
-        "name": "Listen"
+        "name": "Listen",
+        "description": "Listen (to an object)."
     },
     "Take": {
         "forms": ["take", "takes"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Take"
+        "name": "Take",
+        "description": "Take an object."
     },
     "Drop": {
         "forms": ["drop", "drops"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Drop"
+        "name": "Drop",
+        "description": "Leave an object behind."
     },
     "Open": {
         "forms": ["open", "opens", "open up", "opens up"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Open"
+        "name": "Open",
+        "description": "Open an object."
     },
     "Close": {
         "forms": ["close", "closes"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Close"
+        "name": "Close",
+        "description": "Close an object."
     },
     "Push": {
         "forms": ["push", "pushes"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Push"
+        "name": "Push",
+        "description": "Push an object."
     },
     "Use": {
         "forms": ["use", "uses"],
         "patterns": ["O", "OQI"],
         "_class_": "Verb",
-        "name": "Use"
+        "name": "Use",
+        "description": "Use an object (on something else)."
     },
     "Read": {
         "forms": ["read", "reads"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Read"
+        "name": "Read",
+        "description": "Read an object."
     },
     "Put": {
         "forms": ["put", "puts"],
         "patterns": ["OQI"],
         "_class_": "Verb",
-        "name": "Put"
+        "name": "Put",
+        "description": "Put an object on/in/... something else."
     },
     "Send": {
         "forms": ["send", "sends"],
         "patterns": ["OQI"],
         "_class_": "Verb",
-        "name": "Send"
+        "name": "Send",
+        "description": "Send drones to a planet to explore it further."
     },
     "Landon": {
         "forms": ["land on", "lands on"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Landon"
+        "name": "Landon",
+        "description": "Land on a planet."
     },
     "Takeoff": {
         "forms": ["take off", "takes off"],
         "patterns": [""],
         "_class_": "Verb",
-        "name": "Takeoff"
+        "name": "Takeoff",
+        "description": "Takeoff from the surface of a planet."
     },
     "Enter": {
         "forms": ["enter", "enters"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Enter"
+        "name": "Enter",
+        "description": "Enter a solar system to investigate it further."
     },
     "Leave": {
         "forms": ["leave", "leaves", "exit", "exits"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Leave"
+        "name": "Leave",
+        "description": "Leave a solar system and return to deep space."
     },
     "Setup": {
         "forms": ["set up", "sets up", "build", "builds"],
         "patterns": ["O"],
         "_class_": "Verb",
-        "name": "Setup"
+        "name": "Setup",
+        "description": "Build a colony on a planet."
     },
     "Ask": {
         "forms": ["ask", "asks", "tell", "tells"],
         "patterns": ["OQI"],
         "_class_": "Verb",
-        "name": "Ask"
+        "name": "Ask",
+        "description": "Ask an NPC a question about a topic 'ask <NPC> about <TOPIC>'."
     }
 }

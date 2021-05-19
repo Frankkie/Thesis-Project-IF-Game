@@ -76,7 +76,7 @@ class Chapter:
         for condition_set in self.end_conditions:
             conditions = condition_set["conditions"]
             chapter_key = condition_set["next chapter"]
-            if self.__eval_conditions(game, conditions):
+            if self._eval_conditions(game, conditions):
                 res = self._end_chapter(chapter_key)
                 game.display.queue(res, "ChapterEvent")
                 next_chapter = chapter_key
@@ -84,7 +84,7 @@ class Chapter:
 
         return next_chapter
 
-    def __eval_conditions(self, game, conditions):
+    def _eval_conditions(self, game, conditions):
         """
         This method evaluates the conditions for the end of the chapter.
         :param game: The game object.
@@ -269,8 +269,76 @@ class SpaceChapter(Chapter):
     This is a chapter type that is triggered when the PC's fleet is in Outer Space.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, sol_time=0, last_sol_time=0, **kwargs):
         super().__init__(*args, **kwargs)
+        self.sol_time = sol_time
+        self.last_sol_time = last_sol_time
+        if 'solar systems' not in self.chapter_state.keys():
+            self.chapter_state['solar systems'] = 0
+
+    def advance_chapter(self, game):
+        """
+        This method loops through possible Chapter events and end triggers to evaluate
+        the next event of the Chapter. It also creates a new Solar System, if it is
+        timed to do so.
+
+        :param game:
+            the game object that has triggered the chapter
+        :return:
+            dictionary of info about the events triggered.
+
+        """
+        next_chapter = None
+
+        res = self.new_solar_system(game)
+        if res:
+            game.display.queue(res, "ChapterEvent")
+            self.active_system = True
+
+        for event in game.events.values():
+            if event.eval_conditions(game):
+                res = event.trigger(game)
+                game.display.queue(res, "ChapterEvent")
+
+        for condition_set in self.end_conditions:
+            conditions = condition_set["conditions"]
+            chapter_key = condition_set["next chapter"]
+            if self._eval_conditions(game, conditions):
+                res = self._end_chapter(chapter_key)
+                game.display.queue(res, "ChapterEvent")
+                next_chapter = chapter_key
+                return next_chapter
+
+        return next_chapter
+
+    def new_solar_system(self, game):
+        chapter_time = game.game_state['chapter time']
+
+        try:
+            current_system_key = game.game_state['current system']
+            current_system = game.things[current_system_key]
+            if not current_system.is_known:
+                del game.things[current_system.key]
+                self.last_sol_time = chapter_time
+            else:
+                return None
+        except KeyError:
+            pass
+
+        if chapter_time >= (self.sol_time + self.last_sol_time):
+            system = game.solar_system_gen.generate_systems(self.chapter_state['solar systems'])
+            game.planet_gen.generate_planets(system)
+
+            game.things[system.key] = system
+            game.game_state['current system'] = system.key
+            self.chapter_state['solar systems'] += 1
+            if self.chapter_state['solar systems'] == 1:
+                return f"'Admiral, Sir! We're approaching our first alien system, {system.display_name}!'\n" \
+                       "'We can either enter it or leave it, or even go to the telescope room and take a closer look!'"
+            else:
+                return f"'Sir, I must notify you that we're approaching a new solar system, {system.display_name}!'"
+        else:
+            return None
 
 
 class SolarSystemChapter(Chapter):

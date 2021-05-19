@@ -13,6 +13,7 @@ from log_commands import start_log, log_command, log_time, log_seed
 from load import Loader
 from save import Saver
 from timer import CustomTimer
+from solar_system_generator import SolarSystemGenerator, PlanetGenerator
 
 
 class Game:
@@ -30,6 +31,8 @@ class Game:
         self.loader = Loader(self.title, self)
         self.saver = Saver(self)
         self.timer = CustomTimer(self)
+        self.solar_system_gen = SolarSystemGenerator(self.seed, "Andromeda")
+        self.planet_gen = PlanetGenerator(self.seed)
         self.actors = {}
         self.verbs = {}
         self.rooms = {}
@@ -103,6 +106,8 @@ class Game:
             self.display.output()
             self.saver.save_to_current()
 
+        self.timer.pause = False
+        self.timer.start()
         while True:
             log_time(self)
             try:
@@ -204,6 +209,7 @@ class Game:
                 else:
                     self.loader.load_chapter(next_chapter)
                     self.refresh_things()
+                    self.timer.set_timer(chapter_time=0)
                     self.run_chapter(start=True)
 
         else:
@@ -212,6 +218,7 @@ class Game:
             if next_chapter:
                 self.loader.load_chapter(next_chapter)
                 self.refresh_things()
+                self.timer.set_timer(chapter_time=0)
                 self.run_chapter(start=True)
 
     def change_game_state(self, key, value):
@@ -235,8 +242,8 @@ class Game:
         text += '\n- Verbs:\n'
         for verb in self.verbs.values():
             v_name = verb.name
-            v_forms = verb.forms
-            text += f'{v_name}: {v_forms}. '
+            v_descr = verb.description
+            text += f'{v_name}: {v_descr}\n'
         text += '\n\n- Inventory:\n'
         for thing in self.actors['I'].contents.values():
             thing = thing['obj']
@@ -299,6 +306,13 @@ class Game:
         for thing in new_things.values():
             if thing.container == current_room_key:
                 thing.is_known = True
+
+        if 'current system' in self.game_state.keys():
+            try:
+                system = self.things[self.game_state['current system']]
+                new_things[system.key] = system
+            except KeyError:
+                pass
         self.things = new_things
 
     def to_json(self):

@@ -15,17 +15,6 @@ class CustomTimer(threading.Thread):
         self.kwargs = kwargs
 
     def run(self):
-        try:
-            start_game = self.kwargs['start_game']
-        except KeyError:
-            start_game = 0
-        try:
-            start_chapter = self.kwargs['start_chapter']
-        except KeyError:
-            start_chapter = 0
-
-        self.game.game_state['game time'] = start_game
-        self.game.game_state['chapter time'] = start_chapter
         while True:
             if self.pause:
                 continue

@@ -10,8 +10,8 @@
         "abilities": {  "Go": true, "Look": true, "Listen": true,
                         "Take": true, "Drop": true, "Open": true,
                         "Close": true, "Push": true, "Use": true, "Read": true, "Put": true,
-                        "Send": false, "Landon": false, "Takeoff": false,
-                        "Enter": false, "Leave": false, "Setup": false, "Ask": true
+                        "Send": true, "Landon": true, "Takeoff": true,
+                        "Enter": true, "Leave": true, "Setup": true, "Ask": true
                         },
         "on_command": {  "Go": true, "Look": true, "Listen": true,
                         "Take": true, "Drop": true, "Open": true,
@@ -31,7 +31,7 @@
         "container": "Cryo Chambers",
         "contents": null,
         "plural": false,
-        "abilities": {  "Go": false, "Look": true, "Listen": true,
+        "abilities": {  "Go": true, "Look": true, "Listen": true,
                         "Take": false, "Drop": false, "Open": false,
                         "Close": false, "Push": false, "Use": false,
                         "Read": true, "Put": false, "Send": true, "Landon": true, "Takeoff": true,

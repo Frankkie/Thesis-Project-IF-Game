@@ -63,7 +63,13 @@ class Room(Entity):
             a string describing the object.
 
         """
-        printable = self.display_name + "\n" + self.description + "\n"
+        if self.examine_description:
+            printable = f"The {self.display_name}:\n{self.examine_description}\n"
+        elif self.description:
+            printable = f"The {self.display_name}:\n{self.description}\n"
+        else:
+            printable = f"There is nothing interesting about the {self.display_name}.\n"
+
         if print_parts:
             for part in self.contents.keys():
                 printable += f"- {self.contents[part]['obj'].display_name.capitalize()}:" \
@@ -105,12 +111,7 @@ class Room(Entity):
         return self
 
     def _on_look(self, **kwargs):
-        if self.examine_description:
-            return f"The {self.display_name}: " + self.examine_description
-        elif self.description:
-            return f"The {self.display_name}: " + self.string()
-        else:
-            return f"There is nothing interesting about the {self.display_name}."
+        return self.string()
 
     def _on_listen(self, **kwargs):
         if self.audible_description:
@@ -151,7 +152,13 @@ class Door(Room):
             a string describing the object.
 
         """
-        printable = self.display_name + "\n" + self.description + "\n"
+        if self.examine_description:
+            printable = f"The {self.display_name}:\n{self.examine_description}\n"
+        elif self.description:
+            printable = f"The {self.display_name}:\n{self.description}\n"
+        else:
+            printable = f"There is nothing interesting about the {self.display_name}.\n"
+
         if print_parts:
             for part in self.contents.keys():
                 printable += f"- {self.contents[part]['obj'].display_name.capitalize()}:" \

@@ -69,7 +69,7 @@ class SolarSystemGenerator:
 
         sl = SolarSystem(key=name, reference_noun='system', display_name=name, reference_adjectives=['solar', name],
                          star_names=star_names, star_types=star_types, habitable=habitable, num_planets=num_planets,
-                         distance=distance, name_seed=name_seed)
+                         distance=distance, name_seed=name_seed, is_known=True)
 
         return sl
 
@@ -181,9 +181,9 @@ class PlanetGenerator:
 
             planet = Planet(**planet)
             planets[name] = {'obj': planet, 'tags': ['Planet', 'Look']}
-            planets[name] = planet
 
         system.contents = planets
+        # print(system.contents)
 
         return planets
 
