@@ -44,8 +44,6 @@ class ActionPreconditions:
         return True
 
     def _use(self):
-        if self.obj.key not in self.actor.contents:
-            raise PreconditionsError("TakeObjectError", obj=self.obj.display_name)
 
         if not self.obj.action_description['Use']:
             raise PreconditionsError("UseObjectError", obj=self.obj.display_name)

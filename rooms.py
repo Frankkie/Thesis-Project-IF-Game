@@ -71,11 +71,12 @@ class Room(Entity):
             printable = f"There is nothing interesting about the {self.display_name}.\n"
 
         if print_parts:
+            printable += "\n"
             for part in self.contents.keys():
                 printable += f"- {self.contents[part]['obj'].display_name.capitalize()}:" \
                              f" {self.contents[part]['obj'].description}\n"
-
         if print_directions:
+            printable += "\n"
             for direction in self.directions.keys():
                 printable += f"- {direction}: {self.directions[direction]['desc']}\n"
 
@@ -163,7 +164,6 @@ class Door(Room):
             for part in self.contents.keys():
                 printable += f"- {self.contents[part]['obj'].display_name.capitalize()}:" \
                              f" {self.contents[part]['obj'].description}\n"
-            printable += "\n"
 
         if print_directions:
             if self.entity_state["Open"]:

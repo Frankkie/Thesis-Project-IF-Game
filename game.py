@@ -309,8 +309,10 @@ class Game:
 
         if 'current system' in self.game_state.keys():
             try:
-                system = self.things[self.game_state['current system']]
-                new_things[system.key] = system
+                system_key = self.game_state['current system']
+                if system_key:
+                    system = self.things[system_key]
+                    new_things[system.key] = system
             except KeyError:
                 pass
         self.things = new_things

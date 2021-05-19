@@ -316,14 +316,17 @@ class SpaceChapter(Chapter):
 
         try:
             current_system_key = game.game_state['current system']
+        except KeyError:
+            current_system_key = None
+
+        if current_system_key:
             current_system = game.things[current_system_key]
             if not current_system.is_known:
                 del game.things[current_system.key]
+                game.game_state['current system'] = None
                 self.last_sol_time = chapter_time
             else:
                 return None
-        except KeyError:
-            pass
 
         if chapter_time >= (self.sol_time + self.last_sol_time):
             system = game.solar_system_gen.generate_systems(self.chapter_state['solar systems'])
