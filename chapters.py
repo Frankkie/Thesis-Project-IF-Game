@@ -293,7 +293,6 @@ class SpaceChapter(Chapter):
         res = self.new_solar_system(game)
         if res:
             game.display.queue(res, "ChapterEvent")
-            self.active_system = True
 
         for event in game.events.values():
             if event.eval_conditions(game):
@@ -330,10 +329,10 @@ class SpaceChapter(Chapter):
 
         if chapter_time >= (self.sol_time + self.last_sol_time):
             system = game.solar_system_gen.generate_systems(self.chapter_state['solar systems'])
-            game.planet_gen.generate_planets(system)
 
             game.things[system.key] = system
             game.game_state['current system'] = system.key
+            game.refresh_things()
             self.chapter_state['solar systems'] += 1
             if self.chapter_state['solar systems'] == 1:
                 return f"'Admiral, Sir! We're approaching our first alien system, {system.display_name}!'\n" \

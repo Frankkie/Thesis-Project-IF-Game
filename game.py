@@ -13,7 +13,7 @@ from log_commands import start_log, log_command, log_time, log_seed
 from load import Loader
 from save import Saver
 from timer import CustomTimer
-from solar_system_generator import SolarSystemGenerator, PlanetGenerator
+from solar_system_generator import SolarSystemGenerator
 
 
 class Game:
@@ -31,8 +31,7 @@ class Game:
         self.loader = Loader(self.title, self)
         self.saver = Saver(self)
         self.timer = CustomTimer(self)
-        self.solar_system_gen = SolarSystemGenerator(self.seed, "Andromeda")
-        self.planet_gen = PlanetGenerator(self.seed)
+        self.solar_system_gen = None
         self.actors = {}
         self.verbs = {}
         self.rooms = {}
@@ -70,6 +69,7 @@ class Game:
         self.game_state["new game"] = False
         self.run_chapter(start=True)
         log_seed(self)
+        self.solar_system_gen = SolarSystemGenerator(self.seed)
         self.timer.pause = False
         self.timer.start()
         while True:
@@ -89,6 +89,7 @@ class Game:
         self.game_state["new game"] = False
         self.run_chapter(start=True, replay=True)
         self.seed = self.loader.load_prev_seed(self.title)
+        self.solar_system_gen = SolarSystemGenerator(self.seed)
         t = 0
         for command in commands:
             self.game_state['game time'] = times[t]
@@ -313,8 +314,11 @@ class Game:
                 if system_key:
                     system = self.things[system_key]
                     new_things[system.key] = system
+                    for planet in system.contents.keys():
+                        new_things[planet] = system.contents[planet]['obj']
             except KeyError:
                 pass
+
         self.things = new_things
 
     def to_json(self):

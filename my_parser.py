@@ -184,13 +184,26 @@ class Parser:
         for actor in actors:
             actor_names.append(actor.reference_noun)
 
+        planet_names = []
+        try:
+            solar_system = self.game.game_state['current system']
+        except KeyError:
+            solar_system = None
+
+        if solar_system:
+            solar_system = self.game.things[solar_system]
+            planet_names = [solar_system.contents[planet]['obj'].reference_noun for planet in solar_system.contents]
+
         for word in sentence:
             if word in actor_names:
                 new_sentence.append("actor")
             elif word in ("hey", "bye", "yes", "no"):
                 new_sentence.append("topic")
+            elif word in planet_names:
+                new_sentence.append("planet")
             else:
                 new_sentence.append(word)
+
         return new_sentence
 
     def pos_tagging(self, sentence):

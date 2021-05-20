@@ -75,7 +75,7 @@
         "next chapter": "End"
       }
     ],
-    "sol_time": 20,
+    "sol_time": 1,
     "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
     "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
     "Reactor Door South", "Telescope"],

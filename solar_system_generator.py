@@ -11,10 +11,11 @@ class SolarSystemGenerator:
 
     """
 
-    def __init__(self, seed, constellation):
+    def __init__(self, seed):
         self.seed = seed
-        self.constellation = constellation
+        self.constellation = choose_constellation(seed)
         self.star_name_gen = NameGenerator(self.seed, 'star_name_grammar.cfg', prefix=self.constellation)
+        self.planet_gen = PlanetGenerator(self.seed)
         self.generated = set()
         with open(os.path.join("Generators", (self.__class__.__name__.lower() + '.json')), 'r') as file:
             generator_data = json.load(file)
@@ -70,7 +71,8 @@ class SolarSystemGenerator:
         sl = SolarSystem(key=name, reference_noun='system', display_name=name, reference_adjectives=['solar', name],
                          star_names=star_names, star_types=star_types, habitable=habitable, num_planets=num_planets,
                          distance=distance, name_seed=name_seed, is_known=True)
-
+        self.planet_gen.generate_planets(sl)
+        self.generate_telescope_description(sl)
         return sl
 
     def hash_system_name(self, name):
@@ -83,6 +85,32 @@ class SolarSystemGenerator:
             return self.hash_system_name(name + 'a')
         self.generated.add(system_seed)
         return system_seed
+
+    def generate_telescope_description(self, solar_system):
+        descr = solar_system.string() + '\n'
+        planets = [planet['obj'] for planet in solar_system.contents.values()]
+        planet_names = [planet.display_name for planet in planets]
+        planet_types = [planet.planet_type for planet in planets]
+
+        for i, name in enumerate(planet_names):
+            descr += f"- {name}, {planet_types[i]}.\n"
+
+        if len(solar_system.star_names) > 3:
+            descr += "The systems' many stars seem to be pulling on its planets in random ways, " \
+                     "generating highly elliptical orbits.\n"
+        if 'Blue Giant' in solar_system.star_types or 'Red Giant' in solar_system.star_types:
+            descr += "The system is obviously dominated by its most Giant star, " \
+                     "casting incredible amounts of radiation everywhere.\n"
+        if 'White Dwarf' in solar_system.star_types\
+                or 'Black Hole' in solar_system.star_types\
+                or 'Neutron Star' in solar_system.star_types:
+            descr += "The remnants of a long gone star are present here, indicating a violent past.\n"
+        if 'Blue Giant' not in solar_system.star_types\
+                and 'Read Giant' not in solar_system.star_types\
+                and 'Yellow Dwarf' not in solar_system.star_types\
+                and 'Red Dwarf' not in solar_system.star_types:
+            descr += "The system is barely lit by its dim 'stars'."
+        solar_system.action_description['On Use telescope'] = descr
 
 
 class PlanetGenerator:
@@ -123,7 +151,7 @@ class PlanetGenerator:
             name = self.star_name_gen.generate_name(system_seed + (i + r)*r)
             planet = dict()
             planet['display_name'] = name
-            planet['reference_noun'] = name
+            planet['reference_noun'] = name.lower()
             planet['key'] = name
             planet['container'] = system.key
             planet_type = np.random.choice(self.planet_types, p=self.planet_types_weights)
@@ -178,27 +206,24 @@ class PlanetGenerator:
             planet['lifeforms'] = lifeforms
             planet['dangerous_lifeforms'] = dangerous_lifeforms
             planet['colonizable'] = colonizable
-
+            planet['examine_description'] = 'Examining this planet further that far away is impossible.\n' \
+                                            'You have to enter its parent system to take a closer look.'
+            planet['is_known'] = True
+            planet['as_dirobj'] = {'Look': True}
             planet = Planet(**planet)
-            planets[name] = {'obj': planet, 'tags': ['Planet', 'Look']}
+            planets[name] = {'obj': planet, 'tags': ['Planet', 'Look', 'Inventory']}
 
         system.contents = planets
-        # print(system.contents)
 
         return planets
 
 
-if __name__ == '__main__':
-    gen = SolarSystemGenerator(1998, 'Cancer')
-    planet_gen = PlanetGenerator(2021)
-    c = 0
-    for i in range(1000):
-        sl = gen.generate_systems(i)
-        planets = planet_gen.generate_planets(sl)
-        # print(planets)
-        print(sl.string(print_parts=True))
-        for p in planets.values():
-            if p.colonizable:
-                c += 1
-
-    print(c)
+def choose_constellation(seed):
+    import pandas as pd
+    file_path = os.path.join('Generators', 'constellations.csv')
+    with open(file_path, 'r') as file:
+        constellations = pd.read_csv(file)
+    constellations = constellations['Constellation'].to_numpy()
+    np.random.seed(seed)
+    const = np.random.choice(list(constellations))
+    return const
