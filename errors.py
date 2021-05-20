@@ -98,6 +98,12 @@ class PreconditionsError(Error):
             return f'You have to open {self.kwargs["ind_obj"]} first, before you put something in it.'
         if self.error_type == "UseObjectError":
             return f"There is no particular use for the {self.kwargs['obj']}."
+        if self.error_type == "SystemNotEnteredError":
+            return f"You have to enter the solar system before you {self.kwargs['action']} {self.kwargs['planet']}."
+        if self.error_type == "NotDronesOnSendError":
+            return f"You cannot send the {self.kwargs['obj']} to a planet."
+        if self.error_type == "SendNotOnPlanetError":
+            return f"You cannot send drones to a {self.kwargs['ind']}."
         else:
             return self.error_type
 

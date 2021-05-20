@@ -1,7 +1,8 @@
+from numpy import random
 
 
 class Chapter:
-    def __init__(self, key, title, intro_description, outro_description, map_files, first_room,
+    def __init__(self, key, title, intro_description, outro_description, map_files, first_room=None,
                  convonodes_files=None, dialogevents_files=None, events_files=None, topics_files=None,
                  end_conditions=None, chapter_state=None):
         """
@@ -239,6 +240,7 @@ class DeathChapter(Chapter):
         next_chapter = "End"
 
         game.display.queue(self.intro_description, "ChapterStart")
+        game.display.queue(self.outro_description, "ChapterEvent")
         return next_chapter
 
 
@@ -261,6 +263,7 @@ class WinChapter(Chapter):
         next_chapter = "End"
 
         game.display.queue(self.intro_description, "ChapterStart")
+        game.display.queue(self.outro_description, "ChapterEvent")
         return next_chapter
 
 
@@ -299,25 +302,26 @@ class SpaceChapter(Chapter):
                 res = event.trigger(game)
                 game.display.queue(res, "ChapterEvent")
 
-        for condition_set in self.end_conditions:
-            conditions = condition_set["conditions"]
-            chapter_key = condition_set["next chapter"]
-            if self._eval_conditions(game, conditions):
-                res = self._end_chapter(chapter_key)
-                game.display.queue(res, "ChapterEvent")
-                next_chapter = chapter_key
-                return next_chapter
-
+        try:
+            current_system_key = game.game_state['current system']
+        except KeyError:
+            current_system_key = None
+        if current_system_key:
+            solarsystem = game.things[current_system_key]
+            try:
+                if solarsystem.entity_state["Entered"]:
+                    next_chapter = "SolarSystemChapter"
+            except KeyError:
+                pass
         return next_chapter
 
     def new_solar_system(self, game):
-        chapter_time = game.game_state['chapter time']
-
         try:
             current_system_key = game.game_state['current system']
         except KeyError:
             current_system_key = None
 
+        chapter_time = game.game_state['chapter time']
         if current_system_key:
             current_system = game.things[current_system_key]
             if not current_system.is_known:
@@ -350,6 +354,57 @@ class SolarSystemChapter(Chapter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def start_chapter(self, game, replay=False):
+        """
+        This method is triggered by the game at the start of a Chapter, and returns the introduction
+        description of the chapter, based on the previous Chapter.
+
+        :return: None
+
+        """
+        solarsystem = game.things[game.game_state['current system']]
+        num_stars = len(solarsystem.star_types)
+        num_planets = solarsystem.num_planets
+        system_name = solarsystem.key
+
+        random.seed(solarsystem.name_seed)
+        intro = random.choice(self.intro_description)
+        intro = intro.format(star_plural='s' if num_stars > 1 else '', num_planets=num_planets, system_name=system_name)
+        game.display.queue(intro, "ChapterStart")
+
+        return None
+
+    def advance_chapter(self, game):
+        """
+        This method loops through possible Chapter events and end triggers to evaluate
+        the next event of the Chapter.
+
+        :param game:
+            the game object that has triggered the chapter
+        :return:
+            dictionary of info about the events triggered.
+
+        """
+        next_chapter = None
+
+        for event in game.events.values():
+            if event.eval_conditions(game):
+                res = event.trigger(game)
+                game.display.queue(res, "ChapterEvent")
+
+        current_system_key = game.game_state['current system']
+
+        if current_system_key:
+            solarsystem = game.things[current_system_key]
+            if not solarsystem.entity_state["Entered"]:
+                del game.things[solarsystem.key]
+                game.game_state['current system'] = None
+                next_chapter = "Deep Space"
+
+        if next_chapter:
+            game.display.queue(self.outro_description[next_chapter], "ChapterEvent")
+        return next_chapter
 
 
 class PlanetChapter(Chapter):

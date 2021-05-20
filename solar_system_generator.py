@@ -209,7 +209,9 @@ class PlanetGenerator:
             planet['examine_description'] = 'Examining this planet further that far away is impossible.\n' \
                                             'You have to enter its parent system to take a closer look.'
             planet['is_known'] = True
-            planet['as_dirobj'] = {'Look': True}
+            planet['as_dirobj'] = {'Look': True, 'Landon': True}
+            planet['as_indobj'] = {'To': True}
+            planet['action_description'] = {'On Send': "Sent drones!"}
             planet = Planet(**planet)
             planets[name] = {'obj': planet, 'tags': ['Planet', 'Look', 'Inventory']}
 

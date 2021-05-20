@@ -2,13 +2,14 @@ from errors import PreconditionsError
 
 
 class ActionPreconditions:
-    def __init__(self, syntax, actor, verb, obj, qualifier, ind_obj):
+    def __init__(self, syntax, actor, verb, obj, qualifier, ind_obj, game):
         self.syntax = syntax
         self.actor = actor
         self.verb = verb
         self.obj = obj
         self.qualifier = qualifier
         self.ind_obj = ind_obj
+        self.game = game
 
     def check_preconditions(self):
         verb_name = self.verb.name.lower()
@@ -58,3 +59,34 @@ class ActionPreconditions:
 
     def _open(self):
         return True
+
+    def _landon(self):
+        planet = self.obj
+        solarsystem = self.game.things[planet.container]
+
+        try:
+            entered = solarsystem.entity_state["Entered"]
+        except KeyError:
+            raise PreconditionsError("SystemNotEnteredError", action="land on", planet=planet.display_name)
+
+        if entered:
+            return True
+        else:
+            raise PreconditionsError("SystemNotEnteredError", action="land on", planet=planet.display_name)
+
+    def _send(self):
+        if self.obj.key != "drones":
+            raise PreconditionsError("NotDronesOnSendError", obj=self.obj.display_name)
+        if self.ind_obj.__class__.__name__ != "Planet":
+            raise PreconditionsError("SendNotOnPlanetError", ind=self.ind_obj.display_name)
+        planet = self.ind_obj
+        solarsystem = self.game.things[planet.container]
+        try:
+            entered = solarsystem.entity_state["Entered"]
+        except KeyError:
+            raise PreconditionsError("SystemNotEnteredError", action="send drones to", planet=planet.display_name)
+
+        if entered:
+            return True
+        else:
+            raise PreconditionsError("SystemNotEnteredError", action="send drones to", planet=planet.display_name)

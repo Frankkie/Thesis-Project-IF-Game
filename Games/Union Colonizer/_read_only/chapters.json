@@ -54,27 +54,9 @@
   "Deep Space": {
     "key": "Deep Space",
     "title": "Deep Space",
-    "intro_description": "It is only the beginning of the Great Journey for restoring the Union.\n",
-    "outro_description": {
-      "generic": "You have to journey on for now."
-    },
-    "first_room": "Cryo Chambers",
-    "end_conditions": [
-      {
-        "conditions": [
-          {
-            "key": "IntroEnd1",
-            "attribute_path": "game_state.current room",
-            "values": [
-              "North Room"
-            ],
-            "not_": false,
-            "_class_": "Condition"
-          }
-        ],
-        "next chapter": "End"
-      }
-    ],
+    "intro_description": "Thus, your Great Journey for restoring the Union continues on...\n",
+    "outro_description": {},
+    "first_room": null,
     "sol_time": 1,
     "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
     "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
@@ -87,17 +69,58 @@
     "_class_": "SpaceChapter"
   },
 
+  "SolarSystemChapter": {
+    "key": "SolarSystemChapter",
+    "title": "Inside the Solar System",
+    "intro_description": [
+      "As you enter the {system_name} System, you see its {num_planets} planets show more clearly,\nits star{star_plural} shining a bright light upon your fleet, after years of darkness.",
+      "The light of the system's star{star_plural} warms up your vessel.\n{system_name}'s {num_planets} planets are now more visible,\nat first as dim dots, then as clear stars hanging through the nothingness.",
+      "Your vessel decelerates as you enter the {system_name} system.\nUnder the light of its star{star_plural}, its {num_planets} get brighter as you get closer."
+    ],
+    "outro_description": {
+      "Deep Space": "You set sail for new Worlds as you plunge back into the darkness.",
+      "PlanetChapter": "You decide to take the risk to land. An alien world awaits you..."
+    },
+    "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
+    "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
+    "Reactor Door South", "Telescope"],
+    "events_files": ["light_event"],
+    "topics_files": ["light", "hey", "bye", "yes", "no", "bomb"],
+    "dialogevents_files": ["greeting", "goodbye", "goodbye_general", "light_event", "light_event_after_taken",
+    "bomb_event", "yes_bomb_event", "no_bomb_event"],
+    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic", "Lovkiy.bomb"],
+    "first_room": null,
+    "_class_": "SolarSystemChapter"
+  },
+
+  "Win": {
+    "key": "Win",
+    "title": "You won!",
+    "intro_description": "You've secured the future of the Union away from Earth for generations to come!\nThe years pass, and after your death, you're only remembered as a hero.",
+    "outro_description": "Your utopia can now flourish.",
+    "map_files": [],
+    "_class_": "WinChapter"
+  },
+
+  "Death": {
+    "key": "Death",
+    "title": "You lost!",
+    "intro_description": "With you perishing, all the hopes of a future Utopia for all our now dashed.",
+    "outro_description": "The Union thus fell; and no one out here, in the vastness of nothing, we'll live to remember it as it was.",
+    "map_files": [],
+    "_class_": "DeathChapter"
+  },
 
   "End": {
     "key": "End",
     "title": "End Chapter: Game over",
-    "intro_description": "Now the game is over.",
+    "intro_description": "Game Over!",
     "outro_description": {
       "__END__": "The End..."
       },
     "first_room": null,
     "end_conditions": null,
-    "map_files": ["Cryo Chambers", "South Room", "south door", "North Room"],
+    "map_files": [],
     "_class_": "EndChapter"
   }
 }

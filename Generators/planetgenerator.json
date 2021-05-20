@@ -6,13 +6,13 @@
   "num_satellites_weights": [0.5, 0.1, 0.1, 0.1, 0.1, 0.1],
   "temperature_types": ["Hellishly Hot", "Hot", "Warm", "Temperate", "Cold",
   "Frozen", "Icy"],
-  "temperature_types_weights": [0.1, 0.1, 0.2, 0.2, 0.2, 0.1, 0.1],
+  "temperature_types_weights": [0.05, 0.1, 0.2, 0.3, 0.2, 0.1, 0.05],
   "rocky_planet_types": ["Lava Planet", "Rocky Planet"],
   "water_types": ["Desert Planet", "Ocean Planet", "Ice Planet", "Water World"],
   "atmosphere_types": ["No Atmosphere", "Thick Atmosphere",
     "Cloudy Atmosphere", "Acid Atmosphere"],
-  "atmosphere_types_weights": [0.2, 0.3, 0.3, 0.2],
+  "atmosphere_types_weights": [0.1, 0.4, 0.4, 0.1],
   "lifeform_types": ["No Life", "Primordial Life", "Animal Life",
   "Advanced Life", "Former Advanced Life"],
-  "lifeform_types_weights": [0.4, 0.2, 0.1, 0.1, 0.2]
+  "lifeform_types_weights": [0.6, 0.1, 0.1, 0.1, 0.1]
 }

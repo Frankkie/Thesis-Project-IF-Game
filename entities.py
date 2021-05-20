@@ -315,5 +315,9 @@ class Entity:
         pass
 
     def _on_send(self, **kwargs):
-        pass
+        result = self.action_description["Send"]
+        indirect = kwargs["indirect"]
+        result += "\n"
+        result += indirect.action_description["On Send"]
+        return result
 

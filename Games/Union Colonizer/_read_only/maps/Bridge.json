@@ -79,6 +79,23 @@
         "_class_": "Movable"
       },
       "tags": ["Inventory"]
+    },
+    "drones": {
+      "obj": {
+        "key": "drones",
+        "reference_noun": "drones",
+        "reference_adjectives": [],
+        "display_name": "drones",
+        "description": "Made to be fast and disposable, the ship's drones can allow you to look at planets closely, without actually landing.",
+        "plural": true,
+        "container": "Bridge",
+        "as_dirobj": {"Send": true, "Look": true},
+        "action_description": {
+          "Send": "Some drones leave your ship to take a closer look to the planet."
+        },
+        "_class_": "Thing"
+      },
+      "tags": ["Inventory"]
     }
   },
   "directions": {

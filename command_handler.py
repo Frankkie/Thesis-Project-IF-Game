@@ -132,12 +132,6 @@ class CommandHandler:
             except CheckCommandError as error:
                 raise error
 
-        if verb.name in ["Ask"]:
-            try:
-                self.__check_topic(ind_obj, obj)
-            except CheckCommandError as error:
-                raise error
-
         try:
             self.__check_preconditions(syntax, actor, verb, obj, qualifier, ind_obj)
         except PreconditionsError as error:
@@ -252,12 +246,8 @@ class CommandHandler:
         else:
             raise CheckCommandError("ObjectNotAbleError", obj=obj.display_name, verb=verb_name.lower())
 
-    def __check_topic(self, topic, actor_asked):
-        # CHECK WITH THE CONVONODE!!!!!!!!!!!!!!!!!!!!!!!
-        pass
-
     def __check_preconditions(self, syntax, actor, verb, obj, qualifier, ind_obj):
-        prec = ActionPreconditions(syntax, actor, verb, obj, qualifier, ind_obj)
+        prec = ActionPreconditions(syntax, actor, verb, obj, qualifier, ind_obj, self.game)
         try:
             result = prec.check_preconditions()
             del prec

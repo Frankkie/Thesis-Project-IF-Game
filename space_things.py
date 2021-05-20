@@ -33,6 +33,7 @@ class SolarSystem(Thing):
             return f'You just entered the System {self.display_name}.'
 
     def _on_leave(self, **kwargs):
+        self.entity_state["Entered"] = False
         self.is_known = False
         return f"You're leaving behind {self.display_name}, as you look for other worlds to settle!"
 
@@ -63,6 +64,9 @@ class Planet(Thing):
                      f' {self.atmosphere_type}, {self.lifeforms}, {self.dangerous_lifeforms},' \
                      f' {self.colonizable}'
         return printable
+
+    def _on_landon(self, **kwargs):
+        return "Landed!"
 
 
 
