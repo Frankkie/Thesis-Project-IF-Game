@@ -26,6 +26,7 @@ class SolarSystemGenerator:
         self.planet_numbers = generator_data['planet_numbers']
         self.planet_numbers_weights = generator_data['planet_numbers_weights']
         self.distances = [4]
+        self.descriptions_generator = PlanetDescriptionGenerator(self.seed)
 
     def generate_systems(self, system_seed):
         name = self.star_name_gen.generate_name(system_seed)
@@ -111,6 +112,9 @@ class SolarSystemGenerator:
                 and 'Red Dwarf' not in solar_system.star_types:
             descr += "The system is barely lit by its dim 'stars'."
         solar_system.action_description['On Use telescope'] = descr
+
+    def generate_descriptions(self, solarsystem):
+        self.descriptions_generator.generate_descriptions(solarsystem)
 
 
 class PlanetGenerator:
@@ -211,13 +215,93 @@ class PlanetGenerator:
             planet['is_known'] = True
             planet['as_dirobj'] = {'Look': True, 'Landon': True}
             planet['as_indobj'] = {'To': True}
-            planet['action_description'] = {'On Send': "Sent drones!"}
+            planet['action_description'] = {'On Send': "Sent drones!",
+                                            'On Use telescope': 'Examining this planet further that far away is '
+                                                                'impossible.\nYou have to enter its parent system '
+                                                                'to take a closer look.',
+                                            'Landon': 'You are slowly descending onto {name}.',
+                                            'Takeoff': 'You leave {name} behind.'}
             planet = Planet(**planet)
             planets[name] = {'obj': planet, 'tags': ['Planet', 'Look', 'Inventory']}
 
         system.contents = planets
 
         return planets
+
+
+class PlanetDescriptionGenerator:
+    def __init__(self, game_seed):
+        self.game_seed = game_seed
+        with open(os.path.join("Generators", (self.__class__.__name__.lower() + '.json')), 'r') as file:
+            self.generator_data = json.load(file)
+
+    def generate_descriptions(self, solarsystem):
+        i = 0
+        for key in solarsystem.contents:
+            planet = solarsystem.contents[key]['obj']
+            self.choose_features(planet, self.game_seed + solarsystem.name_seed + i)
+            self.examine_description(planet)
+            self.telescope_description(planet)
+            self.drones_description(planet, self.game_seed + solarsystem.name_seed + i)
+            i += 1
+
+    def choose_features(self, planet, seed):
+        features = {}
+        np.random.seed(seed)
+
+        features["orbit"] = np.random.choice(self.generator_data["orbit"][planet.temperature])
+        features["rotation"] = np.random.choice(self.generator_data["rotation"][planet.temperature])
+        features["rings"] = np.random.choice(self.generator_data['rings'])
+
+        if planet.rocky_planet_type:
+            if planet.rocky_planet_type == "Lava Planet":
+                features["surface color"] = np.random.choice(self.generator_data["surface color"]["Lava Planet"])
+            else:
+                features['geology'] = [np.random.choice(
+                    self.generator_data['geology'][planet.water_type]) for _ in range(4)]
+                features['sky color'] = np.random.choice(self.generator_data['sky color'][planet.atmosphere_type])
+                features["surface color"] = np.random.choice(self.generator_data["surface color"][planet.water_type])
+        planet.entity_state['features'] = features
+
+    def examine_description(self, planet):
+        description = self.generator_data["descriptions"][planet.planet_type] + \
+                      self.generator_data["descriptions"][planet.entity_state['features']['orbit']]
+        planet.examine_description = description
+
+    def telescope_description(self, planet):
+        rings = planet.entity_state["features"]["rings"]
+        description = f'{self.generator_data["descriptions"][planet.planet_type]}' \
+                      f'There {"are" if planet.num_satellites != 1 else "is"} ' \
+                      f'{planet.num_satellites} satellite{"s" if planet.num_satellites != 1 else ""} ' \
+                      f'orbiting around it.\n{self.generator_data["descriptions"][rings]}' \
+                      f'{self.generator_data["descriptions"][planet.entity_state["features"]["orbit"]]}'
+
+        if "surface color" in planet.entity_state['features']:
+            surface = planet.entity_state['features']['surface color']
+            description += f"{surface.capitalize()} seems to be the color dominating its surface."
+        planet.action_description["On Use telescope"] = description
+
+    def drones_description(self, planet, seed):
+        np.random.seed(seed)
+        drones_destroyed = np.random.choice([True, False], p=[0.2, 0.8])
+        if drones_destroyed:
+            description = np.random.choice[self.generator_data["descriptions"]["drones destroyed"]]
+
+        else:
+            rotation = self.generator_data["descriptions"][planet.entity_state["features"]["rotation"]]
+            temperature = self.generator_data["descriptions"][planet.temperature]
+            description = planet.action_description["On Use telescope"] + "\n"
+            description += (rotation + temperature)
+            if planet.atmosphere_type == "Cloudy Atmosphere":
+                description += "Unfortunately, due to the dense cloud cover of the atmosphere, " \
+                               "we were unable to retrieve any extra information about the planet."
+            elif planet.atmosphere_type is not None:
+                description += self.generator_data["descriptions"][planet.atmosphere_type]
+                if planet.water_type is not None:
+                    description += np.random.choice(
+                        self.generator_data["descriptions"][planet.lifeforms])
+
+        planet.action_description["On Send"] = description
 
 
 def choose_constellation(seed):

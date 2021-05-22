@@ -60,6 +60,28 @@ class ActionPreconditions:
     def _open(self):
         return True
 
+    def _enter(self):
+        solarsystem = self.obj
+        try:
+            entered = solarsystem.entity_state["Entered"]
+        except KeyError:
+            return True
+        if entered:
+            raise PreconditionsError("SystemAlreadyEnteredError", system_name=solarsystem.display_name)
+        return True
+
+    def _leave(self):
+        solarsystem = self.obj
+        try:
+            planet = self.game.game_state['current planet']
+        except KeyError:
+            return True
+        if planet is not None:
+            planet = self.game.things[planet]
+            raise PreconditionsError("LeaveLandedError", planet=planet.display_name,
+                                     solarsystem=solarsystem.display_name)
+        return True
+
     def _landon(self):
         planet = self.obj
         solarsystem = self.game.things[planet.container]
@@ -70,6 +92,8 @@ class ActionPreconditions:
             raise PreconditionsError("SystemNotEnteredError", action="land on", planet=planet.display_name)
 
         if entered:
+            if planet.planet_type == "Dwarf Planet":
+                raise PreconditionsError("DwarfPlanetLandingError")
             return True
         else:
             raise PreconditionsError("SystemNotEnteredError", action="land on", planet=planet.display_name)

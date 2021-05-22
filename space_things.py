@@ -18,7 +18,7 @@ class SolarSystem(Thing):
     def string(self, print_parts=True):
         printable = f'{self.key}:\n' \
                     f'This system is located {round(self.distance, 2)} light years from Earth.\n' \
-                    f'It has {len(self.star_names)} stars:\n' \
+                    f'It has {len(self.star_names)} star{"" if len(self.star_names) == 1 else "s"}:\n' \
                     f'{"; ".join([", ".join([star, self.star_types[i]]) for i, star in enumerate(self.star_names)])}'\
                     f'.\n' \
                     f'There are {self.num_planets} planets in the system.'
@@ -66,7 +66,12 @@ class Planet(Thing):
         return printable
 
     def _on_landon(self, **kwargs):
-        return "Landed!"
+        self.entity_state['Landed'] = True
+        return self.action_description["Landon"].format(name=self.display_name)
+
+    def on_take_off(self, **kwargs):
+        self.entity_state['Landed'] = False
+        return self.action_description["Takeoff"].format(name=self.display_name)
 
 
 

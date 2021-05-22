@@ -256,6 +256,12 @@ class CommandHandler:
             raise error
 
     def __action_(self, actor, verb):
+        if verb.name == "Takeoff":
+            try:
+                return actor.on_dir_object(verb=verb, game=self.game)
+            except ActionError as error:
+                raise error
+
         curr_room_key = self.game.game_state['current room']
         room = self.game.rooms[curr_room_key]
         try:

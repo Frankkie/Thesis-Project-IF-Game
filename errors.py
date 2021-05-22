@@ -104,6 +104,13 @@ class PreconditionsError(Error):
             return f"You cannot send the {self.kwargs['obj']} to a planet."
         if self.error_type == "SendNotOnPlanetError":
             return f"You cannot send drones to a {self.kwargs['ind']}."
+        if self.error_type == "DwarfPlanetLandingError":
+            return "Due to the low gravity of dwarf planets, it's impossible to safely land on them."
+        if self.error_type == "SystemAlreadyEnteredError":
+            return f"You are already in the {self.kwargs['system_name']} system."
+        if self.error_type == "LeaveLandedError":
+            return f'You have to take off of {self.kwargs["planet"]}, ' \
+                   f'before you leave the {self.kwargs["solarsystem"]} system.'
         else:
             return self.error_type
 

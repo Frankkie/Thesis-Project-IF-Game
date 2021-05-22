@@ -93,6 +93,26 @@
     "_class_": "SolarSystemChapter"
   },
 
+  "PlanetChapter": {
+    "key": "PlanetChapter",
+    "title": "On the Planet.",
+    "intro_description": "Landed!",
+    "outro_description": {
+      "SolarSystemChapter": "You abandon this planet forever and return among it's companion planets.",
+      "PlanetChapter": "An alien world awaits you..."
+    },
+    "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
+    "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
+    "Reactor Door South", "Telescope"],
+    "events_files": ["light_event"],
+    "topics_files": ["light", "hey", "bye", "yes", "no", "bomb"],
+    "dialogevents_files": ["greeting", "goodbye", "goodbye_general", "light_event", "light_event_after_taken",
+    "bomb_event", "yes_bomb_event", "no_bomb_event"],
+    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic", "Lovkiy.bomb"],
+    "first_room": null,
+    "_class_": "PlanetChapter"
+  },
+
   "Win": {
     "key": "Win",
     "title": "You won!",

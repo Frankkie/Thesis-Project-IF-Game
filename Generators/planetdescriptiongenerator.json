@@ -1,0 +1,139 @@
+{
+  "geology": {
+    "Desert Planet": [
+      "desert", "oasis", "canyon", "mountain", "crater", "volcano"
+    ],
+    "Ocean Planet": [
+      "ocean", "canyon", "volcano", "mountain", "glacier", "river"
+    ],
+    "Ice Planet": [
+      "ocean", "glacier", "volcano", "crater", "mountain"
+    ],
+    "Water World": [
+      "island", "ocean", "glacier", "volcano"
+    ]
+  },
+  "sky color": {
+    "No Atmosphere": [
+      "black"
+    ],
+    "Thick Atmosphere": [
+      "blue", "orange", "red"
+    ],
+    "Cloudy Atmosphere": [
+      "orange", "brown", "grey"
+    ],
+    "Acid Atmosphere": [
+      "yellow", "orange", "red", "green"
+    ]
+  },
+  "surface color": {
+    "Lava Planet": [
+      "orange"
+    ],
+    "Desert Planet": [
+      "white", "brown"
+    ],
+    "Ocean Planet": [
+      "red", "brown", "blue", "green"
+    ],
+    "Ice Planet": [
+      "white"
+    ],
+    "Water World": [
+      "blue"
+    ]
+  },
+  "rings": [
+      "extensive", "small", "no rings"
+    ],
+  "orbit": {
+    "Hellishly Hot": ["close", "elliptical"],
+    "Hot": ["close", "elliptical"],
+    "Warm": ["habitable"],
+    "Temperate": ["habitable"],
+    "Cold": ["habitable"],
+    "Frozen": ["far", "elliptical"],
+    "Icy": ["far", "elliptical"]
+  },
+  "rotation": {
+    "Hellishly Hot": [
+      "tidally locked"
+    ],
+    "Hot": [
+      "slow", "tidally locked"
+    ],
+    "Warm": [
+      "slow", "earth-like"
+    ],
+    "Temperate": [
+      "earth-like", "fast"
+    ],
+    "Cold": [
+      "earth-like", "fast"
+    ],
+    "Frozen": [
+      "slow", "fast"
+    ],
+    "Icy": [
+      "slow"
+    ]
+  },
+  "descriptions": {
+    "extensive": "The planet is surrounded by an impressive collection of rings.\n",
+    "small": "A faint ring is visible orbiting the planet.\n",
+    "no rings": "",
+    "close": "It orbits quickly and closely to its parent star.\n",
+    "habitable": "The planet is in its star's habitable zone.\n",
+    "elliptical": "It has a strange elliptical orbit that takes it really close and then very far from its star.\n",
+    "far": "It orbits very far from its parent star, taking decades to complete an orbit.\n",
+    "tidally locked": "The planet is constantly illuminated on one side and in perpetual darkness on the other.\n",
+    "slow": "Its day-night cycle is very slow, one day on there is several Earth days.\n",
+    "fast": "The planet spins very fast on its axis.\n",
+    "earth-like": "A day on there is approximately as long as on Earth.\n",
+    "Super Jupiter": "This is planet which is far more massive than Jupiter.\n" ,
+    "Gas Giant": "This planet is a gas giant.\n" ,
+    "Small Giant": "This is a gas giant, similar to the size of Neptune.\n" ,
+    "Super Earth": "This is a rocky planet, but it's much more massive than Earth.\n" ,
+    "Earth-sized": "The planet is roughly the size of Earth.\n" ,
+    "Small Rocky": "The planet is similar in size to Mars.\n" ,
+    "Dwarf Planet": "This is a very small planet, roughly the size of Pluto.\n",
+    "drones destroyed": [
+      "Due to some freak event, our drones seem to have been destroyed before sending back data on the planet.",
+      "An unknown cause has rendered our drones non-functional.",
+      "Sadly, our drones were not able to report any data from the surface.",
+      "Unfortunately, no data seems to have come back from the drones, and we've lost their signal."
+    ],
+    "Hellishly Hot": "Its surface temperature seems to be high enough to melt lead.\n",
+    "Hot": "Its surface temperature seems to be above the boiling point of water.\n",
+    "Warm": "Its surface temperature seems to be warmer than Earth's, but still bearable.\n",
+    "Temperate": "Its surface temperature seems to be about the same as Earth's.\n",
+    "Cold": "Its surface temperature seems to be colder than Earth's, but still survivable.\n",
+    "Frozen": "Its surface temperature seems to be freezing.\n",
+    "Icy": "Its surface temperature seems to be below the boiling point of methane.\n",
+    "No Atmosphere": "The planet seems to have no atmosphere.\n",
+    "Thick Atmosphere": "Its atmosphere seems to be thick enough to sustain life.\n",
+    "Acid Atmosphere": "Its atmosphere is thick, but we have detected some strange compounds.\n",
+    "No Life": [
+      "There is no life detected on this planet.\n",
+      "There is a slight probability that the planet has some type of life on it already.\n"],
+    "Primordial Life": [
+      "There is no life detected on this planet.\n",
+      "There is a slight probability that the planet has some type of life on it already.\n"
+    ],
+    "Animal Life": [
+      "There is no life detected on this planet.\n",
+      "There is a slight probability that the planet has some type of life on it already.\n",
+      "There is a high probability that the planet is home to living organisms.\n"
+    ],
+    "Advanced Life": [
+      "There is a slight probability that the planet has some type of life on it already.\n",
+      "There is a high probability that the planet is home to living organisms.\n",
+      "We have detected radio waves and artificial lighting from orbit!\n"
+    ],
+    "Former Advanced Life": [
+      "There is no life detected on this planet.\n",
+      "There is a slight probability that the planet has some type of life on it already.\n"
+    ]
+  }
+}

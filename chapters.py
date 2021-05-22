@@ -238,7 +238,7 @@ class DeathChapter(Chapter):
 
         """
         next_chapter = "End"
-
+        game.game_state['lose'] = True
         game.display.queue(self.intro_description, "ChapterStart")
         game.display.queue(self.outro_description, "ChapterEvent")
         return next_chapter
@@ -261,7 +261,7 @@ class WinChapter(Chapter):
 
         """
         next_chapter = "End"
-
+        game.game_state['win'] = True
         game.display.queue(self.intro_description, "ChapterStart")
         game.display.queue(self.outro_description, "ChapterEvent")
         return next_chapter
@@ -364,6 +364,7 @@ class SolarSystemChapter(Chapter):
 
         """
         solarsystem = game.things[game.game_state['current system']]
+        game.solar_system_gen.generate_descriptions(solarsystem)
         num_stars = len(solarsystem.star_types)
         num_planets = solarsystem.num_planets
         system_name = solarsystem.key
@@ -402,6 +403,15 @@ class SolarSystemChapter(Chapter):
                 game.game_state['current system'] = None
                 next_chapter = "Deep Space"
 
+            for planet_key in solarsystem.contents.keys():
+                planet = solarsystem.contents[planet_key]['obj']
+                try:
+                    if planet.entity_state["Landed"]:
+                        game.game_state['current planet'] = planet_key
+                        next_chapter = "PlanetChapter"
+                except KeyError:
+                    pass
+
         if next_chapter:
             game.display.queue(self.outro_description[next_chapter], "ChapterEvent")
         return next_chapter
@@ -414,6 +424,61 @@ class PlanetChapter(Chapter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def start_chapter(self, game, replay=False):
+        """
+        This method is triggered by the game at the start of a Chapter, and returns the introduction
+        description of the chapter, based on the previous Chapter.
+
+        :return: Next_chapter
+
+        """
+        planet = game.things[game.game_state['current planet']]
+        # 1. Generate landing description
+        game.display.queue(self.intro_description, "ChapterStart")
+        if planet.rocky_planet_type != 'Rocky Planet':
+            next_chapter = "Death"
+            return next_chapter
+        # 2. Generate planet threat
+        # 3. Generate planet rooms
+        # 4. Generate colony object
+
+    def advance_chapter(self, game):
+        """
+        This method loops through possible Chapter events and end triggers to evaluate
+        the next event of the Chapter.
+
+        :param game:
+            the game object that has triggered the chapter
+        :return:
+            dictionary of info about the events triggered.
+
+        """
+        next_chapter = None
+
+        for event in game.events.values():
+            if event.eval_conditions(game):
+                res = event.trigger(game)
+                game.display.queue(res, "ChapterEvent")
+
+        for condition_set in self.end_conditions:
+            conditions = condition_set["conditions"]
+            chapter_key = condition_set["next chapter"]
+            if self._eval_conditions(game, conditions):
+                res = self._end_chapter(chapter_key)
+                game.display.queue(res, "ChapterEvent")
+                next_chapter = chapter_key
+
+        if not next_chapter:
+            planet_key = game.game_state['current planet']
+            planet = game.things[planet_key]
+            if not planet.entity_state["Landed"]:
+                game.game_state['current planet'] = None
+                next_chapter = "SolarSystemChapter"
+
+        if next_chapter:
+            game.display.queue(self.outro_description[next_chapter], "ChapterEvent")
+        return next_chapter
 
 
 class ColonyChapter(Chapter):

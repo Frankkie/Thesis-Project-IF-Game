@@ -103,5 +103,21 @@ class Actor(Entity):
         else:
             return f"{self.display_name} is in the {game.rooms[new_room_key].display_name}."
 
+    def _on_takeoff(self, **kwargs):
+        """
+        Triggered by the Takeoff verb.
+        Changes the actor's room depending on the qualifier (direction) given.
+
+        :param kwargs:
+            Keyword args should include 'game', 'qualifier' and 'actor'
+        :return: str
+
+        """
+        game = kwargs['game']
+        planet_key = game.game_state['current planet']
+        planet = game.things[planet_key]
+        return planet.on_take_off(game=game)
+
+
 
 

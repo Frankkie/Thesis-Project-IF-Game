@@ -201,6 +201,8 @@ class Parser:
                 new_sentence.append("topic")
             elif word in planet_names:
                 new_sentence.append("planet")
+            elif word == "to":
+                new_sentence.append("at")
             else:
                 new_sentence.append(word)
 
