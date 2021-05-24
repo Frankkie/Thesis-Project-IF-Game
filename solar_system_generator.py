@@ -247,17 +247,20 @@ class PlanetDescriptionGenerator:
         i = 0
         for key in solarsystem.contents:
             planet = solarsystem.contents[key]['obj']
-            self.choose_features(planet, self.game_seed + solarsystem.name_seed + i)
+            self.choose_features(planet, self.game_seed + solarsystem.name_seed + i, solarsystem)
             self.examine_description(planet)
             self.telescope_description(planet)
             self.drones_description(planet, self.game_seed + solarsystem.name_seed + i)
             i += 1
 
-    def choose_features(self, planet, seed):
+    def choose_features(self, planet, seed, solarsystem):
         features = {}
         np.random.seed(seed)
 
         features["orbit"] = np.random.choice(self.generator_data["orbit"][planet.temperature])
+        num_stars = len(solarsystem.star_names)
+        if num_stars > 3:
+            features["orbit"] = "elliptical"
         features["rotation"] = np.random.choice(self.generator_data["rotation"][planet.temperature])
         features["rings"] = np.random.choice(self.generator_data['rings'])
 

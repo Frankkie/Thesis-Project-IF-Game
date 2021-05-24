@@ -7,10 +7,10 @@
       "ocean", "canyon", "volcano", "mountain", "glacier", "river"
     ],
     "Ice Planet": [
-      "ocean", "glacier", "volcano", "crater", "mountain"
+      "glacier", "volcano", "crater", "mountain"
     ],
     "Water World": [
-      "island", "ocean", "glacier", "volcano"
+      "island", "ocean", "volcano"
     ]
   },
   "sky color": {

@@ -23,7 +23,7 @@ class PlanetRoomGenerator:
             if p == planet:
                 break
         seed = self.seed + solarsystem.name_seed + i
-        game.rooms['t0p0'] = self.generate_room('t0p0', seed)
+        game.rooms['t0p0'] = self.__generate_room('t0p0', seed, planet, solarsystem)
         self.generate_rooms(game, solarsystem, planet)
         game.refresh_things()
 
@@ -40,7 +40,7 @@ class PlanetRoomGenerator:
 
         current_room.directions = rooms_dir
         for new_room_key in new_rooms:
-            new_room = self.generate_room(new_room_key, seed)
+            new_room = self.__generate_room(new_room_key, seed, planet, solarsystem)
             game.rooms[new_room_key] = new_room
             current_chapter.map_files.append(new_room_key)
 
@@ -54,12 +54,29 @@ class PlanetRoomGenerator:
                 pass
         game.refresh_things()
 
-    def generate_room(self, room_key, seed):
+    def __generate_room(self, room_key, seed, planet, solarsystem):
         t = int(room_key[1:self.limit+1])
         p = int(room_key[2+self.limit:])
-        seed += (t*(10**self.limit)) + p
+        seed *= (t+1)
+        seed /= (p+1)
+        seed += ((t+1)*(p+1))
+        seed = int(seed)
+        random.seed(seed)
+
+        room_types = []
+        for elem in planet.entity_state['features']['geology']:
+            room_types.append(elem)
+        if planet.lifeforms in {"Animal Life", "Advanced Life"}:
+            room_types.append("forest")
+        if planet.lifeforms == "Former Advanced Life":
+            room_types.append("abandoned city")
+        if planet.lifeforms == "Advanced Life":
+            room_types.append("city")
+
         new_room = Room(key=room_key, display_name=room_key, reference_noun=room_key)
-        new_room.description = self.generate_description(seed)
+        new_room.entity_state['room type'] = random.choice(room_types)
+        new_room.display_name = new_room.entity_state['room type']
+        self.generate_description(new_room, seed, planet, solarsystem)
         colony = Thing(key='colony', reference_noun='colony', display_name='colony',
                        description='A Union Colony has not yet been set up on this planet.',
                        as_dirobj={'Setup': True},
@@ -68,8 +85,58 @@ class PlanetRoomGenerator:
         new_room += colony
         return new_room
 
-    def generate_description(self, seed):
-        return ""
+    def generate_description(self, room, seed, planet, solarsystem):
+        room_type = room.entity_state['room type']
+        random.seed(seed)
+        description = self.generator_data[room_type]['description']
+        template = random.choice(self.generator_data[room_type]['templates'])
+
+        clouds = ''
+        rings = ''
+        atmosphere = ''
+        radiation = ''
+        temperature = ''
+
+        if planet.atmosphere_type == "Cloudy Atmosphere":
+            clouds = 'The sky is barely visible through the clouds covering the entire planet.\n'
+        if planet.entity_state['features']['rings'] == "extensive":
+            rings = f"The view of {planet.display_name}'s rings is breathtaking.\n"
+        if planet.atmosphere_type == "No Atmosphere":
+            atmosphere = "Your pressure sensors record almost no atmosphere. " \
+                         "You wouldn't be able to breath without a suit on."
+        if planet.atmosphere_type == "Thick Atmosphere":
+            atmosphere = 'There is no need for a suit here, maybe just some oxygen tanks for extra intake.'
+        if planet.atmosphere_type == "Cloudy Atmosphere":
+            atmosphere = 'There is no need for a suit here, maybe just some oxygen tanks for extra intake.'
+        if planet.atmosphere_type == "Acid Atmosphere":
+            atmosphere = 'Something corrosive in the air is slowly eating away on your equipment.'
+        if solarsystem.habitable:
+            radiation = 'Radiation levels are tolerable.'
+        if not solarsystem.habitable:
+            radiation = "Radiation levels are really high, it's almost too dangerous to be walking on the surface."
+        if planet.temperature == "Warm":
+            temperature = 'The temperature is hot enough to make you uncomfortable, ' \
+                          'but you reckon you can withstand it.'
+        if planet.temperature == "Temperate":
+            temperature = "The temperature is close enough to a mild spring day on Earth."
+        if planet.temperature == "Cold":
+            temperature = "The temperature hovers just above zero, but you're used to the cold."
+        if planet.temperature == "Frozen":
+            temperature = "The temperature is constantly below zero. Nothing but extremophiles could survive here."
+        if planet.temperature == "Icy":
+            temperature = "Even with the cutting edge anti-freeze tech of your suit, the cold is unbearable.\n" \
+                          "There are small ponds of liquid methane around you."
+
+        template = template.format(num_stars=len(solarsystem.star_names),
+                                   star_plural='' if len(solarsystem.star_names) == 1 else 's',
+                                   clouds=clouds, sky_color=planet.entity_state['features']['sky color'],
+                                   num_satellites=planet.num_satellites,
+                                   satellite_plural='' if planet.num_satellites == 1 else 's',
+                                   rings=rings, atmosphere=atmosphere, radiation=radiation, temperature=temperature)
+
+        room.examine_description = description + '\n' + template
+        room.description = description
+        room.audible_description = self.generator_data[room_type]['audible']
 
     def generate_threat(self):
         pass
