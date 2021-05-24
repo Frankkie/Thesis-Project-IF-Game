@@ -111,6 +111,14 @@ class PreconditionsError(Error):
         if self.error_type == "LeaveLandedError":
             return f'You have to take off of {self.kwargs["planet"]}, ' \
                    f'before you leave the {self.kwargs["solarsystem"]} system.'
+        if self.error_type == "NotInBridgeError":
+            return f"You have to be in the Spaceship's bridge to {self.kwargs['action']}."
+        if self.error_type == "AlreadyLandedError":
+            return f"You are already landed on {self.kwargs['planet']}. Take off if you want to visit another planet."
+        if self.error_type == "NotOnAPlanetError":
+            return "You have to be on a planet to take off."
+        if self.error_type == "NotInLandingSpotError":
+            return "You have to return to your landing spot (0 Latitude, 0 Longitude) to take off."
         else:
             return self.error_type
 

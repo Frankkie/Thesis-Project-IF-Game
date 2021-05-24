@@ -68,6 +68,8 @@ class ActionPreconditions:
             return True
         if entered:
             raise PreconditionsError("SystemAlreadyEnteredError", system_name=solarsystem.display_name)
+        if self.game.game_state['current room'] != 'Bridge':
+            raise PreconditionsError("NotInBridgeError", action='enter a solar system')
         return True
 
     def _leave(self):
@@ -80,6 +82,8 @@ class ActionPreconditions:
             planet = self.game.things[planet]
             raise PreconditionsError("LeaveLandedError", planet=planet.display_name,
                                      solarsystem=solarsystem.display_name)
+        if self.game.game_state['current room'] != 'Bridge':
+            raise PreconditionsError("NotInBridgeError", action='leave the solar system')
         return True
 
     def _landon(self):
@@ -91,12 +95,36 @@ class ActionPreconditions:
         except KeyError:
             raise PreconditionsError("SystemNotEnteredError", action="land on", planet=planet.display_name)
 
-        if entered:
-            if planet.planet_type == "Dwarf Planet":
-                raise PreconditionsError("DwarfPlanetLandingError")
-            return True
-        else:
+        if not entered:
             raise PreconditionsError("SystemNotEnteredError", action="land on", planet=planet.display_name)
+
+        if planet.planet_type == "Dwarf Planet":
+            raise PreconditionsError("DwarfPlanetLandingError")
+
+        try:
+            planet = self.game.game_state['current planet']
+        except KeyError:
+            return True
+        if planet is not None:
+            planet = self.game.things[planet]
+            raise PreconditionsError("AlreadyLandedError", planet=planet.display_name)
+
+        if self.game.game_state['current room'] != 'Bridge':
+            raise PreconditionsError("NotInBridgeError", action='land on a planet')
+
+        return True
+
+    def _takeoff(self):
+        try:
+            planet = self.game.game_state['current planet']
+        except KeyError:
+            raise PreconditionsError("NotOnAPlanetError")
+        if planet is None:
+            raise PreconditionsError("NotOnAPlanetError")
+
+        if self.game.game_state['current room'] != 't0p0':
+            raise PreconditionsError("NotInLandingSpotError")
+        return True
 
     def _send(self):
         if self.obj.key != "drones":

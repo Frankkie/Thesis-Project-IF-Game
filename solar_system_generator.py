@@ -4,6 +4,7 @@ import os
 
 from name_generator import NameGenerator
 from space_things import SolarSystem, Planet
+from planet_room_generator import PlanetRoomGenerator
 
 
 class SolarSystemGenerator:
@@ -11,7 +12,7 @@ class SolarSystemGenerator:
 
     """
 
-    def __init__(self, seed):
+    def __init__(self, seed, limit=1):
         self.seed = seed
         self.constellation = choose_constellation(seed)
         self.star_name_gen = NameGenerator(self.seed, 'star_name_grammar.cfg', prefix=self.constellation)
@@ -27,6 +28,7 @@ class SolarSystemGenerator:
         self.planet_numbers_weights = generator_data['planet_numbers_weights']
         self.distances = [4]
         self.descriptions_generator = PlanetDescriptionGenerator(self.seed)
+        self.planet_room_generator = PlanetRoomGenerator(self.seed, limit=limit)
 
     def generate_systems(self, system_seed):
         name = self.star_name_gen.generate_name(system_seed)
@@ -115,6 +117,12 @@ class SolarSystemGenerator:
 
     def generate_descriptions(self, solarsystem):
         self.descriptions_generator.generate_descriptions(solarsystem)
+
+    def generate_landing_spot(self, game, solarsystem, planet):
+        self.planet_room_generator.generate_landing_spot(game, solarsystem, planet)
+
+    def generate_planet_rooms(self, game, solarsystem, planet):
+        self.planet_room_generator.generate_rooms(game=game, planet=planet, solarsystem=solarsystem)
 
 
 class PlanetGenerator:
@@ -285,7 +293,7 @@ class PlanetDescriptionGenerator:
         np.random.seed(seed)
         drones_destroyed = np.random.choice([True, False], p=[0.2, 0.8])
         if drones_destroyed:
-            description = np.random.choice[self.generator_data["descriptions"]["drones destroyed"]]
+            description = np.random.choice(self.generator_data["descriptions"]["drones destroyed"])
 
         else:
             rotation = self.generator_data["descriptions"][planet.entity_state["features"]["rotation"]]

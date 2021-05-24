@@ -1,4 +1,5 @@
 from numpy import random
+from planet_room_generator import PlanetRoomGenerator
 
 
 class Chapter:
@@ -422,8 +423,11 @@ class PlanetChapter(Chapter):
     This is a chapter type that is triggered when the PC's fleet lands on a planet in a solar system.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, last_room=None, **kwargs):
         super().__init__(*args, **kwargs)
+        if not last_room:
+            last_room = self.first_room
+        self.last_room = last_room
 
     def start_chapter(self, game, replay=False):
         """
@@ -434,11 +438,14 @@ class PlanetChapter(Chapter):
 
         """
         planet = game.things[game.game_state['current planet']]
-        # 1. Generate landing description
+        solarsystem = game.things[game.game_state['current system']]
+        # 0. Generate landing description
         game.display.queue(self.intro_description, "ChapterStart")
         if planet.rocky_planet_type != 'Rocky Planet':
             next_chapter = "Death"
             return next_chapter
+        # 1. Generate LANDING SPOT ROOM
+        game.solar_system_gen.generate_landing_spot(game, solarsystem, planet)
         # 2. Generate planet threat
         # 3. Generate planet rooms
         # 4. Generate colony object
@@ -455,11 +462,7 @@ class PlanetChapter(Chapter):
 
         """
         next_chapter = None
-
-        for event in game.events.values():
-            if event.eval_conditions(game):
-                res = event.trigger(game)
-                game.display.queue(res, "ChapterEvent")
+        planet = None
 
         for condition_set in self.end_conditions:
             conditions = condition_set["conditions"]
@@ -474,10 +477,25 @@ class PlanetChapter(Chapter):
             planet = game.things[planet_key]
             if not planet.entity_state["Landed"]:
                 game.game_state['current planet'] = None
+                self.map_files = ['t0p0']
                 next_chapter = "SolarSystemChapter"
+
+        if planet is not None:
+            solarsystem = game.things[game.game_state['current system']]
+            current_room_key = game.game_state['current room']
+            if current_room_key != self.last_room:
+                game.solar_system_gen.generate_planet_rooms(game, solarsystem, planet)
+            self.last_room = current_room_key
 
         if next_chapter:
             game.display.queue(self.outro_description[next_chapter], "ChapterEvent")
+
+        else:
+            for event in game.events.values():
+                if event.eval_conditions(game):
+                    res = event.trigger(game)
+                    game.display.queue(res, "ChapterEvent")
+
         return next_chapter
 
 
