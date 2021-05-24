@@ -60,9 +60,9 @@ class Planet(Thing):
     def string(self, print_parts=True):
         printable = self.display_name + ':\n'
         printable += self.examine_description + '\n'
-        printable += f'{self.planet_type}, {self.temperature}, {self.rocky_planet_type}, {self.water_type},' \
+        '''printable += f'{self.planet_type}, {self.temperature}, {self.rocky_planet_type}, {self.water_type},' \
                      f' {self.atmosphere_type}, {self.lifeforms}, {self.dangerous_lifeforms},' \
-                     f' {self.colonizable}'
+                     f' {self.colonizable}'''
         return printable
 
     def _on_landon(self, **kwargs):

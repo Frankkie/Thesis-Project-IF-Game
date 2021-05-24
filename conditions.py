@@ -38,7 +38,7 @@ class Condition:
         return False
 
     def __compare_value(self, attribute, value):
-        if not value:
+        if value is None:
             if attribute is None:
                 return True
             else:

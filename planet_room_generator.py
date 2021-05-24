@@ -3,6 +3,7 @@ import json
 import os
 
 from rooms import Room
+from things import Thing
 
 
 class PlanetRoomGenerator:
@@ -24,6 +25,7 @@ class PlanetRoomGenerator:
         seed = self.seed + solarsystem.name_seed + i
         game.rooms['t0p0'] = self.generate_room('t0p0', seed)
         self.generate_rooms(game, solarsystem, planet)
+        game.refresh_things()
 
     def generate_rooms(self, game, solarsystem, planet):
         i = 0
@@ -50,6 +52,7 @@ class PlanetRoomGenerator:
                 current_chapter.map_files.remove(old_room_key)
             except ValueError:
                 pass
+        game.refresh_things()
 
     def generate_room(self, room_key, seed):
         t = int(room_key[1:self.limit+1])
@@ -57,6 +60,12 @@ class PlanetRoomGenerator:
         seed += (t*(10**self.limit)) + p
         new_room = Room(key=room_key, display_name=room_key, reference_noun=room_key)
         new_room.description = self.generate_description(seed)
+        colony = Thing(key='colony', reference_noun='colony', display_name='colony',
+                       description='A Union Colony has not yet been set up on this planet.',
+                       as_dirobj={'Setup': True},
+                       action_description={"Setup":
+                                           "Thus, you begin the construction of your colony on planet {planet}."})
+        new_room += colony
         return new_room
 
     def generate_description(self, seed):

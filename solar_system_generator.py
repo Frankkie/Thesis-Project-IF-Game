@@ -265,8 +265,7 @@ class PlanetDescriptionGenerator:
             if planet.rocky_planet_type == "Lava Planet":
                 features["surface color"] = np.random.choice(self.generator_data["surface color"]["Lava Planet"])
             else:
-                features['geology'] = [np.random.choice(
-                    self.generator_data['geology'][planet.water_type]) for _ in range(4)]
+                features['geology'] = self.generator_data['geology'][planet.water_type]
                 features['sky color'] = np.random.choice(self.generator_data['sky color'][planet.atmosphere_type])
                 features["surface color"] = np.random.choice(self.generator_data["surface color"][planet.water_type])
         planet.entity_state['features'] = features

@@ -65,11 +65,14 @@ class ActionPreconditions:
         try:
             entered = solarsystem.entity_state["Entered"]
         except KeyError:
+            if self.game.game_state['current room'] != 'Bridge':
+                raise PreconditionsError("NotInBridgeError", action='enter a solar system')
             return True
         if entered:
             raise PreconditionsError("SystemAlreadyEnteredError", system_name=solarsystem.display_name)
         if self.game.game_state['current room'] != 'Bridge':
             raise PreconditionsError("NotInBridgeError", action='enter a solar system')
+
         return True
 
     def _leave(self):
@@ -77,6 +80,8 @@ class ActionPreconditions:
         try:
             planet = self.game.game_state['current planet']
         except KeyError:
+            if self.game.game_state['current room'] != 'Bridge':
+                raise PreconditionsError("NotInBridgeError", action='leave the solar system')
             return True
         if planet is not None:
             planet = self.game.things[planet]
@@ -104,7 +109,10 @@ class ActionPreconditions:
         try:
             planet = self.game.game_state['current planet']
         except KeyError:
+            if self.game.game_state['current room'] != 'Bridge':
+                raise PreconditionsError("NotInBridgeError", action='land on a planet')
             return True
+
         if planet is not None:
             planet = self.game.things[planet]
             raise PreconditionsError("AlreadyLandedError", planet=planet.display_name)
@@ -124,6 +132,7 @@ class ActionPreconditions:
 
         if self.game.game_state['current room'] != 't0p0':
             raise PreconditionsError("NotInLandingSpotError")
+
         return True
 
     def _send(self):

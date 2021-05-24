@@ -5,7 +5,7 @@ from planet_room_generator import PlanetRoomGenerator
 class Chapter:
     def __init__(self, key, title, intro_description, outro_description, map_files, first_room=None,
                  convonodes_files=None, dialogevents_files=None, events_files=None, topics_files=None,
-                 end_conditions=None, chapter_state=None):
+                 end_conditions=None, chapter_state=None, alternate_intro=None):
         """
 
         :param key:
@@ -51,6 +51,7 @@ class Chapter:
         if not chapter_state:
             chapter_state = {}
         self.chapter_state = chapter_state
+        self.alternate_intro = alternate_intro
 
     def start_chapter(self, game, replay=False):
         """
@@ -58,7 +59,15 @@ class Chapter:
         description of the chapter, based on the previous Chapter.
         :return: None
         """
-        game.display.queue(self.intro_description, "ChapterStart")
+        if self.alternate_intro:
+            if 'is known' in self.chapter_state.keys():
+                descr = self.alternate_intro
+            else:
+                descr = self.intro_description
+        else:
+            descr = self.intro_description
+        game.display.queue(descr, "ChapterStart")
+        self.chapter_state['is known'] = True
         return None
 
     def advance_chapter(self, game):
@@ -104,6 +113,7 @@ class Chapter:
         :param next_chapter: The key of the next chapter.
         :return: String
         """
+
         if next_chapter in self.outro_description.keys():
             result = self.outro_description[next_chapter]
             return result
@@ -370,9 +380,16 @@ class SolarSystemChapter(Chapter):
         num_planets = solarsystem.num_planets
         system_name = solarsystem.key
 
-        random.seed(solarsystem.name_seed)
-        intro = random.choice(self.intro_description)
-        intro = intro.format(star_plural='s' if num_stars > 1 else '', num_planets=num_planets, system_name=system_name)
+        intro = None
+        if self.alternate_intro:
+            if 'is known' in self.chapter_state.keys():
+                intro = self.alternate_intro
+        self.chapter_state['is known'] = True
+        if not intro:
+            random.seed(solarsystem.name_seed)
+            intro = random.choice(self.intro_description)
+        intro = intro.format(star_plural='s' if num_stars > 1 else '',
+                             num_planets=num_planets, system_name=system_name)
         game.display.queue(intro, "ChapterStart")
 
         return None
@@ -471,6 +488,7 @@ class PlanetChapter(Chapter):
                 res = self._end_chapter(chapter_key)
                 game.display.queue(res, "ChapterEvent")
                 next_chapter = chapter_key
+                return next_chapter
 
         if not next_chapter:
             planet_key = game.game_state['current planet']
@@ -487,10 +505,10 @@ class PlanetChapter(Chapter):
                 game.solar_system_gen.generate_planet_rooms(game, solarsystem, planet)
             self.last_room = current_room_key
 
-        if next_chapter:
+        if next_chapter and next_chapter != 'ColonyChapter':
             game.display.queue(self.outro_description[next_chapter], "ChapterEvent")
 
-        else:
+        elif not next_chapter:
             for event in game.events.values():
                 if event.eval_conditions(game):
                     res = event.trigger(game)
@@ -506,3 +524,16 @@ class ColonyChapter(Chapter):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    def start_chapter(self, game, replay=False):
+        """
+        This method is triggered by the game at the start of a Chapter, and returns the introduction
+        description of the chapter, based on the previous Chapter.
+        :return: None
+        """
+        planet = game.things[game.game_state['current planet']]
+        game.game_state['colonizable'] = planet.colonizable
+        game.display.queue(self.intro_description, "ChapterStart")
+        next_chapter = self.advance_chapter(game)
+        print(self.end_conditions[0]["conditions"][0].eval_condition(game))
+        return next_chapter
