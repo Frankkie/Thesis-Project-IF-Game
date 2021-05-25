@@ -457,14 +457,12 @@ class PlanetChapter(Chapter):
         """
         planet = game.things[game.game_state['current planet']]
         solarsystem = game.things[game.game_state['current system']]
-        # 0. Generate landing description
-        game.display.queue(self.intro_description, "ChapterStart")
+        descr = game.solar_system_gen.generate_landing_description(planet)
+        game.display.queue(descr, "ChapterEvent")
         if planet.rocky_planet_type != 'Rocky Planet':
             next_chapter = "Death"
             return next_chapter
-        # 1. Generate landing spot room
         game.solar_system_gen.generate_landing_spot(game, solarsystem, planet)
-        # 2. Generate planet threat
 
     def advance_chapter(self, game):
         """
@@ -533,6 +531,8 @@ class ColonyChapter(Chapter):
         planet = game.things[game.game_state['current planet']]
         game.game_state['colonizable'] = planet.colonizable
         game.display.queue(self.intro_description, "ChapterStart")
+        descr = game.solar_system_gen.generate_colony_description(planet)
+        game.display.queue(descr, "ChapterEvent")
         next_chapter = self.advance_chapter(game)
 
         return next_chapter

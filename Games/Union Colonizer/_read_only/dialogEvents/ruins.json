@@ -21,7 +21,7 @@
     "quips": [
       {
         "key": "q1",
-        "text": "'By analyzing the chemical compounds on the surface, I can tell was once industrial activity on this planet.\nBut I think it's long gone now.', Lovkiy replies.",
+        "text": "'By analyzing the chemical compounds on the surface, I can tell there was once industrial activity on this planet.\nBut I think it's long gone now.', Lovkiy replies.",
         "_class_": "Quip",
         "is_repeatable": true
       }

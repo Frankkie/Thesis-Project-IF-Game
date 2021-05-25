@@ -58,7 +58,7 @@
     "alternate_intro": "Your Great Journey for restoring the Union continues, in search for a different solar system...\n",
     "outro_description": {},
     "first_room": null,
-    "sol_time": 1,
+    "sol_time": 120,
     "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
     "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
     "Reactor Door South", "Telescope"],
@@ -96,11 +96,12 @@
   "PlanetChapter": {
     "key": "PlanetChapter",
     "title": "On the Planet.",
-    "intro_description": "Landed!",
+    "intro_description": "",
     "outro_description": {
       "SolarSystemChapter": "You abandon this planet forever.",
       "PlanetChapter": "An alien world awaits you...",
-      "ColonyChapter": "This is were your journey through the Cosmos has ended, and you start the final leg of your mission:\nRe-establishing the Union, away from Earth."
+      "ColonyChapter": "This is were your journey through the Cosmos has ended, and you start the final leg of your mission:\nRe-establishing the Union, away from Earth.",
+      "generic": ""
     },
     "end_conditions": [
       {

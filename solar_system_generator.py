@@ -11,7 +11,6 @@ class SolarSystemGenerator:
     """
 
     """
-
     def __init__(self, seed, limit=1):
         self.seed = seed
         self.constellation = choose_constellation(seed)
@@ -29,6 +28,8 @@ class SolarSystemGenerator:
         self.distances = [4]
         self.descriptions_generator = PlanetDescriptionGenerator(self.seed)
         self.planet_room_generator = PlanetRoomGenerator(self.seed, limit=limit)
+        self.landingdescriptiongenerator = LandingDescriptionGenerator(self.seed)
+        self.colonydescriptiongenerator = ColonyDescriptionGenerator(self.seed)
 
     def generate_systems(self, system_seed):
         name = self.star_name_gen.generate_name(system_seed)
@@ -123,6 +124,12 @@ class SolarSystemGenerator:
 
     def generate_planet_rooms(self, game, solarsystem, planet):
         self.planet_room_generator.generate_rooms(game=game, planet=planet, solarsystem=solarsystem)
+
+    def generate_landing_description(self, planet):
+        return self.landingdescriptiongenerator.generate_description(planet)
+
+    def generate_colony_description(self, planet):
+        return self.colonydescriptiongenerator.generate_description(planet)
 
 
 class PlanetGenerator:
@@ -351,6 +358,56 @@ class PlanetDescriptionGenerator:
                         self.generator_data["descriptions"][planet.lifeforms])
 
         planet.action_description["On Send"] = description
+
+
+class LandingDescriptionGenerator:
+    def __init__(self, seed):
+        self.seed = seed
+        with open(os.path.join("Generators", (self.__class__.__name__.lower() + '.json')), 'r') as file:
+            self.generator_data = json.load(file)
+
+    def generate_description(self, planet):
+        if planet.rocky_planet_type is None:
+            description = self.generator_data['giant']
+        elif planet.rocky_planet_type == 'Lava Planet':
+            description = self.generator_data['lava']
+        else:
+            if planet.atmosphere_type == 'No Atmosphere':
+                description = self.generator_data['no atmosphere']
+            elif planet.atmosphere_type == 'Cloudy Atmosphere':
+                description = self.generator_data['cloudy atmosphere']
+            else:
+                description = self.generator_data['other']
+            description = description.format(name=planet.display_name,
+                                             surface_color=planet.entity_state['features']['surface color'],
+                                             sky_color=planet.entity_state['features']['sky color'])
+        return description
+
+
+class ColonyDescriptionGenerator:
+    def __init__(self, seed):
+        self.seed = seed
+        with open(os.path.join("Generators", "threats.json"), 'r') as file:
+            self.threat_data = json.load(file)
+
+    def generate_description(self, planet):
+        description = ""
+        for threat in planet.entity_state['features']['threats'].keys():
+            if planet.entity_state['features']['threats'][threat] and not planet.colonizable:
+                description += self.threat_data[threat]['colony'] + '\n'
+
+        if description == "":
+            description = "As the years go by, your colony grows stronger and stronger.\n" \
+                          "Here you can see the grandeur and vision of the Union back on Earth. Your people\n" \
+                          "are now free to build their Utopia undisturbed, and build they do. This is not the\n" \
+                          "end, it is just the beginning. Colony ships leave to find more worlds to colonize\n" \
+                          "throughout the galaxy. And you know deep down, that some day, the Earth will be yours again!"
+
+        description = ("All together, in the ways of your ancestors you build your new colony\n" +
+                       f"on {planet.display_name}, that you now call home...\n" + description)
+        description += '\n'
+
+        return description
 
 
 def choose_constellation(seed):

@@ -26,6 +26,7 @@ class PlanetRoomGenerator:
             if p == planet:
                 break
         seed = self.seed + solarsystem.name_seed + i
+        game.rooms = dict()
         game.rooms['t0p0'] = self.__generate_room('t0p0', seed, planet, solarsystem)
         self.generate_rooms(game, solarsystem, planet)
         game.refresh_things()

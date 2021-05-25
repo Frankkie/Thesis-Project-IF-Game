@@ -2,7 +2,7 @@
   "key": "Bridge",
   "reference_noun": "bridge",
   "display_name": "bridge",
-  "description": "This is where you pilot the your spaceship from.",
+  "description": "This is where you pilot your spaceship from.",
   "examine_description": "The bridge of Ostatok 1 is the best example of the engineering prowess of the Union's engineers.\nThis is where you pilot your fleet and monitor your ship.",
   "audible_description": "A quiet electrical hum is the only sound in the room.",
   "contents": {
