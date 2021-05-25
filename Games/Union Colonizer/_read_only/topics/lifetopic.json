@@ -1,0 +1,10 @@
+{
+    "key": "lifetopic",
+    "display_name": "alien life",
+    "reference_noun": "life",
+    "topic_quip": "'Are there any signs of alien life that you can detect?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["alien"],
+    "is_active": true,
+    "_class_": "Topic"
+  }

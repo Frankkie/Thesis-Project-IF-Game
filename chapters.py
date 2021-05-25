@@ -1,5 +1,4 @@
 from numpy import random
-from planet_room_generator import PlanetRoomGenerator
 
 
 class Chapter:
@@ -383,7 +382,8 @@ class SolarSystemChapter(Chapter):
         intro = None
         if self.alternate_intro:
             if 'is known' in self.chapter_state.keys():
-                intro = self.alternate_intro
+                if self.chapter_state['is known']:
+                    intro = self.alternate_intro
         self.chapter_state['is known'] = True
         if not intro:
             random.seed(solarsystem.name_seed)
@@ -419,6 +419,7 @@ class SolarSystemChapter(Chapter):
             if not solarsystem.entity_state["Entered"]:
                 del game.things[solarsystem.key]
                 game.game_state['current system'] = None
+                self.chapter_state['is known'] = False
                 next_chapter = "Deep Space"
 
             for planet_key in solarsystem.contents.keys():
@@ -461,11 +462,9 @@ class PlanetChapter(Chapter):
         if planet.rocky_planet_type != 'Rocky Planet':
             next_chapter = "Death"
             return next_chapter
-        # 1. Generate LANDING SPOT ROOM
+        # 1. Generate landing spot room
         game.solar_system_gen.generate_landing_spot(game, solarsystem, planet)
         # 2. Generate planet threat
-        # 3. Generate planet rooms
-        # 4. Generate colony object
 
     def advance_chapter(self, game):
         """
@@ -535,5 +534,5 @@ class ColonyChapter(Chapter):
         game.game_state['colonizable'] = planet.colonizable
         game.display.queue(self.intro_description, "ChapterStart")
         next_chapter = self.advance_chapter(game)
-        print(self.end_conditions[0]["conditions"][0].eval_condition(game))
+
         return next_chapter

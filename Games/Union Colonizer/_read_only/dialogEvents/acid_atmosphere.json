@@ -1,0 +1,24 @@
+{
+    "key": "acid_atmosphere",
+    "trigger_topics": ["atmosphere"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.entity_state.features.threats.acid threat",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Sulfuric acid levels are intolerably high.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

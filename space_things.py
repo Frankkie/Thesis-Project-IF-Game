@@ -2,12 +2,14 @@ from things import Thing
 
 
 class SolarSystem(Thing):
-    def __init__(self, *args, name_seed, star_names, star_types, habitable, num_planets, distance, **kwargs):
+    def __init__(self, *args, name_seed, star_names, star_types,
+                 habitable, num_planets, distance, num_stars, **kwargs):
         """
 
         """
         super().__init__(*args, **kwargs)
         self.num_planets = num_planets
+        self.num_stars = num_stars
         self.name_seed = name_seed
         self.star_names = star_names
         self.star_types = star_types
@@ -60,9 +62,9 @@ class Planet(Thing):
     def string(self, print_parts=True):
         printable = self.display_name + ':\n'
         printable += self.examine_description + '\n'
-        '''printable += f'{self.planet_type}, {self.temperature}, {self.rocky_planet_type}, {self.water_type},' \
+        printable += f'{self.planet_type}, {self.temperature}, {self.rocky_planet_type}, {self.water_type},' \
                      f' {self.atmosphere_type}, {self.lifeforms}, {self.dangerous_lifeforms},' \
-                     f' {self.colonizable}'''
+                     f' {self.colonizable}'
         return printable
 
     def _on_landon(self, **kwargs):

@@ -1,0 +1,24 @@
+{
+    "key": "no_atmosphere",
+    "trigger_topics": ["atmosphere"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.entity_state.features.threats.air threat",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'The atmosphere is way too thin for humans to breathe or life to flourish.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

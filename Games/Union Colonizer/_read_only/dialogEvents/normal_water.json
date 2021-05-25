@@ -1,0 +1,31 @@
+{
+    "key": "normal_water",
+    "trigger_topics": ["planetwater"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.water_type",
+        "values": [
+          "Ocean Planet"
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'This planet has just enough water.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      },
+      {
+        "key": "q2",
+        "text": "'There is the perfect amount of water for supporting our colony here, Sir.', Lovkiy informs you.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "shuffle_quips": true,
+    "_class_": "DialogEvent"
+  }

@@ -1,0 +1,10 @@
+{
+    "key": "ruinstopic",
+    "display_name": "ancient ruins",
+    "reference_noun": "ruins",
+    "topic_quip": "'What can you tell me about the ancient ruins?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["alien", "ancient"],
+    "is_active": false,
+    "_class_": "Topic"
+  }

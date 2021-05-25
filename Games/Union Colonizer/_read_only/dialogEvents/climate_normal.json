@@ -1,0 +1,21 @@
+{
+    "key": "climate_normal",
+    "trigger_topics": ["climate"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'The climate here is mild enough to support human activity.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      },
+      {
+        "key": "q2",
+        "text": "'It is neither too hot, neither too cold here, Sir.', Lovkiy informs you.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "shuffle_quips": true,
+    "_class_": "DialogEvent"
+  }

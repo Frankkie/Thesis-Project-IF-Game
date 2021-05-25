@@ -2,7 +2,6 @@
   "key": "generic",
   "actor": "Lovkiy",
   "next_nodes": {
-    "bomb": ["bomb"],
     "ready": ["bye"]
   },
   "_class_": "ConvoNode"

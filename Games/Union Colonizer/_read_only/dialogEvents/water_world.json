@@ -1,0 +1,24 @@
+{
+    "key": "water_world",
+    "trigger_topics": ["planetwater"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.water_type",
+        "values": [
+          "Water World"
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'This planet has too much water in fact. There is barely any land to build a civilization on.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

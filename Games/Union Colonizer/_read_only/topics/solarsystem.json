@@ -1,0 +1,10 @@
+{
+    "key": "solarsystem",
+    "display_name": "solar system",
+    "reference_noun": "system",
+    "topic_quip": "'Lovkiy, what can you tell me about this solar system?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["solar"],
+    "is_active": true,
+    "_class_": "Topic"
+  }

@@ -1,0 +1,10 @@
+{
+    "key": "animalstopic",
+    "display_name": "alien creatures",
+    "reference_noun": "creatures",
+    "topic_quip": "'What can you tell me about these creatures Lovkiy?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["alien"],
+    "is_active": false,
+    "_class_": "Topic"
+  }

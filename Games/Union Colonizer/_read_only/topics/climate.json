@@ -1,0 +1,10 @@
+{
+    "key": "climate",
+    "display_name": "climate",
+    "reference_noun": "climate",
+    "topic_quip": "'Lovkiy, what can you tell me about the climate of this planet?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "is_active": true,
+    "_class_": "Topic"
+  }

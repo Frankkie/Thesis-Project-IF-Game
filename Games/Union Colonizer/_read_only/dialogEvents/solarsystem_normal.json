@@ -1,0 +1,14 @@
+{
+    "key": "solarsystem_normal",
+    "trigger_topics": ["solarsystem"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'This solar system is stable and the planet's parent star is in the main sequence and small, which is positive', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

@@ -1,0 +1,23 @@
+{
+    "key": "primordial",
+    "trigger_topics": ["lifetopic"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.entity_state.features.threats.microbe threat",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'I can detect microorganisms on the planet's surface and water bodies!', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

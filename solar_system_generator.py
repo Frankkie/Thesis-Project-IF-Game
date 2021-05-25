@@ -73,7 +73,7 @@ class SolarSystemGenerator:
 
         sl = SolarSystem(key=name, reference_noun='system', display_name=name, reference_adjectives=['solar', name],
                          star_names=star_names, star_types=star_types, habitable=habitable, num_planets=num_planets,
-                         distance=distance, name_seed=name_seed, is_known=True)
+                         distance=distance, name_seed=name_seed, is_known=True, num_stars=len(star_names))
         self.planet_gen.generate_planets(sl)
         self.generate_telescope_description(sl)
         return sl
@@ -104,13 +104,13 @@ class SolarSystemGenerator:
         if 'Blue Giant' in solar_system.star_types or 'Red Giant' in solar_system.star_types:
             descr += "The system is obviously dominated by its most Giant star, " \
                      "casting incredible amounts of radiation everywhere.\n"
-        if 'White Dwarf' in solar_system.star_types\
-                or 'Black Hole' in solar_system.star_types\
+        if 'White Dwarf' in solar_system.star_types \
+                or 'Black Hole' in solar_system.star_types \
                 or 'Neutron Star' in solar_system.star_types:
             descr += "The remnants of a long gone star are present here, indicating a violent past.\n"
-        if 'Blue Giant' not in solar_system.star_types\
-                and 'Read Giant' not in solar_system.star_types\
-                and 'Yellow Dwarf' not in solar_system.star_types\
+        if 'Blue Giant' not in solar_system.star_types \
+                and 'Read Giant' not in solar_system.star_types \
+                and 'Yellow Dwarf' not in solar_system.star_types \
                 and 'Red Dwarf' not in solar_system.star_types:
             descr += "The system is barely lit by its dim 'stars'."
         solar_system.action_description['On Use telescope'] = descr
@@ -160,7 +160,7 @@ class PlanetGenerator:
         np.random.seed(self.seed + system.name_seed)
         for i in range(num_planets):
             r = np.random.randint(1, 100)
-            name = self.star_name_gen.generate_name(system_seed + (i + r)*r)
+            name = self.star_name_gen.generate_name(system_seed + (i + r) * r)
             planet = dict()
             planet['display_name'] = name
             planet['reference_noun'] = name.lower()
@@ -248,6 +248,7 @@ class PlanetDescriptionGenerator:
         for key in solarsystem.contents:
             planet = solarsystem.contents[key]['obj']
             self.choose_features(planet, self.game_seed + solarsystem.name_seed + i, solarsystem)
+            self.generate_threat(planet, solarsystem)
             self.examine_description(planet)
             self.telescope_description(planet)
             self.drones_description(planet, self.game_seed + solarsystem.name_seed + i)
@@ -272,6 +273,44 @@ class PlanetDescriptionGenerator:
                 features['sky color'] = np.random.choice(self.generator_data['sky color'][planet.atmosphere_type])
                 features["surface color"] = np.random.choice(self.generator_data["surface color"][planet.water_type])
         planet.entity_state['features'] = features
+
+    def generate_threat(self, planet, solarsystem):
+        threat_types = {'cold threat': False,
+                        'water threat': False,
+                        'desert threat': False,
+                        'elliptical threat': False,
+                        'radiation threat': False,
+                        'air threat': False,
+                        'microbe threat': False,
+                        'animal threat': False,
+                        'ruins threat': False,
+                        'genius threat': False
+                        }
+
+        if planet.water_type == 'Ice Planet':
+            threat_types['cold threat'] = True
+        if planet.water_type == 'Water World':
+            threat_types['water threat'] = True
+        if planet.water_type == 'Desert Planet':
+            threat_types['desert threat'] = True
+        if planet.entity_state['features']['orbit'] == 'elliptical':
+            threat_types['elliptical threat'] = True
+        if planet.entity_state['features']['orbit'] != 'elliptical' and solarsystem.habitable is False:
+            threat_types['radiation threat'] = True
+        if planet.atmosphere_type == 'No Atmosphere':
+            threat_types['air threat'] = True
+        if planet.atmosphere_type == 'Acid Atmosphere':
+            threat_types['acid threat'] = True
+        if planet.lifeforms == 'Primordial Life':
+            threat_types['microbe threat'] = True
+        if planet.lifeforms == 'Animal Life':
+            threat_types['animal threat'] = True
+        if planet.lifeforms == 'Former Advanced Life':
+            threat_types['ruins threat'] = True
+        if planet.lifeforms == 'Advanced Life':
+            threat_types['genius threat'] = True
+
+        planet.entity_state['features']['threats'] = threat_types
 
     def examine_description(self, planet):
         description = self.generator_data["descriptions"][planet.planet_type] + \

@@ -1,0 +1,66 @@
+{
+  "cold threat": {
+    "clues": ["dry ice"],
+    "deadly events": []
+  },
+
+
+  "water threat": {
+    "clues": [],
+    "deadly events": []
+  },
+
+
+  "desert threat":  {
+    "clues": [],
+    "deadly events": []
+  },
+
+
+  "elliptical threat": {
+    "clues": [],
+    "deadly events": []
+  },
+
+
+  "radiation threat":  {
+    "clues": [],
+    "deadly events": []
+  },
+
+
+  "air threat": {
+    "clues": [],
+    "deadly events": []
+  },
+
+
+  "acid threat":  {
+    "clues": ["acid rain"],
+    "deadly events": []
+  },
+
+
+  "microbe threat": {
+    "clues": ["green water"],
+    "deadly events": []
+  },
+
+
+  "animal threat":  {
+    "clues": ["alien animal"],
+    "deadly events": []
+  },
+
+
+  "ruins threat": {
+    "clues": ["alien trap", "alien artifact"],
+    "deadly events": []
+  },
+
+
+  "genius threat":  {
+    "clues": ["alien trap", "alien artifact", "alien drone"],
+    "deadly events": []
+  }
+}

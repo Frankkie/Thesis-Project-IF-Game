@@ -41,6 +41,7 @@ class Game:
         self.convonodes = {}
         self.dialogevents = {}
         self.events = {}
+        self.currents = {}
 
     def boot_game(self, actors, verbs, chapters, display, last_save_key, replay=False):
         self.actors = actors
@@ -170,8 +171,6 @@ class Game:
             self.display.queue(str(error), "Error")
             return
 
-        # DISAMBIGUATE COMMANDS BEFORE THIS POINT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
         # For all the commands.
         for sentence in parts:
             sentence = sentence[0]
@@ -285,6 +284,7 @@ class Game:
         new_things = {}
         current_room_key = self.game_state["current room"]
         current_room = self.rooms[current_room_key]
+        self.currents['room'] = current_room
         for actor in self.actors.keys():
             if self.actors[actor].container == current_room_key:
                 self.actors[actor].is_known = True
@@ -309,15 +309,19 @@ class Game:
                 thing.is_known = True
 
         if 'current system' in self.game_state.keys():
-            try:
-                system_key = self.game_state['current system']
-                if system_key:
-                    system = self.things[system_key]
-                    new_things[system.key] = system
-                    for planet in system.contents.keys():
-                        new_things[planet] = system.contents[planet]['obj']
-            except KeyError:
-                pass
+            system_key = self.game_state['current system']
+            if system_key:
+                system = self.things[system_key]
+                self.currents['system'] = system
+                new_things[system.key] = system
+                for planet in system.contents.keys():
+                    new_things[planet] = system.contents[planet]['obj']
+
+        if 'current planet' in self.game_state.keys():
+            planet_key = self.game_state['current planet']
+            if planet_key:
+                planet = self.things[planet_key]
+                self.currents['planet'] = planet
 
         self.things = new_things
 

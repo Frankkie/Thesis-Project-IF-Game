@@ -1,0 +1,14 @@
+{
+    "key": "animals_question",
+    "trigger_topics": ["animalstopic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'I cannot give you much more information other than that there might be dangerous beasts out there.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

@@ -62,11 +62,10 @@
     "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
     "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
     "Reactor Door South", "Telescope"],
-    "events_files": ["light_event"],
-    "topics_files": ["light", "hey", "bye", "yes", "no", "bomb"],
-    "dialogevents_files": ["greeting", "goodbye", "goodbye_general", "light_event", "light_event_after_taken",
-    "bomb_event", "yes_bomb_event", "no_bomb_event"],
-    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic", "Lovkiy.bomb"],
+    "events_files": [],
+    "topics_files": ["hey", "bye", "yes", "no"],
+    "dialogevents_files": ["greeting", "goodbye", "goodbye_general"],
+    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic"],
     "_class_": "SpaceChapter"
   },
 
@@ -86,11 +85,10 @@
     "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
     "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
     "Reactor Door South", "Telescope"],
-    "events_files": ["light_event"],
-    "topics_files": ["light", "hey", "bye", "yes", "no", "bomb"],
-    "dialogevents_files": ["greeting", "goodbye", "goodbye_general", "light_event", "light_event_after_taken",
-    "bomb_event", "yes_bomb_event", "no_bomb_event"],
-    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic", "Lovkiy.bomb"],
+    "events_files": [],
+    "topics_files": ["hey", "bye", "yes", "no"],
+    "dialogevents_files": ["greeting", "goodbye", "goodbye_general"],
+    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic"],
     "first_room": "Bridge",
     "_class_": "SolarSystemChapter"
   },
@@ -118,9 +116,31 @@
           }
         ],
         "next chapter": "ColonyChapter"
+      },
+      {
+        "conditions": [
+          {
+            "key": "PlayerDeath",
+            "attribute_path": "game_state.lose",
+            "values": [
+              true
+            ],
+            "not_": false,
+            "_class_": "Condition"
+          }
+        ],
+        "next chapter": "Death"
       }
     ],
     "map_files": ["t0p0"],
+    "events_files": [],
+    "topics_files": ["lifetopic", "animalstopic", "atmosphere", "bye", "hey", "no", "yes",
+      "civilizationtopic", "climate", "diseasetopic", "planetwater", "ruinstopic", "solarsystem"],
+    "dialogevents_files": ["goodbye", "goodbye_general", "greeting", "climate_cold", "climate_normal",
+    "desert", "water_world", "normal_water", "radiation", "elliptical_orbit", "solarsystem_normal",
+    "acid_atmosphere", "no_atmosphere", "normal_atmosphere", "no_life", "primordial_dangerous",
+    "primordial", "animals", "ruins", "advanced", "animals_question", "ruins_question", "civilization_question"],
+    "convonodes_files": ["Lovkiy.hey", "Lovkiy.ready", "Lovkiy.generic"],
     "first_room": "t0p0",
     "_class_": "PlanetChapter"
   },

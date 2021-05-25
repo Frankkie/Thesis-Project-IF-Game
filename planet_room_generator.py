@@ -4,6 +4,7 @@ import os
 
 from rooms import Room
 from things import Thing
+from custom_json import custom_load
 
 
 class PlanetRoomGenerator:
@@ -14,6 +15,8 @@ class PlanetRoomGenerator:
         self.seed = seed
         with open(os.path.join("Generators", (self.__class__.__name__.lower() + '.json')), 'r') as file:
             self.generator_data = json.load(file)
+        with open(os.path.join("Generators", "threats.json"), 'r') as file:
+            self.threat_data = json.load(file)
         self.limit = limit
 
     def generate_landing_spot(self, game, solarsystem, planet):
@@ -77,6 +80,7 @@ class PlanetRoomGenerator:
         new_room.entity_state['room type'] = random.choice(room_types)
         new_room.display_name = new_room.entity_state['room type']
         self.generate_description(new_room, seed, planet, solarsystem)
+        self.__load_threat_objects(planet, new_room)
         colony = Thing(key='colony', reference_noun='colony', display_name='colony',
                        description='A Union Colony has not yet been set up on this planet.',
                        as_dirobj={'Setup': True},
@@ -138,8 +142,18 @@ class PlanetRoomGenerator:
         room.description = description
         room.audible_description = self.generator_data[room_type]['audible']
 
-    def generate_threat(self):
-        pass
+    def __load_threat_objects(self, planet, room):
+        clues = custom_load(os.path.join("Generators", "clues.json"))
+        threats = planet.entity_state['features']['threats']
+        for threat in threats.keys():
+            if threats[threat]:
+                # Place clue
+                if self.threat_data[threat]['clues']:
+                    place_clue = random.choice([True, False], p=[0.7, 0.3])
+                    if place_clue:
+                        clue_key = random.choice(self.threat_data[threat]['clues'])
+                        clue = clues[clue_key]
+                        room += clue
 
     def generate_things(self):
         pass

@@ -1,0 +1,10 @@
+{
+    "key": "planetwater",
+    "display_name": "water",
+    "reference_noun": "water",
+    "topic_quip": "'Lovkiy, how much water is there here?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "is_active": true,
+    "_class_": "Topic"
+  }
