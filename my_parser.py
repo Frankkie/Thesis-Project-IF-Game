@@ -54,6 +54,15 @@ class PreParser:
         self.text = self.text.strip()
         if self.text in self.preparse_table.keys():
             self.text = self.preparse_table[self.text]
+        self.ask_short()
+
+    def ask_short(self):
+        if 'ask lovkiy' in self.text:
+            if 'about' not in self.text:
+                self.text = self.text.replace('ask lovkiy', 'ask lovkiy about')
+        elif 'ask' in self.text:
+            if 'about' not in self.text:
+                self.text = self.text.replace('ask', 'ask lovkiy about')
 
 
 class Parser:

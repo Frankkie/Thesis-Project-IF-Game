@@ -74,6 +74,7 @@ class Display:
                 print(result)
         else:
             print(self.text)
+        print()
 
     def __display_init(self):
         print()
@@ -82,7 +83,7 @@ class Display:
         print()
 
     def __display_help(self):
-        print(self.text)
+        print(self.text.rstrip())
 
     def __display_undo(self):
         print("Your mistake has been forgiven!")

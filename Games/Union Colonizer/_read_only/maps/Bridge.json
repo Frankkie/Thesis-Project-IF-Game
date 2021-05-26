@@ -6,6 +6,23 @@
   "examine_description": "The bridge of Ostatok 1 is the best example of the engineering prowess of the Union's engineers.\nThis is where you pilot your fleet and monitor your ship.",
   "audible_description": "A quiet electrical hum is the only sound in the room.",
   "contents": {
+    "telescope": {
+      "obj": {
+        "key": "telescope",
+        "reference_noun": "telescope",
+        "display_name": "telescope",
+        "description": "This telescope is your great eye into the Cosmos.",
+        "as_dirobj": {
+          "Use": true, "Look": true
+        },
+        "action_description": {
+          "Use": "You look through the telescope's tiny eyepiece into the darkness."
+        },
+        "container": "Bridge",
+        "_class_": "Thing"
+      },
+      "tags": ["Inventory"]
+    },
     "red button": {
       "obj": {
         "key": "red button",
@@ -99,10 +116,6 @@
     }
   },
   "directions": {
-    "North": {
-        "room": "Telescope",
-        "desc": "To the north of the bridge, there is your telescope room."
-      },
     "South": {
           "room": "Comm Room",
           "desc": "This corridor leads to the Communications' Room."

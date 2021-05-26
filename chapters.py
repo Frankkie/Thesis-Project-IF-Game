@@ -66,6 +66,9 @@ class Chapter:
         else:
             descr = self.intro_description
         game.display.queue(descr, "ChapterStart")
+        if self.first_room:
+            first_room = game.rooms[self.first_room]
+            game.display.queue(first_room.string(), "ChapterStart")
         self.chapter_state['is known'] = True
         return None
 
@@ -350,7 +353,8 @@ class SpaceChapter(Chapter):
             self.chapter_state['solar systems'] += 1
             if self.chapter_state['solar systems'] == 1:
                 return f"'Admiral, Sir! We're approaching our first alien system, {system.display_name}!'\n" \
-                       "'We can either enter it or leave it, or even go to the telescope room and take a closer look!'"
+                       "'We can either enter it or leave it, or even use the telescope on the system\n" \
+                       "and take a closer look!'"
             else:
                 return f"'Sir, I must notify you that we're approaching a new solar system, {system.display_name}!'"
         else:
@@ -463,6 +467,8 @@ class PlanetChapter(Chapter):
             next_chapter = "Death"
             return next_chapter
         game.solar_system_gen.generate_landing_spot(game, solarsystem, planet)
+        first_room = game.rooms[self.first_room]
+        game.display.queue(first_room.string(), "ChapterStart")
 
     def advance_chapter(self, game):
         """
@@ -477,6 +483,11 @@ class PlanetChapter(Chapter):
         """
         next_chapter = None
         planet = None
+
+        for event in game.events.values():
+            if event.eval_conditions(game):
+                res = event.trigger(game)
+                game.display.queue(res, "ChapterEvent")
 
         for condition_set in self.end_conditions:
             conditions = condition_set["conditions"]
@@ -504,12 +515,6 @@ class PlanetChapter(Chapter):
 
         if next_chapter and next_chapter != 'ColonyChapter':
             game.display.queue(self.outro_description[next_chapter], "ChapterEvent")
-
-        elif not next_chapter:
-            for event in game.events.values():
-                if event.eval_conditions(game):
-                    res = event.trigger(game)
-                    game.display.queue(res, "ChapterEvent")
 
         return next_chapter
 

@@ -92,8 +92,14 @@ class PlanetRoomGenerator:
 
     def generate_description(self, room, seed, planet, solarsystem):
         room_type = room.entity_state['room type']
+
+        room_key = room.key
+        t = int(room_key[1:1 + self.limit])
+        p = int(room_key[2 + self.limit:])
+        description = f"Latitude: {p}, Longitude: {t}.\n"
+
         random.seed(seed)
-        description = self.generator_data[room_type]['description']
+        description += self.generator_data[room_type]['description']
         template = random.choice(self.generator_data[room_type]['templates'])
 
         clouds = ''
@@ -150,16 +156,13 @@ class PlanetRoomGenerator:
             if threats[threat]:
                 # Place clue
                 if self.threat_data[threat]['clues']:
-                    place_clue = random.choice([True, False], p=[0.7, 0.3])
+                    place_clue = random.choice([True, False], p=[0.6, 0.4])
                     if place_clue:
                         clue_key = random.choice(self.threat_data[threat]['clues'])
                         clue = clues[clue_key]
                         room += clue
 
     def generate_things(self):
-        pass
-
-    def generate_topics(self):
         pass
 
     def _adj_room_coordinates(self, room, rooms_dict):
