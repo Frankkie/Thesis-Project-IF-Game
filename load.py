@@ -93,6 +93,11 @@ class Loader:
 
         chapter = self.game.chapters[chapter_key]
 
+        self.game.events = dict()
+        self.game.topics = dict()
+        self.game.convonodes = dict()
+        self.game.dialogevents = dict()
+
         convonodes_files = [os.path.join(self.current_folder, "convoNodes", (file + ".json")) for file in
                             chapter.convonodes_files]
         dialogevents_files = [os.path.join(self.current_folder, "dialogEvents", (file + ".json")) for file in

@@ -21,6 +21,9 @@
                         },
         "as_dirobj": {"Ask": true},
         "gender": 2,
+        "entity_state": {
+          "danger": false
+        },
         "_class_": "Actor"
     },
     "Lovkiy": {

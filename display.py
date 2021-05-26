@@ -19,7 +19,12 @@ class Display:
         self.empty_queue()
 
     def display(self, text, text_type):
-        self.text = text
+        try:
+            self.text = text.rstrip()
+            self.text = self.text.replace('\n\n\n', '\n')
+            self.text = self.text.replace('\n\n', '\n')
+        except (TypeError, AttributeError):
+            self.text = text
         if text_type == "Error":
             self.__display_error(text)
         elif text_type == "Initial":
@@ -52,7 +57,8 @@ class Display:
         return text
 
     def __display_prompt(self):
-        print(self.text, end="> ")
+        print()
+        print(self.text, end=" > ")
 
     def __display_error(self, error):
         print(error.rstrip())
@@ -71,10 +77,9 @@ class Display:
     def __display_chapter_event(self):
         if type(self.text) == list:
             for result in self.text:
-                print(result)
+                print(result.rstrip())
         else:
-            print(self.text)
-        print()
+            print(self.text.rstrip())
 
     def __display_init(self):
         print()
@@ -95,7 +100,8 @@ class Display:
         print("You quit '%s'! Such a shame." % self.game.title)
 
     def __display_replay(self):
-        print("> " + self.text)
+        print()
+        print(" > " + self.text)
 
     def __display_specify(self):
         print(self.text)

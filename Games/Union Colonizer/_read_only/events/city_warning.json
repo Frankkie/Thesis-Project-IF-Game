@@ -1,0 +1,39 @@
+{
+    "key": "city_warning",
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.room.entity_state.room type",
+        "values": [
+          "city"
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      },
+      {
+        "key": "c3",
+        "attribute_path": "actors.I.entity_state.danger",
+        "values": [
+          "Warned"
+        ],
+        "not_": true,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "actors.I.entity_state.danger",
+        "new_value_expression": "'Warned'",
+        "_class_": "StateUpdate"
+      },
+      {
+        "attribute_path": "game_state.chapter time",
+        "new_value_expression": "0.0",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "event_description": "You realize that the aliens will soon find you.\nYou have to leave this place before it's too late.",
+    "done": 0,
+    "repeatable": true,
+    "_class_": "Event"
+  }

@@ -201,6 +201,9 @@ class IntroChapterUnionColonizer(IntroChapter):
                     game.display.queue(sentence, 'Help')
                 game.display.output()
 
+        first_room = game.rooms[self.first_room]
+        game.display.queue(first_room.string(), "ChapterStart")
+
         return "Deep Space"
 
     def __hash_answers(self, name, year):
@@ -514,6 +517,7 @@ class PlanetChapter(Chapter):
             self.last_room = current_room_key
 
         if next_chapter and next_chapter != 'ColonyChapter':
+            game.actors['I'].entity_state['danger'] = False
             game.display.queue(self.outro_description[next_chapter], "ChapterEvent")
 
         return next_chapter

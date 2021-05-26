@@ -49,11 +49,11 @@ class Condition:
             lower = value[0]
             upper = value[1]
             if not lower:
-                return value < upper
+                return attribute < upper
             if not upper:
-                return value > lower
+                return attribute > lower
             else:
-                return lower < value < upper
+                return lower < attribute < upper
 
     def to_json(self):
         """

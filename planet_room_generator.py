@@ -156,7 +156,7 @@ class PlanetRoomGenerator:
             if threats[threat]:
                 # Place clue
                 if self.threat_data[threat]['clues']:
-                    place_clue = random.choice([True, False], p=[0.6, 0.4])
+                    place_clue = random.choice([True, False], p=[0.8, 0.2])
                     if place_clue:
                         clue_key = random.choice(self.threat_data[threat]['clues'])
                         clue = clues[clue_key]
