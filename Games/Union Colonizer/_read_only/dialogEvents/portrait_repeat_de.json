@@ -1,0 +1,24 @@
+{
+    "key": "portrait_repeat_de",
+    "trigger_topics": ["portrait_topic"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "dialogevents.portrait_de.done",
+        "values": [
+          5
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Sir, I reckon you have asked me a thousand times, and I have already told you.', Lovkiy replies.\nYou think back trying to remember...\n'No you haven't told me!!!', you reply surely.",
+        "_class_": "Quip",
+        "is_repeatable": false
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

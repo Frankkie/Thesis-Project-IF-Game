@@ -1,0 +1,10 @@
+{
+  "key": "experiment",
+  "actor": "Lovkiy",
+  "next_nodes": {
+    "experiment": ["experiment_topic", "yes", "no"]
+  },
+  "to_generic_allowed": false,
+  "generic_not_allowed_desc": "'Answer me! Do you want to know about the experiment, yes or no?'",
+  "_class_": "ConvoNode"
+}

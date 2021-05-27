@@ -1,0 +1,14 @@
+{
+    "key": "normal_atmosphere",
+    "trigger_topics": ["atmosphere"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'The atmosphere seems optimal for human habitation.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

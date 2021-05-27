@@ -98,6 +98,27 @@ class PreconditionsError(Error):
             return f'You have to open {self.kwargs["ind_obj"]} first, before you put something in it.'
         if self.error_type == "UseObjectError":
             return f"There is no particular use for the {self.kwargs['obj']}."
+        if self.error_type == "SystemNotEnteredError":
+            return f"You have to enter the solar system before you {self.kwargs['action']} {self.kwargs['planet']}."
+        if self.error_type == "NotDronesOnSendError":
+            return f"You cannot send the {self.kwargs['obj']} to a planet."
+        if self.error_type == "SendNotOnPlanetError":
+            return f"You cannot send drones to a {self.kwargs['ind']}."
+        if self.error_type == "DwarfPlanetLandingError":
+            return "Due to the low gravity of dwarf planets, it's impossible to safely land on them."
+        if self.error_type == "SystemAlreadyEnteredError":
+            return f"You are already in the {self.kwargs['system_name']} system."
+        if self.error_type == "LeaveLandedError":
+            return f'You have to take off of {self.kwargs["planet"]}, ' \
+                   f'before you leave the {self.kwargs["solarsystem"]} system.'
+        if self.error_type == "NotInBridgeError":
+            return f"You have to be in the Spaceship's bridge to {self.kwargs['action']}."
+        if self.error_type == "AlreadyLandedError":
+            return f"You are already landed on {self.kwargs['planet']}. Take off if you want to visit another planet."
+        if self.error_type == "NotOnAPlanetError":
+            return "You have to be on a planet to take off."
+        if self.error_type == "NotInLandingSpotError":
+            return "You have to return to your landing spot (0 Latitude, 0 Longitude) to take off."
         else:
             return self.error_type
 

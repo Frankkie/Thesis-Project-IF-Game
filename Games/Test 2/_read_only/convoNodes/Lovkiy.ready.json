@@ -1,0 +1,9 @@
+{
+  "key": "ready",
+  "actor": "Lovkiy",
+  "next_nodes": {
+    "hey": ["hey"]
+  },
+  "switch_to_generic_desc": "'Hey, I didn't see you there!'",
+  "_class_": "ConvoNode"
+}

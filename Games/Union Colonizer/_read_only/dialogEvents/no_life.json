@@ -1,0 +1,19 @@
+{
+    "key": "no_life",
+    "trigger_topics": ["lifetopic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'From what I can tell, there is no life on this planet.', Lovkiy replies.",
+        "_class_": "Quip"
+      },
+      {
+        "key": "q2",
+        "text": "'Sir, I am 99% certain that the only life form on this planet is us.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

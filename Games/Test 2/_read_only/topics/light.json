@@ -1,0 +1,9 @@
+{
+    "key": "light",
+    "display_name": "light",
+    "reference_noun": "light",
+    "topic_quip": "'What the hell is this light on the dog?' you ask curiously.",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["beeping", "red"],
+    "_class_": "Topic"
+  }

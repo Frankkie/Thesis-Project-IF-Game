@@ -1,0 +1,14 @@
+{
+    "key": "bomb_event",
+    "trigger_topics": ["bomb"],
+    "trigger_convonode": "bomb",
+    "quips": [
+      {
+        "key": "bombq1",
+        "text": "'Do you really want to know about the bomb?' asks Lovkiy, as a weird cunning tone overtakes his robotic voice.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

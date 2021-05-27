@@ -1,0 +1,137 @@
+{
+  "key": "Bridge",
+  "reference_noun": "bridge",
+  "display_name": "bridge",
+  "description": "This is where you pilot your spaceship from.",
+  "examine_description": "The bridge of Ostatok 1 is the best example of the engineering prowess of the Union's engineers.\nThis is where you pilot your fleet and monitor your ship.",
+  "audible_description": "A quiet electrical hum is the only sound in the room.",
+  "contents": {
+    "telescope": {
+      "obj": {
+        "key": "telescope",
+        "reference_noun": "telescope",
+        "display_name": "telescope",
+        "description": "This telescope is your great eye into the Cosmos.",
+        "as_dirobj": {
+          "Use": true, "Look": true
+        },
+        "action_description": {
+          "Use": "You look through the telescope's tiny eyepiece into the darkness."
+        },
+        "container": "Bridge",
+        "_class_": "Thing"
+      },
+      "tags": ["Inventory"]
+    },
+    "red button": {
+      "obj": {
+        "key": "red button",
+        "reference_noun": "button",
+        "reference_adjectives": ["red"],
+        "display_name": "red button",
+        "description": "This is a red button.",
+        "container": "Bridge",
+        "as_dirobj": {"Look": true, "Push":  true},
+        "action_description": {
+          "Push": "You push on the red button."
+        },
+        "_class_": "Thing"
+      },
+      "tags": ["Inventory"]
+    },
+    "blue button": {
+      "obj": {
+        "key": "blue button",
+        "reference_noun": "button",
+        "reference_adjectives": ["blue"],
+        "display_name": "blue button",
+        "description": "This is a blue button.",
+        "container": "Bridge",
+        "as_dirobj": {"Look": true, "Push":  true},
+        "action_description": {
+          "Push": "You push on the blue button."
+        },
+        "_class_": "Thing"
+      },
+      "tags": ["Inventory"]
+    },
+    "window": {
+      "obj": {
+        "key": "window",
+        "reference_noun": "window",
+        "reference_adjectives": [],
+        "display_name": "window",
+        "description": "A small window is your only look of the vast Cosmos outside.",
+        "examine_description": "You look outside of the small window.\nOnly a couple of dim stars shine through the dark vastness of the universe.",
+        "container": "Bridge",
+        "action_description": {},
+        "_class_": "Fixture"
+      },
+      "tags": ["Inventory"]
+    },
+    "portrait": {
+      "obj": {
+        "key": "portrait",
+        "reference_noun": "portrait",
+        "reference_adjectives": ["old", "faded"],
+        "display_name": "old faded portrait",
+        "description": "This picture has long faded away. Only the outline of a man's face is visible.",
+        "container": "Bridge",
+        "_class_": "Fixture"
+      },
+      "tags": ["Inventory"]
+    },
+    "laser gun": {
+      "obj": {
+        "key": "laser gun",
+        "reference_noun": "gun",
+        "reference_adjectives": ["laser"],
+        "display_name": "laser gun",
+        "description": "A single laser gun is tied on its case on the wall. It might be useful at some point.",
+        "container": "Bridge",
+        "as_dirobj": {"Use": true},
+        "action_description": {
+          "Use": "The gun shakes as it loads."
+        },
+        "_class_": "Movable"
+      },
+      "tags": ["Inventory"]
+    },
+    "drones": {
+      "obj": {
+        "key": "drones",
+        "reference_noun": "drones",
+        "reference_adjectives": [],
+        "display_name": "drones",
+        "description": "Made to be fast and disposable, the ship's drones can allow you to look at planets closely, without actually landing.",
+        "plural": true,
+        "container": "Bridge",
+        "as_dirobj": {"Send": true, "Look": true},
+        "action_description": {
+          "Send": "Some drones leave your ship to take a closer look to the planet."
+        },
+        "_class_": "Thing"
+      },
+      "tags": ["Inventory"]
+    }
+  },
+  "directions": {
+    "South": {
+          "room": "Comm Room",
+          "desc": "This corridor leads to the Communications' Room."
+      },
+    "West": {
+          "room": "Cryo Chambers Door",
+          "desc": "This is the door to the Cryo Chambers."
+      },
+    "Northwest": {
+          "room": "Life Support Door",
+          "desc": "In this direction you can find the life support systems' room."
+      },
+    "Southwest": {
+          "room": "Quarters Door",
+          "desc": "This door leads to your living quarters."
+      }
+  },
+  "_class_": "Room"
+}

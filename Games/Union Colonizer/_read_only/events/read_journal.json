@@ -1,0 +1,30 @@
+{
+    "key": "read_journal",
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "things.journal.entity_state.Read",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.journal_topic.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
+      },
+      {
+        "attribute_path": "topics.time_topic.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "event_description": "You look at some of the dates on the entries: 2094, 2178, 2196, 2277, 2456, 2892...\n'That's impossible', you think. 'The year is 2293! Am I going mad?'",
+    "done": 0,
+    "repeatable": 1,
+    "_class_": "Event"
+  }

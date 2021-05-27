@@ -1,0 +1,14 @@
+{
+    "key": "ruins_question",
+    "trigger_topics": ["ruinstopic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'I cannot give you much more information other than that there might be dangerous traps laying around.'",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

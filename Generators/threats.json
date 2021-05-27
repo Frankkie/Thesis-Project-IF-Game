@@ -1,0 +1,77 @@
+{
+  "cold threat": {
+    "clues": ["dry ice"],
+    "deadly events": [],
+    "colony": "And as the years go by, the cold seems to be beating you, despite your best efforts.\nFarming the soil is impossible. The best surviving engineers of the Union could not make life here bearable,\neven under glass domes.\n"
+  },
+
+
+  "water threat": {
+    "clues": [],
+    "deadly events": [],
+    "colony": "As you build your colony more and more, you realize what an unforgiving place\na vast ocean planet really is. Land becomes more valuable than gold. Even fish can't survive\nthese unforgiving seas. As the years go by, all the small islands of these world have been used up..."
+  },
+
+
+  "desert threat":  {
+    "clues": [],
+    "deadly events": [],
+    "colony": "Water here is rare. But life cannot flourish for long without water. What you thought\nwere generous oases run dry in months. One by one, your crops, your animals\nand your people succumb to thirst."
+  },
+
+
+  "elliptical threat": {
+    "clues": [],
+    "deadly events": [],
+    "colony": "Your planet's elliptical orbit, and its unstable parent system create an unstable\nclimate for your planet. Your colonists are sometimes dying from the extreme heat,\nother times from the unforgiving cold."
+  },
+
+
+  "radiation threat":  {
+    "clues": [],
+    "deadly events": [],
+    "colony": "The planet's parent system is home to a relentless star that spews radiation in\nhigh amounts. Nothing living can survive for long in this type of environment..."
+  },
+
+
+  "air threat": {
+    "clues": [],
+    "deadly events": [],
+    "colony": "No atmosphere though, means limited supplies of oxygen, low protection from\nmeteorites and radiation, and a life confined in tight spaces. All these cause your colony\nto wither away. It's death by a thousand cuts."
+  },
+
+
+  "acid threat":  {
+    "clues": ["acid rain"],
+    "deadly events": [],
+    "colony": "The atmosphere of the planet makes life here unbearable, though. Equipment\nand buildings are eaten away by the acid rain, plants die the moment they're planted on this\nsoil. And all your fellow colonists fall ill."
+  },
+
+
+  "microbe threat": {
+    "clues": ["green sludge"],
+    "deadly events": [],
+    "colony": "The microorganisms living on this planet turn out to be able to infect\nhumans. Blood-sucking parasites, viruses, flesh-eating bacteria. One way or another, everyone\nis killed by them eventually."
+  },
+
+
+  "animal threat":  {
+    "clues": ["alien animal"],
+    "deadly events": [],
+    "colony": "The alien beasts living on this planet are not welcome to your colonists\n though. Violent beast attacks kill men, women and children, destroy buildings and critical\ninfrastructure. Despite your best efforts, it seems like nature has got the best of you."
+  },
+
+
+  "ruins threat": {
+    "clues": ["alien trap", "alien artifact"],
+    "deadly events": [],
+    "colony": "As you keep building, you uncover more and more artifacts of long lost\nalien civilizations. But more than just ruins, you fall upon traps, unexploded bombs and dangerous\nnuclear waste. Some of the most dangerous alien technology falls in the wrong hands eventually..."
+  },
+
+
+  "genius threat":  {
+    "clues": ["alien trap", "alien artifact", "alien drone"],
+    "deadly events": [],
+    "colony": "But, you're not alone on this world. Alien civilizations are already\nflourishing here. From the moment they discover your colony, they unite to wipe you all out. You try\n to defeat them, but their technology and numbers are far superior..."
+  }
+}

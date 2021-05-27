@@ -1,0 +1,31 @@
+{
+    "key": "desert",
+    "trigger_topics": ["planetwater"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.water_type",
+        "values": [
+          "Desert Planet", "Ice Planet"
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'This planet is way too arid for supporting a colony.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      },
+      {
+        "key": "q2",
+        "text": "'This is nothing more than a giant desert.', Lovkiy informs you.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "shuffle_quips": true,
+    "_class_": "DialogEvent"
+  }

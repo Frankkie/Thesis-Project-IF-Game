@@ -1,0 +1,30 @@
+{
+    "key": "ruins",
+    "trigger_topics": ["lifetopic"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.entity_state.features.threats.ruins threat",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }],
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.ruinstopic.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'By analyzing the chemical compounds on the surface, I can tell there was once industrial activity on this planet.\nBut I think it's long gone now.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

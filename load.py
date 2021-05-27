@@ -46,12 +46,25 @@ class Loader:
         return game_dict, self.game_args
 
     def load_prev_commands(self, title):
-        log_file_path = f"Games\\{title}\\log_commands.log"
+        log_file_path = os.path.join('Games', title, "log_commands.log")
         commands = []
+        times = []
         with open(log_file_path, "r") as log_file:
             for line in log_file:
-                commands.append(line.rstrip())
-        return commands
+                try:
+                    time = float(line.rstrip())
+                    times.append(time)
+                except ValueError:
+                    commands.append(line.rstrip())
+        return commands, times
+
+    def load_prev_seed(self, title):
+        log_file_path = os.path.join('Games', title, "log_seed.log")
+
+        with open(log_file_path, "r") as log_file:
+            for line in log_file:
+                seed = int(line.rstrip())
+        return seed
 
     def load_undo(self):
         temp_folder = os.path.join(self.game_folder + "_temp", "")
@@ -80,33 +93,45 @@ class Loader:
 
         chapter = self.game.chapters[chapter_key]
 
-        try:
-            convonodes_file = os.path.join(self.current_folder, "convoNodes", chapter.convonodes_file)
-        except TypeError:
-            convonodes_file = None
-        try:
-            dialogevents_file = os.path.join(self.current_folder, "dialogEvents", chapter.dialogevents_file)
-        except TypeError:
-            dialogevents_file = None
-        try:
-            events_file = os.path.join(self.current_folder, "events", chapter.events_file)
-        except TypeError:
-            events_file = None
-        maps_file = os.path.join(self.current_folder, "maps", chapter.map_file)
-        try:
-            topics_file = os.path.join(self.current_folder, "topics", chapter.topics_file)
-        except TypeError:
-            topics_file = None
+        self.game.events = dict()
+        self.game.topics = dict()
+        self.game.convonodes = dict()
+        self.game.dialogevents = dict()
 
-        self.game.rooms = cjson.custom_load(maps_file)
-        if convonodes_file:
-            self.game.convonodes = cjson.custom_load(convonodes_file)
-        if dialogevents_file:
-            self.game.dialogevents = cjson.custom_load(dialogevents_file)
-        if events_file:
-            self.game.events = cjson.custom_load(events_file)
-        if topics_file:
-            self.game.topics = cjson.custom_load(topics_file)
+        convonodes_files = [os.path.join(self.current_folder, "convoNodes", (file + ".json")) for file in
+                            chapter.convonodes_files]
+        dialogevents_files = [os.path.join(self.current_folder, "dialogEvents", (file + ".json")) for file in
+                              chapter.dialogevents_files]
+        events_files = [os.path.join(self.current_folder, "events", (file + ".json")) for file in chapter.events_files]
+        map_files = [os.path.join(self.current_folder, "maps", (file + ".json")) for file in chapter.map_files]
+        topics_files = [os.path.join(self.current_folder, "topics", (file + ".json")) for file in chapter.topics_files]
+
+        for i, file in enumerate(convonodes_files):
+            f = chapter.convonodes_files[i].split('.')
+            actor = f[0]
+            node = f[1]
+            obj = cjson.custom_load(file)
+            if actor in self.game.convonodes.keys():
+                self.game.convonodes[actor][node] = obj
+            else:
+                self.game.convonodes[actor] = {}
+                self.game.convonodes[actor][node] = obj
+
+        for file in dialogevents_files:
+            obj = cjson.custom_load(file)
+            self.game.dialogevents[obj.key] = obj
+
+        for file in events_files:
+            obj = cjson.custom_load(file)
+            self.game.events[obj.key] = obj
+
+        for file in topics_files:
+            obj = cjson.custom_load(file)
+            self.game.topics[obj.key] = obj
+
+        for file in map_files:
+            obj = cjson.custom_load(file)
+            self.game.rooms[obj.key] = obj
 
         self.game.game_state["current chapter"] = chapter_key
 

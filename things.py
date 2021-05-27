@@ -80,6 +80,12 @@ class Thing(Entity):
 
         return printable
 
+    def _on_setup(self, **kwargs):
+        game = kwargs['game']
+        planet = game.things[game.game_state['current planet']].display_name
+        self.entity_state["Setup"] = True
+        return self.action_description["Setup"].format(planet=planet)
+
 
 class Fixture(Thing):
     """

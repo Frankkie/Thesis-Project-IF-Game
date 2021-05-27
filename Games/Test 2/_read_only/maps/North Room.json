@@ -1,0 +1,16 @@
+{
+"key": "North Room",
+"reference_noun": "NorthRoom",
+"display_name": "North Room",
+"description": "This is the North Room, north of the New Room.",
+"container": null,
+"contents": null,
+"plural": false,
+"directions": {
+    "South": {
+        "room": "New Room",
+        "desc": "To the south of the North Room, there is the New Room."
+    }
+},
+"_class_": "Room"
+}

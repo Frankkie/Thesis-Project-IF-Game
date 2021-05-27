@@ -1,0 +1,24 @@
+{
+  "key": "Reactor",
+  "reference_noun": "reactor",
+  "display_name": "fusion reactor room",
+  "description": "Radiation tickles your tongue every time you enter the room.",
+  "examine_description": "",
+  "audible_description": "",
+  "contents": {},
+  "directions": {
+    "Northeast": {
+          "room": "Reactor Door North",
+          "desc": "A reinforced door protects the rest of the ship from any radiation leakages."
+      },
+    "Southeast": {
+          "room": "Reactor Door South",
+          "desc": "A reinforced door protects the rest of the ship from any radiation leakages."
+      },
+    "West": {
+          "room": "Engines Door",
+          "desc": "The most forbidden part of the ship lies behind those doors."
+      }
+  },
+  "_class_": "Room"
+}

@@ -56,6 +56,8 @@ class StateUpdate:
                 container = game.rooms[new_value]
             elif new_value in game.things.keys():
                 container = game.things[new_value]
+            elif new_value is None:
+                container = game.currents['room']
             else:
                 container = game.actors[new_value]
 

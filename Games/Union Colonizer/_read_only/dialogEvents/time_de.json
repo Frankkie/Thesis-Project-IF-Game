@@ -1,0 +1,21 @@
+{
+    "key": "time_de",
+    "trigger_topics": ["time_topic"],
+    "trigger_conditions": [],
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.experiment_topic.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Sir, the year is 3654...' Lovkiy replies. You are shocked. 'You shouldn't have known this,\nbut it must be an issue with the experiment.'",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

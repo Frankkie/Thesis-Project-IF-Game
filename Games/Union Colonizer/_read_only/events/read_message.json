@@ -1,0 +1,25 @@
+{
+    "key": "read_message",
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "things.messages.entity_state.Read",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "things.messages.entity_state.Read",
+        "new_value_expression": "False",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "event_description": "The first messages are all from right after the Treason of 2089. Those horrible years.\nWhoever survived from the command had to go underground. As the years pass the messages become\nmore sporadic, more enigmatic. They speak of an experiment. Of what sort is this experiment though?",
+    "done": 0,
+    "repeatable": 1,
+    "_class_": "Event"
+  }

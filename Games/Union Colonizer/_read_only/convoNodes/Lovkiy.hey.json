@@ -1,0 +1,8 @@
+{
+  "key": "hey",
+  "actor": "Lovkiy",
+  "next_nodes": {
+    "ready": ["bye"]
+  },
+  "_class_": "ConvoNode"
+}

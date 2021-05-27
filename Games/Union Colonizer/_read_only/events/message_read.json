@@ -1,0 +1,34 @@
+{
+    "key": "message_read",
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "things.messages.entity_state.Read",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      },
+      {
+        "key": "c2",
+        "attribute_path": "events.read_message.done",
+        "values": [
+          1
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "things.messages.entity_state.Read",
+        "new_value_expression": "False",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "event_description": "Nothing new comes out of these messages.",
+    "done": 0,
+    "repeatable": true,
+    "_class_": "Event"
+  }

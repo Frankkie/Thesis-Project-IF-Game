@@ -4,21 +4,27 @@ class Display:
     def __init__(self, game):
         self.game = game
         self.text = None
-        self.output_queue = []
+        self._output_queue = []
 
     def queue(self, text, text_type):
-        self.output_queue.append((text, text_type))
+        self._output_queue.append((text, text_type))
 
     def empty_queue(self):
-        self.output_queue = []
+        self._output_queue = []
 
     def output(self):
-        for element in self.output_queue:
+        print()
+        for element in self._output_queue:
             self.display(element[0], element[1])
         self.empty_queue()
 
     def display(self, text, text_type):
-        self.text = text
+        try:
+            self.text = text.rstrip()
+            self.text = self.text.replace('\n\n\n', '\n')
+            self.text = self.text.replace('\n\n', '\n')
+        except (TypeError, AttributeError):
+            self.text = text
         if text_type == "Error":
             self.__display_error(text)
         elif text_type == "Initial":
@@ -51,56 +57,51 @@ class Display:
         return text
 
     def __display_prompt(self):
-        print(self.text, end="> ")
+        print()
+        print(self.text, end=" > ")
 
     def __display_error(self, error):
         print(error.rstrip())
-        print()
 
     def __display_action(self, text):
         print(text.rstrip())
-        print()
 
     def __display_dialog(self, text):
         print(text[0])
         try:
             for r in text[1]:
                 print(r.rstrip())
-            print()
         except IndexError:
             pass
 
     def __display_chapter_event(self):
         if type(self.text) == list:
             for result in self.text:
-                print(result)
+                print(result.rstrip())
         else:
             print(self.text.rstrip())
-        print()
 
     def __display_init(self):
+        print()
         print(self.game.title)
         print(self.game.credits)
-        print("\n")
+        print()
 
     def __display_help(self):
-        print(self.text)
-        print("\n")
+        print(self.text.rstrip())
 
     def __display_undo(self):
         print("Your mistake has been forgiven!")
-        print("\n")
 
     def __display_save(self):
         print("Game saved!")
-        print("\n")
 
     def __display_quit(self):
         print("You quit '%s'! Such a shame." % self.game.title)
-        print("\n")
 
     def __display_replay(self):
-        print("> " + self.text)
+        print()
+        print(" > " + self.text)
 
     def __display_specify(self):
         print(self.text)

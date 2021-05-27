@@ -1,0 +1,9 @@
+{
+  "key": "generic",
+  "actor": "Lovkiy",
+  "next_nodes": {
+    "ready": ["bye"],
+    "experiment": ["experiment_topic"]
+  },
+  "_class_": "ConvoNode"
+}

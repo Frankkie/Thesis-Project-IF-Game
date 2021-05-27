@@ -9,9 +9,11 @@ import sys
 import my_parser as prs
 from command_handler import CommandHandler
 from errors import *
-from log_commands import start_log, log_command
+from log_commands import start_log, log_command, log_time, log_seed
 from load import Loader
 from save import Saver
+from timer import CustomTimer
+from solar_system_generator import SolarSystemGenerator
 
 
 class Game:
@@ -28,6 +30,8 @@ class Game:
         self.np_parser = prs.NounPhraseParser(self)
         self.loader = Loader(self.title, self)
         self.saver = Saver(self)
+        self.timer = CustomTimer(self)
+        self.solar_system_gen = None
         self.actors = {}
         self.verbs = {}
         self.rooms = {}
@@ -37,6 +41,7 @@ class Game:
         self.convonodes = {}
         self.dialogevents = {}
         self.events = {}
+        self.currents = {}
 
     def boot_game(self, actors, verbs, chapters, display, last_save_key, replay=False):
         self.actors = actors
@@ -64,36 +69,55 @@ class Game:
     def start_game(self):
         self.game_state["new game"] = False
         self.run_chapter(start=True)
+        log_seed(self)
+        self.solar_system_gen = SolarSystemGenerator(self.seed)
+        self.timer.pause = False
+        self.timer.start()
         while True:
+            log_time(self)
             try:
                 self.run_pc_turn()
             except UndoCommand:
                 continue
             self.display.output()
+            log_time(self)
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
 
     def replay_game(self):
-        commands = self.loader.load_prev_commands(self.title)
+        commands, times = self.loader.load_prev_commands(self.title)
         self.game_state["new game"] = False
-        self.run_chapter(start=True)
+        self.run_chapter(start=True, replay=True)
+        self.seed = self.loader.load_prev_seed(self.title)
+        self.solar_system_gen = SolarSystemGenerator(self.seed)
+        t = 0
         for command in commands:
+            self.game_state['game time'] = times[t]
+            self.game_state['chapter time'] = times[t+1]
+            t += 2
             try:
                 self.run_pc_turn(command)
             except UndoCommand:
                 continue
             self.display.output()
+            self.game_state['game time'] = times[t]
+            self.game_state['chapter time'] = times[t + 1]
+            t += 2
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
 
+        self.timer.pause = False
+        self.timer.start()
         while True:
+            log_time(self)
             try:
                 self.run_pc_turn()
             except UndoCommand:
                 continue
             self.display.output()
+            log_time(self)
             self.run_chapter()
             self.display.output()
             self.saver.save_to_current()
@@ -147,8 +171,6 @@ class Game:
             self.display.queue(str(error), "Error")
             return
 
-        # DISAMBIGUATE COMMANDS BEFORE THIS POINT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
         # For all the commands.
         for sentence in parts:
             sentence = sentence[0]
@@ -176,14 +198,19 @@ class Game:
         command = self.display.fetch()
         return command
 
-    def run_chapter(self, start=False):
+    def run_chapter(self, start=False, replay=False):
         active_chapter_key = self.game_state["current chapter"]
         active_chapter = self.chapters[active_chapter_key]
         if start:
-            next_chapter = active_chapter.start_chapter(self)
+            next_chapter = active_chapter.start_chapter(self, replay)
             if next_chapter:
                 if next_chapter == "__END__":
                     self.end_game()
+                else:
+                    self.loader.load_chapter(next_chapter)
+                    self.refresh_things()
+                    self.timer.set_timer(chapter_time=0)
+                    self.run_chapter(start=True)
 
         else:
             next_chapter = active_chapter.advance_chapter(self)
@@ -191,6 +218,7 @@ class Game:
             if next_chapter:
                 self.loader.load_chapter(next_chapter)
                 self.refresh_things()
+                self.timer.set_timer(chapter_time=0)
                 self.run_chapter(start=True)
 
     def change_game_state(self, key, value):
@@ -214,8 +242,8 @@ class Game:
         text += '\n- Verbs:\n'
         for verb in self.verbs.values():
             v_name = verb.name
-            v_forms = verb.forms
-            text += f'{v_name}: {v_forms}. '
+            v_descr = verb.description
+            text += f'{v_name}: {v_descr}\n'
         text += '\n\n- Inventory:\n'
         for thing in self.actors['I'].contents.values():
             thing = thing['obj']
@@ -248,12 +276,15 @@ class Game:
             self.saver.empty_current_temp()
         else:
             self.end_game()
+
+        self.timer.stopped = True
         sys.exit(0)
 
     def refresh_things(self):
         new_things = {}
         current_room_key = self.game_state["current room"]
         current_room = self.rooms[current_room_key]
+        self.currents['room'] = current_room
         for actor in self.actors.keys():
             if self.actors[actor].container == current_room_key:
                 self.actors[actor].is_known = True
@@ -276,6 +307,30 @@ class Game:
         for thing in new_things.values():
             if thing.container == current_room_key:
                 thing.is_known = True
+
+        if 'current system' in self.game_state.keys():
+            system_key = self.game_state['current system']
+            if system_key:
+                system = self.things[system_key]
+                self.currents['system'] = system
+                new_things[system.key] = system
+                for planet in system.contents.keys():
+                    new_things[planet] = system.contents[planet]['obj']
+            else:
+                self.currents['system'] = None
+        else:
+            self.currents['system'] = None
+
+        if 'current planet' in self.game_state.keys():
+            planet_key = self.game_state['current planet']
+            if planet_key:
+                planet = self.things[planet_key]
+                self.currents['planet'] = planet
+            else:
+                self.currents['planet'] = None
+        else:
+            self.currents['planet'] = None
+
         self.things = new_things
 
     def to_json(self):
@@ -286,6 +341,7 @@ class Game:
             A dictionary of the object's attributes, containing the key '_class_'.
 
         """
+
         obj_dict = {
             "title": self.title,
             "credits_": self.credits,
@@ -294,4 +350,3 @@ class Game:
             "seed": self.seed
         }
         return obj_dict
-

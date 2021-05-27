@@ -1,0 +1,14 @@
+{
+    "key": "messages_de",
+    "trigger_topics": ["messages_topic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'These were sent a couple of years after our departure from Earth.\nAfter that there is complete radio silence from the Union's secret headquarters.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": false
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

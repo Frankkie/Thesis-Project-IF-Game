@@ -1,0 +1,13 @@
+{
+    "key": "goodbye_general",
+    "trigger_topics": ["bye"],
+    "quips": [
+      {
+        "key": "byeq1",
+        "text": "Lovkiy's screen turns dark again.",
+        "is_repeatable": true,
+        "_class_": "Quip"
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

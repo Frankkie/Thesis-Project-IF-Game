@@ -1,0 +1,53 @@
+{
+    "I": {
+        "key": "I",
+        "reference_noun": "i",
+        "display_name": "you",
+        "description": "This is you, the player.",
+        "container": "Cryo Chambers",
+        "contents": null,
+        "plural": false,
+        "abilities": {  "Go": true, "Look": true, "Listen": true,
+                        "Take": true, "Drop": true, "Open": true,
+                        "Close": true, "Push": true, "Use": true, "Read": true, "Put": true,
+                        "Send": true, "Landon": true, "Takeoff": true,
+                        "Enter": true, "Leave": true, "Setup": true, "Ask": true
+                        },
+        "on_command": {  "Go": true, "Look": true, "Listen": true,
+                        "Take": true, "Drop": true, "Open": true,
+                        "Close": true, "Push": true, "Use": true, "Read": true, "Put": true,
+                        "Send": true, "Landon": true, "Takeoff": true,
+                        "Enter": true, "Leave": true, "Setup": true, "Ask": true
+                        },
+        "as_dirobj": {"Ask": true},
+        "gender": 2,
+        "entity_state": {
+          "danger": false
+        },
+        "_class_": "Actor"
+    },
+    "Lovkiy": {
+        "key": "Lovkiy",
+        "reference_noun": "lovkiy",
+        "display_name": "Lovkiy",
+        "description": "This is Lovkiy, your AI companion to your Great Journey.",
+        "container": "Cryo Chambers",
+        "contents": null,
+        "plural": false,
+        "abilities": {  "Go": true, "Look": true, "Listen": true,
+                        "Take": false, "Drop": false, "Open": false,
+                        "Close": false, "Push": false, "Use": false,
+                        "Read": true, "Put": false, "Send": true, "Landon": true, "Takeoff": true,
+                        "Enter": true, "Leave": true, "Setup": true, "Ask": false
+                        },
+        "on_command": {  "Go": true, "Look": true, "Listen": true,
+                        "Take": true, "Drop": true, "Open": true,
+                        "Close": true, "Push": true, "Use": true,
+                        "Read": true, "Put": true, "Send": true, "Landon": true, "Takeoff": true,
+                        "Enter": true, "Leave": true, "Setup": true, "Ask": true
+                        },
+        "as_dirobj": {"Ask": true},
+        "gender": 1,
+        "_class_": "Actor"
+    }
+}

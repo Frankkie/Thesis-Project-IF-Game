@@ -13,7 +13,10 @@ class Verb:
 
     Attributes
     ----------
-    None defined here.
+    forms
+    patterns
+    name
+    description
 
     Methods
     -------
@@ -23,7 +26,7 @@ class Verb:
         Convert the instance of this class to a serializable object.
 
     """
-    def __init__(self, forms, patterns, name):
+    def __init__(self, forms, patterns, name, description=""):
         """
         Constructor of the verb class.
 
@@ -37,11 +40,14 @@ class Verb:
             'OQI' is for a transitive verb with direct and indirect object(s).
         :param name: String
             A unique name to id this verb.
+        :param description: String
+            A description of the verb's action.
 
         """
         self.forms = forms
         self.patterns = patterns
         self.name = name
+        self.description = description
 
     def __str__(self):
         """

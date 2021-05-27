@@ -1,0 +1,38 @@
+{
+    "key": "portrait_de",
+    "trigger_topics": ["portrait_topic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Does it really matter? It has been faded for a long time...', Lovkiy replies",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q2",
+        "text": "'Sir, with all due respect, I don't think this is something you should be focusing on.'",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q3",
+        "text": "'We have more important questions to answer. Like on which planet we should build our Colony.',\nLovkiy replies, visibly annoyed. You come to realize that the portrait is even more faded than usual.",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q4",
+        "text": "'The leaders of the past are of no importance to us.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q5",
+        "text": "'We must focus on the future...'.",
+        "_class_": "Quip",
+        "is_repeatable": false
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

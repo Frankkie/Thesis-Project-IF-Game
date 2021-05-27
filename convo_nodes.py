@@ -63,6 +63,7 @@ class ConvoNode:
     def handle_topic(self, actor, topic_key, game):
 
         next_node = self.switch_node(topic_key)
+        print(self.key, next_node)
         if not next_node:
             return [self.generic_not_allowed_desc]
 
@@ -70,11 +71,12 @@ class ConvoNode:
         if self.switch_to_generic_desc and next_node == 'generic':
             response.append(self.switch_to_generic_desc)
 
+        actor.active_convonode = next_node
         try:
             response += self.trigger_dialogevent(actor, topic_key, game, next_node)
         except DialogError as error:
             raise error
-        actor.active_convonode = next_node
+
         return response
 
     def trigger_dialogevent(self, actor, topic, game, next_node):

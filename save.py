@@ -33,21 +33,26 @@ class Saver:
         chapter_key = self.game.game_state["current chapter"]
         chapter = self.game.chapters[chapter_key]
 
-        if chapter.convonodes_file:
-            convonodes_file = os.path.join(self.current_folder, "convoNodes", chapter.convonodes_file)
-            cjson.custom_dump(self.game.convonodes, convonodes_file)
-        if chapter.dialogevents_file:
-            dialogevents_file = os.path.join(self.current_folder, "dialogEvents", chapter.dialogevents_file)
-            cjson.custom_dump(self.game.dialogevents, dialogevents_file)
-        if chapter.events_file:
-            events_file = os.path.join(self.current_folder, "events", chapter.events_file)
-            cjson.custom_dump(self.game.events, events_file)
-        if chapter.topics_file:
-            topics_file = os.path.join(self.current_folder, "topics", chapter.topics_file)
-            cjson.custom_dump(self.game.topics, topics_file)
+        for file in chapter.convonodes_files:
+            f = os.path.join(self.current_folder, "convoNodes", (file + ".json"))
+            file = file.split('.')
+            cjson.custom_dump(self.game.convonodes[file[0]][file[1]], f)
 
-        maps_file = os.path.join(self.current_folder, "maps", chapter.map_file)
-        cjson.custom_dump(self.game.rooms, maps_file)
+        for file in chapter.dialogevents_files:
+            f = os.path.join(self.current_folder, "dialogEvents", (file + ".json"))
+            cjson.custom_dump(self.game.dialogevents[file], f)
+
+        for file in chapter.events_files:
+            f = os.path.join(self.current_folder, "events", (file + ".json"))
+            cjson.custom_dump(self.game.events[file], f)
+
+        for file in chapter.topics_files:
+            f = os.path.join(self.current_folder, "topics", (file + ".json"))
+            cjson.custom_dump(self.game.topics[file], f)
+
+        for file in chapter.map_files:
+            f = os.path.join(self.current_folder, "maps", (file + ".json"))
+            cjson.custom_dump(self.game.rooms[file], f)
 
         # Save Actors
         cjson.custom_dump(self.game.actors, os.path.join(self.current_folder, "actors.json"))

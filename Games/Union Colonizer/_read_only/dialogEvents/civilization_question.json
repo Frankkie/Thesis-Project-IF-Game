@@ -1,0 +1,14 @@
+{
+    "key": "civilization_question",
+    "trigger_topics": ["civilizationtopic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'I'm almost 100% sure there is! We should leave, Sir!'",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

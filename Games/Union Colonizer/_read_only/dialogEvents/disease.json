@@ -1,0 +1,14 @@
+{
+    "key": "disease",
+    "trigger_topics": ["diseasetopic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'I must warn you I don't know much about alien microbial illnesses.\nBut I think we should leave immediately, or we face death.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

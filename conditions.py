@@ -38,7 +38,7 @@ class Condition:
         return False
 
     def __compare_value(self, attribute, value):
-        if not value:
+        if value is None:
             if attribute is None:
                 return True
             else:
@@ -49,11 +49,11 @@ class Condition:
             lower = value[0]
             upper = value[1]
             if not lower:
-                return value < upper
+                return attribute < upper
             if not upper:
-                return value > lower
+                return attribute > lower
             else:
-                return lower < value < upper
+                return lower < attribute < upper
 
     def to_json(self):
         """

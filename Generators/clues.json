@@ -1,0 +1,82 @@
+{
+  "dry ice": {
+    "key": "dry ice",
+    "reference_noun": "ice",
+    "reference_adjectives": ["dry"],
+    "display_name": "ice",
+    "description": "Big chunks of ice are scattered everywhere around you.",
+    "examine_description": "The ice is actually dry ice, formed from CO2 in freezing temperatures.",
+    "container": "",
+    "_class_": "Fixture"
+  },
+
+  "acid rain": {
+    "key": "acid rain",
+    "reference_noun": "rain",
+    "reference_adjectives": ["acid"],
+    "display_name": "rain",
+    "description": "Rain falls down upon the landscape.",
+    "examine_description": "A closer look at the droplets reveals that they're actually extremely corrosive.",
+    "container": "",
+    "_class_": "Fixture"
+  },
+
+  "green sludge": {
+    "key": "green sludge",
+    "reference_noun": "sludge",
+    "reference_adjectives": ["green"],
+    "display_name": "green sludge",
+    "description": "A puddle of green goo.",
+    "examine_description": "The puddle seems to be more than just goo, it's actually teaming with microbes!",
+    "container": "",
+    "_class_": "Movable"
+  },
+
+  "alien animal": {
+    "key": "alien animal",
+    "reference_noun": "creature",
+    "reference_adjectives": ["alien"],
+    "display_name": "alien creature",
+    "description": "A curious creature reveals itself in the landscape.",
+    "examine_description": "Taking a closer look with your binoculars, it's actually alive, but it's like nothing you've seen before...",
+    "container": "",
+    "action_description": {
+      "Take": "You try to run after the alien creature. It runs fast but you catch it.\nIt cries out an ugly screech as it tries to free itself."
+    },
+    "_class_": "Movable"
+  },
+
+  "alien artifact": {
+    "key": "alien artifact",
+    "reference_noun": "object",
+    "reference_adjectives": ["rusty", "metal"],
+    "display_name": "rusty object",
+    "description": "A rusty metal object protrudes from the surface.",
+    "examine_description": "Can it be? This is clearly metallic, and obviously made with intent.\nCan it be an ancient remnant of a long gone alien civilization?",
+    "container": "",
+    "_class_": "Movable"
+  },
+
+  "alien trap": {
+    "key": "alien trap",
+    "reference_noun": "object",
+    "reference_adjectives": ["shiny", "metal"],
+    "display_name": "shiny object",
+    "description": "A shiny metal object protrudes from the surface.",
+    "examine_description": "Can it be? This is clearly metallic, and obviously made with intent.\nCan it be an ancient remnant of a long gone alien civilization?",
+    "container": "",
+    "_class_": "Movable"
+  },
+
+  "alien drone": {
+    "key": "alien drone",
+    "reference_noun": "object",
+    "reference_adjectives": ["alien", "flying"],
+    "display_name": "flying object",
+    "description": "A weird object floats above you in the sky.",
+    "examine_description": "Taking a closer look reveals that it surely must be a drone!",
+    "container": "",
+    "action_description": {"On Use gun": "The drone takes a hit, but repels your laser fire!"},
+    "_class_": "Thing"
+  }
+}

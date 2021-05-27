@@ -1,0 +1,10 @@
+{
+    "key": "journal_topic",
+    "display_name": "journal",
+    "reference_noun": "journal",
+    "topic_quip": "'Do you know anything about this journal?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["red"],
+    "is_active": false,
+    "_class_": "Topic"
+  }

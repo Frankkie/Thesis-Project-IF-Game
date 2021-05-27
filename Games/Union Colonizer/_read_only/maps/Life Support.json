@@ -1,0 +1,20 @@
+{
+  "key": "Life Support",
+  "reference_noun": "support",
+  "display_name": "life support systems room",
+  "description": "The life support room is not only filled with filters and machines,\nbut also the only plants and soil away from home.",
+  "examine_description": "",
+  "audible_description": "",
+  "contents": {},
+  "directions": {
+    "Southeast": {
+          "room": "Life Support Door",
+          "desc": "The door separating the bridge from the life support is the rustiest."
+      },
+    "Southwest": {
+          "room": "Reactor Door North",
+          "desc": "A reinforced door protects the rest of the ship from any radiation leakages."
+      }
+  },
+  "_class_": "Room"
+}

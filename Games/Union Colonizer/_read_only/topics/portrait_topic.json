@@ -1,0 +1,10 @@
+{
+    "key": "portrait_topic",
+    "display_name": "portrait",
+    "reference_noun": "portrait",
+    "topic_quip": "'I can't remember whose portrait is this.', you mumble to yourself.",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "is_active": true,
+    "_class_": "Topic"
+  }

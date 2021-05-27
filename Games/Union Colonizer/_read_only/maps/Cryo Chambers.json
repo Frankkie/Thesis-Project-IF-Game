@@ -1,0 +1,31 @@
+{
+    "key": "Cryo Chambers",
+    "reference_noun": "cryochambers",
+    "display_name": "cryo chambers",
+    "description": "You will never get used to the eerie darkness and cold of the Cryo Chambers.",
+    "examine_description": "",
+    "audible_description": "",
+    "contents": {
+        "cryo pods": {
+            "obj": {
+                "key": "cryo pods",
+                "reference_noun": "pods",
+                "display_name": "cryo pods",
+                "description": "These are the pods where your crew-mates are hibernating.",
+                "container": "Cryo Chambers",
+                "contents": null,
+                "plural": true,
+                "reference_adjectives": [],
+                "_class_": "Fixture"
+                },
+            "tags": ["Look"]
+        }
+    },
+    "directions": {
+        "East": {
+            "room": "Cryo Chambers Door",
+            "desc": "A heavy metal door blocks the entrance to the Bridge."
+        }
+    },
+    "_class_": "Room"
+}

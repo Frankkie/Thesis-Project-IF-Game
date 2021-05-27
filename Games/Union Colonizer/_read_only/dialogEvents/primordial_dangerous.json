@@ -1,0 +1,40 @@
+{
+    "key": "primordial_dangerous",
+    "trigger_topics": ["lifetopic"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.entity_state.features.threats.microbe threat",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      },
+      {
+        "key": "c2",
+        "attribute_path": "currents.planet.colonizable",
+        "values": [
+          false
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.diseasetopic.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'I can detect microorganisms on the planet's surface and water bodies!\nAnd from what I can tell they are not friendly. They might cause diseases.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

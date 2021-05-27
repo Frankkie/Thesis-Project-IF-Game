@@ -1,0 +1,31 @@
+{
+    "key": "climate_cold",
+    "trigger_topics": ["climate"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.planet.water_type",
+        "values": [
+          "Ice Planet"
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'The climate here is too cold to support human activity.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      },
+      {
+        "key": "q2",
+        "text": "'It is way too cold to support life here, Sir.', Lovkiy informs you.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "shuffle_quips": true,
+    "_class_": "DialogEvent"
+  }

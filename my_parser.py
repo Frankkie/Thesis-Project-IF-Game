@@ -54,6 +54,14 @@ class PreParser:
         self.text = self.text.strip()
         if self.text in self.preparse_table.keys():
             self.text = self.preparse_table[self.text]
+        self.ask_short()
+
+    def ask_short(self):
+        if 'ask about' in self.text:
+            self.text = self.text.replace('ask about', 'ask lovkiy about')
+        elif 'ask' in self.text:
+            if 'about' not in self.text:
+                self.text = self.text.replace('ask', 'ask lovkiy about')
 
 
 class Parser:
@@ -184,13 +192,28 @@ class Parser:
         for actor in actors:
             actor_names.append(actor.reference_noun)
 
+        planet_names = []
+        try:
+            solar_system = self.game.game_state['current system']
+        except KeyError:
+            solar_system = None
+
+        if solar_system:
+            solar_system = self.game.things[solar_system]
+            planet_names = [solar_system.contents[planet]['obj'].reference_noun for planet in solar_system.contents]
+
         for word in sentence:
             if word in actor_names:
                 new_sentence.append("actor")
             elif word in ("hey", "bye", "yes", "no"):
                 new_sentence.append("topic")
+            elif word in planet_names:
+                new_sentence.append("planet")
+            elif word == "to":
+                new_sentence.append("at")
             else:
                 new_sentence.append(word)
+
         return new_sentence
 
     def pos_tagging(self, sentence):

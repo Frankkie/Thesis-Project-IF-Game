@@ -1,0 +1,21 @@
+{
+    "key": "Reactor Door North",
+    "reference_noun": "door",
+    "display_name": "north reactor door",
+    "description": "A reinforced door protects the rest of the ship from any radiation leakages.",
+    "reference_adjectives": ["north", "reactor"],
+    "as_dirobj": {
+        "Open": true, "Close": true
+    },
+    "directions": {
+        "Northeast": {
+            "room": "Life Support",
+            "desc": "The life support room is not only filled with filters and machines,\nbut also the only plants and soil away from home."
+        },
+        "Southwest": {
+            "room": "Reactor",
+            "desc": "Radiation tickles your tongue every time you enter the room."
+        }
+    },
+    "_class_": "Door"
+}

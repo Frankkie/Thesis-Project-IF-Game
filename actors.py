@@ -93,7 +93,8 @@ class Actor(Entity):
             if room.entity_state['Open'] is False and room.active_direction != direction_key:
                 raise ActionError('DoorClosedError', direction=direction_key, door=room.display_name)
 
-        direction_desc = direction["desc"]
+        new_room = game.rooms[new_room_key]
+        direction_desc = f'{new_room.display_name.capitalize()}:\n{new_room.description}'
         actor.container = new_room_key
         if self.key == "I":
             game.change_game_state("current room", new_room_key)
@@ -101,6 +102,22 @@ class Actor(Entity):
             return direction_desc
         else:
             return f"{self.display_name} is in the {game.rooms[new_room_key].display_name}."
+
+    def _on_takeoff(self, **kwargs):
+        """
+        Triggered by the Takeoff verb.
+        Changes the actor's room depending on the qualifier (direction) given.
+
+        :param kwargs:
+            Keyword args should include 'game', 'qualifier' and 'actor'
+        :return: str
+
+        """
+        game = kwargs['game']
+        planet_key = game.game_state['current planet']
+        planet = game.things[planet_key]
+        return planet.on_take_off(game=game)
+
 
 
 
