@@ -1,0 +1,14 @@
+{
+    "key": "solarsystem_de",
+    "trigger_topics": ["solar_system_space"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Sir, you can take a closer look to the system we are approaching, by using the telescope,\nby entering the system and sending drones to its planets, or actually landing on some of them.'",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

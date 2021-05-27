@@ -1,0 +1,25 @@
+{
+    "key": "push_red_button",
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "things.red button.entity_state.Pushed",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "things.red button.entity_state.Pushed",
+        "new_value_expression": "False",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "event_description": "An eerie instrumental piece starts playing. Disturbed, you turn it off after a few seconds.",
+    "done": 0,
+    "repeatable": 3,
+    "_class_": "Event"
+  }

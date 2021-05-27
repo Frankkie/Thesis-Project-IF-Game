@@ -1,0 +1,24 @@
+{
+    "key": "no_solarsystem_de",
+    "trigger_topics": ["solar_system_space"],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "game_state.current system",
+        "values": [
+          null
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Sir, I am afraid we are not close to any system!'",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

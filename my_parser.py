@@ -57,9 +57,8 @@ class PreParser:
         self.ask_short()
 
     def ask_short(self):
-        if 'ask lovkiy' in self.text:
-            if 'about' not in self.text:
-                self.text = self.text.replace('ask lovkiy', 'ask lovkiy about')
+        if 'ask about' in self.text:
+            self.text = self.text.replace('ask about', 'ask lovkiy about')
         elif 'ask' in self.text:
             if 'about' not in self.text:
                 self.text = self.text.replace('ask', 'ask lovkiy about')

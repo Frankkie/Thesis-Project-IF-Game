@@ -1,0 +1,10 @@
+{
+    "key": "solar_system_space",
+    "display_name": "solar system",
+    "reference_noun": "system",
+    "topic_quip": "'Lovkiy, what can you tell me about the solar system which we are approaching?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["solar"],
+    "is_active": true,
+    "_class_": "Topic"
+  }

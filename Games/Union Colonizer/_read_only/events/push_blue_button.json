@@ -1,0 +1,30 @@
+{
+    "key": "push_blue_button",
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "things.blue button.entity_state.Pushed",
+        "values": [
+          true
+        ],
+        "not_": false,
+        "_class_": "Condition"
+      }
+    ],
+    "game_state_changes": [
+      {
+        "attribute_path": "things.blue button.entity_state.Pushed",
+        "new_value_expression": "False",
+        "_class_": "StateUpdate"
+      },
+      {
+        "attribute_path": "actors.Lovkiy.active_convonode",
+        "new_value_expression": "'generic'",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "event_description": "Lovkiy's screen lights up. 'Hello Sir!'",
+    "done": 0,
+    "repeatable": true,
+    "_class_": "Event"
+  }

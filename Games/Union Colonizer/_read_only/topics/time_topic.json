@@ -1,0 +1,10 @@
+{
+    "key": "time_topic",
+    "display_name": "time",
+    "reference_noun": "time",
+    "topic_quip": "'What year is it Lovkiy? I can tell time passes differently...'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "is_active": false,
+    "_class_": "Topic"
+  }

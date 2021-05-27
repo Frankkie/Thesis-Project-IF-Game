@@ -302,18 +302,6 @@ class Entity:
         self.entity_state['Open'] = True
         return descr
 
-    def _on_leave(self, **kwargs):
-        pass
-
-    def _on_setup(self, **kwargs):
-        pass
-
-    def _on_enter(self, **kwargs):
-        pass
-
-    def _on_landon(self, **kwargs):
-        pass
-
     def _on_send(self, **kwargs):
         result = self.action_description["Send"]
         indirect = kwargs["indirect"]

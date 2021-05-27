@@ -1,0 +1,10 @@
+{
+    "key": "buttons_topic",
+    "display_name": "buttons",
+    "reference_noun": "buttons",
+    "topic_quip": "'Lovkiy, what do those buttons in the Bridge do?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["red", "blue"],
+    "is_active": true,
+    "_class_": "Topic"
+  }

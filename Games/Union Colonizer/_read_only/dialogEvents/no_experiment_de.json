@@ -1,0 +1,26 @@
+{
+    "key": "no_experiment_de",
+    "trigger_topics": ["no"],
+    "trigger_convonode": "experiment",
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.experiment_topic.is_active",
+        "new_value_expression": "False",
+        "_class_": "StateUpdate"
+      },
+      {
+        "attribute_path": "actors.Lovkiy.active_convonode",
+        "new_value_expression": "'generic'",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Well, sir, that's probably for the best...",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+}

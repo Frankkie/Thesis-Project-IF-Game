@@ -1,0 +1,15 @@
+{
+    "key": "experiment_de",
+    "trigger_topics": ["experiment_topic"],
+    "trigger_conditions": [],
+    "game_state_changes": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Sir, are you sure you want to know about this? Some questions are better left unanswered.'",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+      ],
+    "_class_": "DialogEvent"
+  }

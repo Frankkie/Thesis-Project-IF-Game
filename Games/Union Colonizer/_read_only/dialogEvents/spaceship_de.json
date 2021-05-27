@@ -1,0 +1,32 @@
+{
+    "key": "spaceship_de",
+    "trigger_topics": ["spaceship_topic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Ostatok 1 is a marvel of Union technology!', Lovkiy replies proudly.",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q2",
+        "text": "'It was designed in 2076, by our top space engineers.'",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q3",
+        "text": "'It is propelled by a fusion reactor and can reach up to speeds of 40% of the speed of light!'",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q4",
+        "text": "'It is capable of sustaining us for thousands of years, if need be.'",
+        "_class_": "Quip",
+        "is_repeatable": false
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

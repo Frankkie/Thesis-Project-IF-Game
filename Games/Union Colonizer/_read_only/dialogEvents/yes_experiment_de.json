@@ -1,0 +1,26 @@
+{
+    "key": "yes_experiment_de",
+    "trigger_topics": ["yes"],
+    "trigger_convonode": "experiment",
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.experiment_topic.is_active",
+        "new_value_expression": "False",
+        "_class_": "StateUpdate"
+      },
+      {
+        "attribute_path": "actors.Lovkiy.active_convonode",
+        "new_value_expression": "'generic'",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Well, sir, the truth is, you are no human anymore. I was instructed by the high command of the Union\nright after we left Earth, to experiment on you and the rest of the crew, to allow for humans to escape\ntheir mortality. There is no other way if we want to conquer the galaxy...\nI thought that my experiment was successful, if we exclude the warped perception of time that you experience.'\nYou listen to Lovkiy in total disbelief.",
+        "_class_": "Quip",
+        "is_repeatable": true
+      }
+    ],
+    "_class_": "DialogEvent"
+}

@@ -5,7 +5,22 @@
     "description": "You will never get used to the eerie darkness and cold of the Cryo Chambers.",
     "examine_description": "",
     "audible_description": "",
-    "contents": {},
+    "contents": {
+        "cryo pods": {
+            "obj": {
+                "key": "cryo pods",
+                "reference_noun": "pods",
+                "display_name": "cryo pods",
+                "description": "These are the pods where your crew-mates are hibernating.",
+                "container": "Cryo Chambers",
+                "contents": null,
+                "plural": true,
+                "reference_adjectives": [],
+                "_class_": "Fixture"
+                },
+            "tags": ["Look"]
+        }
+    },
     "directions": {
         "East": {
             "room": "Cryo Chambers Door",

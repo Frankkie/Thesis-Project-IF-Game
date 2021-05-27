@@ -1,0 +1,10 @@
+{
+    "key": "spaceship_topic",
+    "display_name": "spaceship",
+    "reference_noun": "spaceship",
+    "topic_quip": "'What can you tell me about Ostatok 1?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "is_active": true,
+    "_class_": "Topic"
+  }

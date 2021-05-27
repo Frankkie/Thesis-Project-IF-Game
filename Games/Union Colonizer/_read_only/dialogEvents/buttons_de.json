@@ -1,0 +1,14 @@
+{
+    "key": "buttons_de",
+    "trigger_topics": ["buttons_topic"],
+    "trigger_conditions": [],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'The blue button plays music, and the red button will let me know that you want to talk to me.', Lovkiy replies.",
+        "_class_": "Quip",
+        "is_repeatable": false
+      }
+    ],
+    "_class_": "DialogEvent"
+  }

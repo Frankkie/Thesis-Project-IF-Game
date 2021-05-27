@@ -2,14 +2,46 @@
   "key": "Comm Room",
   "reference_noun": "communications",
   "display_name": "communications room",
-  "description": "",
+  "description": "This is the room where messages are received and transmitted.",
   "examine_description": "",
   "audible_description": "",
-  "contents": {},
+  "contents": {
+      "monitor": {
+          "obj": {
+              "key": "monitor",
+              "reference_noun": "monitor",
+              "display_name": "monitor",
+              "description": "This is an old monitor.",
+              "container": "Comm Room",
+              "contents": {
+                  "messages": {
+                      "obj": {
+                          "key": "messages",
+                          "reference_noun": "messages",
+                          "display_name": "messages",
+                          "description": "There are message notifications showing up on the monitor.",
+                          "container": "monitor",
+                          "contents": null,
+                          "plural": true,
+                          "reference_adjectives": ["unread"],
+                          "_class_": "Thing",
+                          "as_dirobj": {"Read": true},
+                          "action_description": {"Read": "You open a notification, and begin listening to the message."}
+                          },
+                      "tags": ["Look"]
+                  }
+              },
+              "plural": false,
+              "reference_adjectives": ["grey"],
+              "_class_": "Fixture"
+              },
+          "tags": ["Look", "Inventory"]
+      }
+  },
   "directions": {
     "North": {
           "room": "Bridge",
-          "desc": ""
+          "desc": "North of the communications room is the bridge."
       }
   },
   "_class_": "Room"

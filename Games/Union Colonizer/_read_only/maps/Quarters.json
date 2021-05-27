@@ -6,7 +6,55 @@
   "plural": true,
   "examine_description": "",
   "audible_description": "",
-  "contents": {},
+  "contents": {
+      "bed": {
+          "obj": {
+              "key": "bed",
+              "reference_noun": "bed",
+              "display_name": "bed",
+              "description": "This is your bed.",
+              "container": "Quarters",
+              "contents": null,
+              "plural": false,
+              "reference_adjectives": [],
+              "_class_": "Fixture"
+              },
+          "tags": ["Look"]
+      },
+      "drawer": {
+          "obj": {
+              "key": "drawer",
+              "reference_noun": "drawer",
+              "display_name": "drawer",
+              "description": "This is your drawer.",
+              "container": "Quarters",
+              "contents": {
+                  "journal": {
+                      "obj": {
+                          "key": "journal",
+                          "reference_noun": "journal",
+                          "display_name": "journal",
+                          "description": "This is a red journal.",
+                          "container": "drawer",
+                          "contents": null,
+                          "plural": false,
+                          "reference_adjectives": ["red"],
+                          "_class_": "Movable",
+                          "as_dirobj": {"Read": true},
+                          "action_description": {
+                            "Read": "You try to read your journal. 'Curious' you think, you don't remember keeping a journal at all.\nYou flip through the pages and there is nothing more than faded incomprehensible scribbles\nstaining the yellow paper."
+                          }
+                      },
+                      "tags": ["Look", "Inventory", "In"]
+                  }
+              },
+              "plural": false,
+              "reference_adjectives": [],
+              "_class_": "OpenableContainer"
+              },
+          "tags": ["Look"]
+      }
+  },
   "directions": {
       "Northeast": {
           "room": "Quarters Door",

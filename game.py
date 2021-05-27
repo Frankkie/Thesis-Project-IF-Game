@@ -316,12 +316,20 @@ class Game:
                 new_things[system.key] = system
                 for planet in system.contents.keys():
                     new_things[planet] = system.contents[planet]['obj']
+            else:
+                self.currents['system'] = None
+        else:
+            self.currents['system'] = None
 
         if 'current planet' in self.game_state.keys():
             planet_key = self.game_state['current planet']
             if planet_key:
                 planet = self.things[planet_key]
                 self.currents['planet'] = planet
+            else:
+                self.currents['planet'] = None
+        else:
+            self.currents['planet'] = None
 
         self.things = new_things
 

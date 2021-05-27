@@ -1,0 +1,10 @@
+{
+    "key": "experiment_topic",
+    "display_name": "experiment",
+    "reference_noun": "experiment",
+    "topic_quip": "'Lovkiy, what do you mean? What kind of experiment?' you ask worryingly.",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": ["secret"],
+    "is_active": false,
+    "_class_": "Topic"
+  }

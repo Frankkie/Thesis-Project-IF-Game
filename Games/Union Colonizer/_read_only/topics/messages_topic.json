@@ -1,0 +1,10 @@
+{
+    "key": "messages_topic",
+    "display_name": "messages",
+    "reference_noun": "messages",
+    "topic_quip": "'Lovkiy, when are these messages from?'",
+    "actor_key": "Lovkiy",
+    "reference_adjectives": [],
+    "is_active": false,
+    "_class_": "Topic"
+  }

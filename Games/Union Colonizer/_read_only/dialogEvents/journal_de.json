@@ -1,0 +1,33 @@
+{
+    "key": "journal_de",
+    "trigger_topics": ["journal_topic"],
+    "trigger_conditions": [],
+    "game_state_changes": [
+      {
+        "attribute_path": "topics.time_topic.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
+      }
+    ],
+    "quips": [
+      {
+        "key": "q1",
+        "text": "'Sir, I would never look through your stuff!', Lovkiy replies.\n'That was not my question!' you think out loud.",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q2",
+        "text": "'I don't think we should be talking about this, Sir!'",
+        "_class_": "Quip",
+        "is_repeatable": false
+      },
+      {
+        "key": "q3",
+        "text": "'Fine, I will tell you! I was not supposed to, but we are all alone now, aren't we?,\nLovkiy replies angrily. 'It has to do with the experiment.'",
+        "_class_": "Quip",
+        "is_repeatable": false
+      }
+    ],
+    "_class_": "DialogEvent"
+  }
