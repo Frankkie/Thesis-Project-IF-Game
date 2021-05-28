@@ -41,7 +41,7 @@
     "examine_description": "Taking a closer look with your binoculars, it's actually alive, but it's like nothing you've seen before...",
     "container": "",
     "action_description": {
-      "Take": "You try to run after the alien creature. It runs fast but you catch it.\nIt cries out an ugly screech as it tries to free itself."
+      "Take": "You try to run after the alien creature. It runs fast but you catch it. It cries out an ugly screech as it tries to free itself."
     },
     "_class_": "Movable"
   },
@@ -52,7 +52,7 @@
     "reference_adjectives": ["rusty", "metal"],
     "display_name": "rusty object",
     "description": "A rusty metal object protrudes from the surface.",
-    "examine_description": "Can it be? This is clearly metallic, and obviously made with intent.\nCan it be an ancient remnant of a long gone alien civilization?",
+    "examine_description": "Can it be? This is clearly metallic, and obviously made with intent. Can it be an ancient remnant of a long gone alien civilization?",
     "container": "",
     "_class_": "Movable"
   },
@@ -63,7 +63,7 @@
     "reference_adjectives": ["shiny", "metal"],
     "display_name": "shiny object",
     "description": "A shiny metal object protrudes from the surface.",
-    "examine_description": "Can it be? This is clearly metallic, and obviously made with intent.\nCan it be an ancient remnant of a long gone alien civilization?",
+    "examine_description": "Can it be? This is clearly metallic, and obviously made with intent. Can it be an ancient remnant of a long gone alien civilization?",
     "container": "",
     "_class_": "Movable"
   },

@@ -160,8 +160,8 @@ class IntroChapterUnionColonizer(IntroChapter):
             game.display.output()
             answer = game.display.fetch()
             if answer != 'y':
-                for sentence in self.intro_description:
-                    game.display.queue(sentence, "ChapterStart")
+                self.intro_description = "".join(self.intro_description)
+                game.display.queue(self.intro_description, "ChapterStart")
                 game.display.output()
 
             import re

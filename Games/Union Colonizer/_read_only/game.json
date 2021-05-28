@@ -1,6 +1,6 @@
 {
   "title": "Union Colonizer",
-  "credits_": "by Christos Frantzolas for his Diploma Thesis.\nDepartment of Electrical and Computer Engineering, University of Patras, Greece.",
+  "credits_": "\nby Christos Frantzolas for his Diploma Thesis.\nDepartment of Electrical and Computer Engineering, University of Patras, Greece.",
   "game_state": {
     "current room": "Cryo Chambers",
     "current chapter": "Intro",

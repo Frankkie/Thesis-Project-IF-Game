@@ -63,7 +63,7 @@ class ConvoNode:
     def handle_topic(self, actor, topic_key, game):
 
         next_node = self.switch_node(topic_key)
-        print(self.key, next_node)
+
         if not next_node:
             return [self.generic_not_allowed_desc]
 

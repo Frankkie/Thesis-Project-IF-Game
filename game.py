@@ -18,6 +18,7 @@ from solar_system_generator import SolarSystemGenerator
 
 class Game:
     def __init__(self, title, credits_, game_state=None, seed=0, last_save_key=None):
+        self.app = None
         self.title = title
         self.credits = credits_
         self.game_state = game_state
@@ -51,6 +52,12 @@ class Game:
         self.last_save_key = last_save_key
         self.loader.load_chapter(self.game_state["current chapter"], start=True)
         self.refresh_things()
+
+        while not self.app:
+            pass
+
+        self.app.game = self
+        self.app.game_screen.game = self
 
         if replay:
             self.replay_game()

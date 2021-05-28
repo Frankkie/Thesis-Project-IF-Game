@@ -22,7 +22,7 @@
     "quips": [
       {
         "key": "q1",
-        "text": "'There are enough bio-signatures to suggest the existence of complex life on the planet.\nThat is, animals!', Lovkiy replies.",
+        "text": "'There are enough bio-signatures to suggest the existence of complex life on the planet. That is, animals!', Lovkiy replies.",
         "_class_": "Quip",
         "is_repeatable": true
       }
