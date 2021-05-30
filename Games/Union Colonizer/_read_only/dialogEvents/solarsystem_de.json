@@ -1,7 +1,17 @@
 {
     "key": "solarsystem_de",
     "trigger_topics": ["solar_system_space"],
-    "trigger_conditions": [],
+    "trigger_conditions": [
+      {
+        "key": "c1",
+        "attribute_path": "currents.system",
+        "values": [
+          null
+        ],
+        "not_": true,
+        "_class_": "Condition"
+      }
+    ],
     "quips": [
       {
         "key": "q1",
