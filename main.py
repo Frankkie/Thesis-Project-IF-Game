@@ -1,7 +1,6 @@
 import threading
-from app import MyApp
 from init_all import Initializer
-import sys
+from app import MyApp
 
 
 class GameThread(threading.Thread):
@@ -14,20 +13,8 @@ class GameThread(threading.Thread):
         self.replay = replay
 
     def run(self):
-        if self.replay:
-            self.init.replay_game()
-        else:
-            self.init.load_game()
+        self.init.load_game(self.replay)
 
 
-answer = input("REPLAY? (y/n): ")
-if answer == "y":
-    replay = True
-else:
-    replay = False
+MyApp(GameThread()).run()
 
-init = GameThread(replay=replay)
-
-MyApp(init).run()
-
-sys.exit(0)

@@ -43,8 +43,10 @@ class Game:
         self.dialogevents = {}
         self.events = {}
         self.currents = {}
+        self.quit = False
+        self.replay = False
 
-    def boot_game(self, actors, verbs, chapters, display, last_save_key, replay=False):
+    def boot_game(self, actors, verbs, chapters, display, last_save_key):
         self.actors = actors
         self.verbs = verbs
         self.chapters = chapters
@@ -56,22 +58,14 @@ class Game:
         while not self.app:
             pass
 
-        self.app.game = self
-        self.app.game_screen.game = self
-
-        if replay:
+        if self.replay:
             self.replay_game()
 
         start_log(self)
+
         self.display.queue("", "Initial")
         self.display.output()
-        # Print boot up description
-        # begin = self.get_command("Do you want to begin? (y/n) ")
-        begin = "y"
-        if begin == "y":
-            self.start_game()
-        else:
-            self.quit_game()
+        self.start_game()
 
     def start_game(self):
         self.game_state["new game"] = False
@@ -138,12 +132,10 @@ class Game:
             pc_command = command
             self.display.queue(command, "Replay")
             self.display.output()
-
         # Preparse command.
         self.preparser.run_preparser(pc_command)
         pc_command = self.preparser.text
         cmd_type = self.preparser.cmd_type
-
         # If this is a parsable command
         if cmd_type == "Command":
             self.parsable_command(pc_command)
@@ -285,6 +277,9 @@ class Game:
             self.end_game()
 
         self.timer.stopped = True
+        self.quit = True
+        self.display.queue("You can now close the window.", "Prompt")
+        self.display.output()
         sys.exit(0)
 
     def refresh_things(self):
