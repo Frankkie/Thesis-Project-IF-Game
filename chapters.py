@@ -160,8 +160,8 @@ class IntroChapterUnionColonizer(IntroChapter):
             game.display.output()
             answer = game.display.fetch()
             if answer != 'y':
-                for sentence in self.intro_description:
-                    game.display.queue(sentence, "ChapterStart")
+                self.intro_description = "".join(self.intro_description)
+                game.display.queue(self.intro_description, "ChapterStart")
                 game.display.output()
 
             import re
@@ -182,11 +182,11 @@ class IntroChapterUnionColonizer(IntroChapter):
                     answer = int(answer)
                 except ValueError:
                     continue
-                if answer > 2040:
-                    game.display.queue('Please give me a year before 2040.', 'Error')
+                if answer > 2050:
+                    game.display.queue('Please give me a year before 2050.', 'Error')
                     game.display.output()
-                elif answer < 2000:
-                    game.display.queue('Please give me a year after 1999.', 'Error')
+                elif answer < 2020:
+                    game.display.queue('Please give me a year after 2020.', 'Error')
                     game.display.output()
                 else:
                     year = answer
@@ -311,7 +311,8 @@ class SpaceChapter(Chapter):
 
         res = self.new_solar_system(game)
         if res:
-            game.display.queue(res, "ChapterEvent")
+            game.display.queue(res, "Dialog")
+            game.display.output()
 
         for event in game.events.values():
             if event.eval_conditions(game):

@@ -21,7 +21,7 @@
     "quips": [
       {
         "key": "q1",
-        "text": "'By analyzing the chemical compounds on the surface, I can tell there is industrial activity on this planet.\nWe should get out of here immediately!', Lovkiy replies in terror. 'Can AI feel fear?', you ponder.",
+        "text": "'By analyzing the chemical compounds on the surface, I can tell there is industrial activity on this planet. We should get out of here immediately!', Lovkiy replies in terror. 'Can AI feel fear?', you ponder.",
         "_class_": "Quip",
         "is_repeatable": true
       }

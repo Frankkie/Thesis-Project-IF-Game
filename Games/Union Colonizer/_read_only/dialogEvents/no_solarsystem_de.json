@@ -1,17 +1,7 @@
 {
     "key": "no_solarsystem_de",
     "trigger_topics": ["solar_system_space"],
-    "trigger_conditions": [
-      {
-        "key": "c1",
-        "attribute_path": "game_state.current system",
-        "values": [
-          null
-        ],
-        "not_": false,
-        "_class_": "Condition"
-      }
-    ],
+    "trigger_conditions": [],
     "quips": [
       {
         "key": "q1",

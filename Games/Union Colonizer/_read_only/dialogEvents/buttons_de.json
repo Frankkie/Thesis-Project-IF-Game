@@ -5,7 +5,7 @@
     "quips": [
       {
         "key": "q1",
-        "text": "'The blue button plays music, and the red button will let me know that you want to talk to me.', Lovkiy replies.",
+        "text": "'The red button plays music, and the blue button will let me know that you want to talk to me.', Lovkiy replies.",
         "_class_": "Quip",
         "is_repeatable": false
       }

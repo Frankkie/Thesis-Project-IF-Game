@@ -32,7 +32,7 @@
         "_class_": "StateUpdate"
       }
     ],
-    "event_description": "You realize that the aliens will soon find you.\nYou have to leave this place before it's too late.",
+    "event_description": "You realize that the aliens will soon find you. You have to leave this place before it's too late.",
     "done": 0,
     "repeatable": true,
     "_class_": "Event"

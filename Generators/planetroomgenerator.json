@@ -1,117 +1,117 @@
 {
   "desert": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "A vast desert lays before your eyes.",
     "audible": "You can hear nothing the sound of the wind hurling against the sand dunes."
   },
   "oasis": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "Among the sandy hills of this wasteland, an improbable oasis.",
     "audible": "You can hear the sound of water flowing somewhere close to you."
   },
   "canyon": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "A huge canyon scars the landscape, splitting it in half.",
     "audible": "You only hear the sound of wind rushing through the canyon."
   },
   "mountain": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "A tall mountain stands before you.",
     "audible": "You can hear the sound of the wind whistling."
   },
   "crater": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "A large crater is here, indicating a past violent collision.",
     "audible": "You can hear the sound of "
   },
   "volcano": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "A volcano stands in your way, spewing hot magma everywhere.",
     "audible": "You can hear the sound of the wind whistling."
   },
   "ocean": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "A vast ocean lies before your eyes, no land in sight.",
     "audible": "You can hear the sound of the waves and the wind."
   },
   "glacier": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "In this part of the planet, a frozen glacier can be found.",
     "audible": "You can hear the sound of ice cracking beneath your feet."
   },
   "river": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "A river flows before you, reminding you of your childhood village besides a river on Earth.",
     "audible": "You can hear the sound of water flowing."
   },
   "island": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "Surrounded by water on all sides, a lonely island appears in the horizon.",
     "audible": "You can hear the sound of the waves crushing on the island's shore."
   },
   "forest": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
-    "description": "Suddenly, you find yourself in an alien forest.\nOr at least, the closest thing to a forest that you can find on such a planet.",
+    "description": "Suddenly, you find yourself in an alien forest. Or at least, the closest thing to a forest that you can find on such a planet.",
     "audible": "You can hear the sound of wild animals at the distance."
   },
   "city": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "You find yourself near a city. But these are not humans...",
     "audible": "You hear the sounds of industry and crowds."
   },
   "abandoned city": {
     "templates": [
-      "You look up at the sky to see the system's {num_stars} star{star_plural} shining.\nThe sky is tinted in its usual {sky_color} color.",
-      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}.\n{clouds}{rings}",
-      "{atmosphere}\n{temperature}\n{radiation}"
+      "You look up at the sky to see the system's {num_stars} star{star_plural} shining. The sky is tinted in its usual {sky_color} color.",
+      "In the sky you can see the planet's {num_satellites} moon{satellite_plural}. {clouds}{rings}",
+      "{atmosphere} {temperature} {radiation}"
     ],
     "description": "Sticking through the ground are the remnants of an alien city! You marvel at the abandoned rubles.",
     "audible": "You can hear nothing but the wind. There is an eeriness to it."

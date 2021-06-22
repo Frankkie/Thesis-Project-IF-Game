@@ -27,23 +27,6 @@ class Initializer:
         self.display.game = self.game
         self.game.boot_game(**game_args)
 
-    def replay_game(self):
-        game_name = "Union Colonizer"
-        self.loader = Loader(game_name, None)
-        dct, game_args = self.loader.load_game(self.display)
-        self.game = Game(**dct)
-        self.display.game = self.game
-        self.game.boot_game(**game_args, replay=True)
-
-
-if __name__ == "__main__":
-    init = Initializer()
-    n = input("REPLAY? (y/n): ")
-    if n == "y":
-        init.replay_game()
-    else:
-        init.load_game()
-
 
 
 

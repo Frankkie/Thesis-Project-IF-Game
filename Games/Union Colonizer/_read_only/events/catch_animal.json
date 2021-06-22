@@ -27,7 +27,7 @@
         "_class_": "StateUpdate"
       }
     ],
-    "event_description": "You hear something screech back. But it's much louder.\nA huge worm-like beast appears before you, and kills you with just one bite.",
+    "event_description": "You hear something screech back. But it's much louder. A huge worm-like beast appears before you, and kills you with just one bite.",
     "done": 0,
     "repeatable": true,
     "_class_": "Event"

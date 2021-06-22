@@ -5,6 +5,11 @@ class Display:
         self.game = game
         self.text = None
         self._output_queue = []
+        self.letter_default_color = 'dddddd'
+        self.prompt_color = '33ff33'
+        self.help_color = 'ffcc00'
+        self.error_color = "ffb000"
+        self.dialog_color = '00ff66'
 
     def queue(self, text, text_type):
         self._output_queue.append((text, text_type))
@@ -13,18 +18,20 @@ class Display:
         self._output_queue = []
 
     def output(self):
-        print()
+        self.print_on_screen()
+
         for element in self._output_queue:
             self.display(element[0], element[1])
         self.empty_queue()
 
     def display(self, text, text_type):
+
         try:
-            self.text = text.rstrip()
-            self.text = self.text.replace('\n\n\n', '\n')
+            self.text = text.replace('\n\n\n', '\n')
             self.text = self.text.replace('\n\n', '\n')
         except (TypeError, AttributeError):
             self.text = text
+
         if text_type == "Error":
             self.__display_error(text)
         elif text_type == "Initial":
@@ -53,55 +60,84 @@ class Display:
             self.__display_specify()
 
     def fetch(self):
-        text = input()
-        return text
+        command = None
+        while not command:
+            command = self.game.app.game_screen.current_command
+        self.game.app.game_screen.current_command = None
+        self.print_on_screen()
+        return command
 
     def __display_prompt(self):
-        print()
-        print(self.text, end=" > ")
+        self.print_on_screen()
+        self.print_on_screen(self.text, end="> ", color=self.prompt_color)
 
     def __display_error(self, error):
-        print(error.rstrip())
+        self.print_on_screen()
+        self.print_on_screen(error.rstrip(), color=self.error_color)
+        self.print_on_screen()
 
     def __display_action(self, text):
-        print(text.rstrip())
+        self.print_on_screen()
+        self.print_on_screen(text.rstrip(), color=self.letter_default_color)
+        self.print_on_screen()
 
     def __display_dialog(self, text):
-        print(text[0])
-        try:
-            for r in text[1]:
-                print(r.rstrip())
-        except IndexError:
-            pass
+        self.print_on_screen()
+        if type(text) == str:
+            self.print_on_screen(text, color=self.dialog_color)
+        else:
+            self.print_on_screen(text[0], color=self.dialog_color)
+            try:
+                for r in text[1]:
+                    self.print_on_screen()
+                    self.print_on_screen(r.rstrip(), color=self.dialog_color)
+            except IndexError:
+                pass
+        self.print_on_screen()
 
     def __display_chapter_event(self):
+        self.print_on_screen()
         if type(self.text) == list:
             for result in self.text:
-                print(result.rstrip())
+                self.print_on_screen()
+                self.print_on_screen(result, color=self.letter_default_color)
+
         else:
-            print(self.text.rstrip())
+            self.print_on_screen(self.text, color=self.letter_default_color)
+        self.print_on_screen()
 
     def __display_init(self):
-        print()
-        print(self.game.title)
-        print(self.game.credits)
-        print()
+        self.print_on_screen(self.game.title, color=self.help_color)
+        self.print_on_screen(self.game.credits, color=self.help_color)
+        self.print_on_screen('\n\n')
 
     def __display_help(self):
-        print(self.text.rstrip())
+        self.print_on_screen()
+        self.print_on_screen(self.text, color=self.help_color)
 
     def __display_undo(self):
-        print("Your mistake has been forgiven!")
+        self.print_on_screen()
+        self.print_on_screen("Your mistake has been forgiven!", color=self.help_color)
 
     def __display_save(self):
-        print("Game saved!")
+        self.print_on_screen()
+        self.print_on_screen("Game saved!", color=self.help_color)
 
     def __display_quit(self):
-        print("You quit '%s'! Such a shame." % self.game.title)
+        self.print_on_screen()
+        self.print_on_screen("You quit '%s'! Such a shame." % self.game.title, color=self.help_color)
 
     def __display_replay(self):
-        print()
-        print(" > " + self.text)
+        self.print_on_screen()
+        self.print_on_screen("> " + self.text, color=self.prompt_color)
 
     def __display_specify(self):
-        print(self.text)
+        self.print_on_screen()
+        self.print_on_screen(self.text, color=self.help_color)
+
+    def print_on_screen(self, text='\n', **kwargs):
+        if 'end' in kwargs.keys():
+            text += kwargs['end']
+        if 'color' in kwargs.keys():
+            text = f'[color={kwargs["color"]}]{text}[/color]'
+        self.game.app.game_screen.history.update_game_history(text)

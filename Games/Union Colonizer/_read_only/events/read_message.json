@@ -16,6 +16,11 @@
         "attribute_path": "things.messages.entity_state.Read",
         "new_value_expression": "False",
         "_class_": "StateUpdate"
+      },
+      {
+        "attribute_path": "topics.messages_topic.is_active",
+        "new_value_expression": "True",
+        "_class_": "StateUpdate"
       }
     ],
     "event_description": "The first messages are all from right after the Treason of 2089. Those horrible years.\nWhoever survived from the command had to go underground. As the years pass the messages become\nmore sporadic, more enigmatic. They speak of an experiment. Of what sort is this experiment though?",

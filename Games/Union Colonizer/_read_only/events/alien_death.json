@@ -36,7 +36,7 @@
         "_class_": "StateUpdate"
       }
     ],
-    "event_description": "Despite your desperate attempt to escape, the inhabitants of this planet capture you.\nThe last days of your life are spent inside a medical chamber where the aliens torture you.",
+    "event_description": "Despite your desperate attempt to escape, the inhabitants of this planet capture you. The last days of your life are spent inside a medical chamber where the aliens torture you.",
     "done": 0,
     "repeatable": true,
     "_class_": "Event"

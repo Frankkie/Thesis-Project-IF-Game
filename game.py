@@ -18,6 +18,7 @@ from solar_system_generator import SolarSystemGenerator
 
 class Game:
     def __init__(self, title, credits_, game_state=None, seed=0, last_save_key=None):
+        self.app = None
         self.title = title
         self.credits = credits_
         self.game_state = game_state
@@ -42,8 +43,10 @@ class Game:
         self.dialogevents = {}
         self.events = {}
         self.currents = {}
+        self.quit = False
+        self.replay = False
 
-    def boot_game(self, actors, verbs, chapters, display, last_save_key, replay=False):
+    def boot_game(self, actors, verbs, chapters, display, last_save_key):
         self.actors = actors
         self.verbs = verbs
         self.chapters = chapters
@@ -52,19 +55,17 @@ class Game:
         self.loader.load_chapter(self.game_state["current chapter"], start=True)
         self.refresh_things()
 
-        if replay:
+        while not self.app:
+            pass
+
+        if self.replay:
             self.replay_game()
 
         start_log(self)
+
         self.display.queue("", "Initial")
         self.display.output()
-        # Print boot up description
-        # begin = self.get_command("Do you want to begin? (y/n) ")
-        begin = "y"
-        if begin == "y":
-            self.start_game()
-        else:
-            self.quit_game()
+        self.start_game()
 
     def start_game(self):
         self.game_state["new game"] = False
@@ -131,12 +132,10 @@ class Game:
             pc_command = command
             self.display.queue(command, "Replay")
             self.display.output()
-
         # Preparse command.
         self.preparser.run_preparser(pc_command)
         pc_command = self.preparser.text
         cmd_type = self.preparser.cmd_type
-
         # If this is a parsable command
         if cmd_type == "Command":
             self.parsable_command(pc_command)
@@ -243,19 +242,18 @@ class Game:
         for verb in self.verbs.values():
             v_name = verb.name
             v_descr = verb.description
-            text += f'{v_name}: {v_descr}\n'
+            text += f'    - {v_name}: {v_descr}\n'
         text += '\n\n- Inventory:\n'
         for thing in self.actors['I'].contents.values():
             thing = thing['obj']
             thing_noun = thing.reference_noun
             thing_adj = thing.reference_adjectives
-            text += f'{thing_noun}: {thing_adj}. '
+            text += f'    - {thing_noun}\n'
         text += '\n\n- Topics:\n'
         for topic in self.topics.values():
             if topic.is_active:
                 topic_noun = topic.reference_noun
-                topic_adj = topic.reference_adjectives
-                text += f'{topic_noun}: {topic_adj}. '
+                text += f'    - {topic_noun}\n'
 
         text += '\n'
         self.display.queue(text, "Help")
@@ -267,6 +265,7 @@ class Game:
         self.end_game()
 
     def end_game(self):
+        self.app.game_screen.stop_music()
         self.display.queue("Do you want to save this game? (y/n)", "Prompt")
         self.display.output()
         reply = self.display.fetch()
@@ -278,6 +277,7 @@ class Game:
             self.end_game()
 
         self.timer.stopped = True
+        self.quit = True
         sys.exit(0)
 
     def refresh_things(self):

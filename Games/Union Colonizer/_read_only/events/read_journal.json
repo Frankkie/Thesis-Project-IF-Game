@@ -23,7 +23,7 @@
         "_class_": "StateUpdate"
       }
     ],
-    "event_description": "You look at some of the dates on the entries: 2094, 2178, 2196, 2277, 2456, 2892...\n'That's impossible', you think. 'The year is 2293! Am I going mad?'",
+    "event_description": "You look at some of the dates on the entries: 2094, 2178, 2196, 2277, 2456, 2892... 'That's impossible', you think. 'The year is still 2377, isn't it?! Am I going mad?'",
     "done": 0,
     "repeatable": 1,
     "_class_": "Event"
