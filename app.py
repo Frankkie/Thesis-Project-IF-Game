@@ -5,6 +5,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.text import LabelBase
 
 import os
+import time
 
 from game_screen import GamePage
 
@@ -24,7 +25,8 @@ LabelBase.register(name='Invasion2000',
 class MyApp(App):
     def __init__(self, init_object, **kwargs):
         super(MyApp, self).__init__(**kwargs)
-        init_object.start()
+        self.init_object = init_object
+        self.init_object.start()
         self.sm = ScreenManager()
         screen = Screen(name='Main')
         self.game = None
@@ -38,11 +40,4 @@ class MyApp(App):
         return self.sm
 
     def exit_check(self, *args):
-        if not self.game:
-            return False
-
-        if not self.game.quit:
-            return True
-        else:
-            self.game_screen.player.pause = True
-            return False
+        return False

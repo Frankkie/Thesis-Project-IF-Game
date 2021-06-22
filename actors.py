@@ -6,9 +6,10 @@ Classes:
 
 """
 
+import json
+
 from entities import Entity
 from errors import ActionError
-import json
 
 
 class Actor(Entity):

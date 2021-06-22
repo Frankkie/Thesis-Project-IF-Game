@@ -58,7 +58,7 @@
     "alternate_intro": "Your Great Journey for restoring the Union continues, in search for a different solar system...",
     "outro_description": {},
     "first_room": null,
-    "sol_time": 200,
+    "sol_time": 1,
     "map_files": ["Cryo Chambers", "Bridge", "Comm Room", "Cryo Chambers Door", "Engines", "Engines Door",
     "Life Support", "Life Support Door", "Quarters", "Quarters Door", "Reactor", "Reactor Door North",
     "Reactor Door South"],
@@ -78,7 +78,7 @@
     "intro_description": [
       "As you enter the {system_name} System, you see its {num_planets} planets show more clearly, its star{star_plural} shining a bright light upon your fleet, after years of darkness.",
       "The light of the system's star{star_plural} warms up your vessel. {system_name}'s {num_planets} planets are now more visible, at first as dim dots, then as clear stars hanging through the nothingness.",
-      "Your vessel decelerates as you enter the {system_name} system. Under the light of its star{star_plural}, its {num_planets} get brighter as you get closer."
+      "Your vessel decelerates as you enter the {system_name} system. Under the light of its star{star_plural}, its {num_planets} planets get brighter as you get closer."
     ],
     "alternate_intro": "You return amongst the {system_name}'s {num_planets} planets. ",
     "outro_description": {

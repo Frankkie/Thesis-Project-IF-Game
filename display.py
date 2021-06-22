@@ -83,13 +83,16 @@ class Display:
 
     def __display_dialog(self, text):
         self.print_on_screen()
-        self.print_on_screen(text[0], color=self.dialog_color)
-        try:
-            for r in text[1]:
-                self.print_on_screen()
-                self.print_on_screen(r.rstrip(), color=self.dialog_color)
-        except IndexError:
-            pass
+        if type(text) == str:
+            self.print_on_screen(text, color=self.dialog_color)
+        else:
+            self.print_on_screen(text[0], color=self.dialog_color)
+            try:
+                for r in text[1]:
+                    self.print_on_screen()
+                    self.print_on_screen(r.rstrip(), color=self.dialog_color)
+            except IndexError:
+                pass
         self.print_on_screen()
 
     def __display_chapter_event(self):
@@ -131,7 +134,6 @@ class Display:
     def __display_specify(self):
         self.print_on_screen()
         self.print_on_screen(self.text, color=self.help_color)
-        self.print_on_screen('\n> ', color=self.prompt_color)
 
     def print_on_screen(self, text='\n', **kwargs):
         if 'end' in kwargs.keys():

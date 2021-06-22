@@ -25,7 +25,7 @@ class SolarSystemGenerator:
         self.star_type_weights = generator_data['star_type_weights']
         self.planet_numbers = generator_data['planet_numbers']
         self.planet_numbers_weights = generator_data['planet_numbers_weights']
-        self.distances = [4]
+        self.distances = [4.0]
         self.descriptions_generator = PlanetDescriptionGenerator(self.seed)
         self.planet_room_generator = PlanetRoomGenerator(self.seed, limit=limit)
         self.landingdescriptiongenerator = LandingDescriptionGenerator(self.seed)
@@ -37,7 +37,7 @@ class SolarSystemGenerator:
 
         np.random.seed(name_seed)
 
-        num_stars = np.random.choice(self.star_numbers, p=self.star_number_weights)
+        num_stars = int(np.random.choice(self.star_numbers, p=self.star_number_weights))
 
         star_names = []
         if num_stars == 1:
@@ -64,12 +64,13 @@ class SolarSystemGenerator:
                     habitable = False
                     break
 
-        num_planets = np.random.choice(self.planet_numbers, p=self.planet_numbers_weights)
+        num_planets = int(np.random.choice(self.planet_numbers, p=self.planet_numbers_weights))
 
         if num_planets == 0:
             habitable = False
 
         distance = self.distances[-1] + np.random.exponential(scale=5.0)
+        distance = float(distance)
         self.distances.append(distance)
 
         sl = SolarSystem(key=name, reference_noun='system', display_name=name, reference_adjectives=['solar', name],
@@ -87,6 +88,7 @@ class SolarSystemGenerator:
         system_seed = int(system_seed) % (10 ** 8)
         if system_seed in self.generated:
             return self.hash_system_name(name + 'a')
+        system_seed = int(system_seed)
         self.generated.add(system_seed)
         return system_seed
 
@@ -101,19 +103,19 @@ class SolarSystemGenerator:
 
         if len(solar_system.star_names) > 3:
             descr += "The systems' many stars seem to be pulling on its planets in random ways, " \
-                     "generating highly elliptical orbits.\n"
+                     "generating highly elliptical orbits. "
         if 'Blue Giant' in solar_system.star_types or 'Red Giant' in solar_system.star_types:
             descr += "The system is obviously dominated by its most Giant star, " \
-                     "casting incredible amounts of radiation everywhere.\n"
+                     "casting incredible amounts of radiation everywhere. "
         if 'White Dwarf' in solar_system.star_types \
                 or 'Black Hole' in solar_system.star_types \
                 or 'Neutron Star' in solar_system.star_types:
-            descr += "The remnants of a long gone star are present here, indicating a violent past.\n"
+            descr += "The remnants of a long gone star are present here, indicating a violent past. "
         if 'Blue Giant' not in solar_system.star_types \
                 and 'Read Giant' not in solar_system.star_types \
                 and 'Yellow Dwarf' not in solar_system.star_types \
                 and 'Red Dwarf' not in solar_system.star_types:
-            descr += "The system is barely lit by its dim 'stars'."
+            descr += "The system is barely lit by its dim 'stars'. "
         solar_system.action_description['On Use telescope'] = descr
 
     def generate_descriptions(self, solarsystem):
@@ -176,7 +178,7 @@ class PlanetGenerator:
             planet_type = np.random.choice(self.planet_types, p=self.planet_types_weights)
             planet['planet_type'] = planet_type
             num_satellites = np.random.choice(self.num_satellites, p=self.num_satellites_weights)
-            planet['num_satellites'] = num_satellites
+            planet['num_satellites'] = int(num_satellites)
             temperature = np.random.choice(self.temperature_types, p=self.temperature_types_weights)
             planet['temperature'] = temperature
 
@@ -212,7 +214,7 @@ class PlanetGenerator:
                     lifeforms = np.random.choice(["No Life", "Former Advanced Life"], p=[0.9, 0.1])
 
                 if lifeforms in {"Primordial Life", "Animal Life", "Former Advanced Life"}:
-                    dangerous_lifeforms = np.random.choice([True, False])
+                    dangerous_lifeforms = bool(np.random.choice([True, False]))
                 elif lifeforms == "Advanced Life":
                     dangerous_lifeforms = True
 
@@ -225,14 +227,14 @@ class PlanetGenerator:
             planet['lifeforms'] = lifeforms
             planet['dangerous_lifeforms'] = dangerous_lifeforms
             planet['colonizable'] = colonizable
-            planet['examine_description'] = 'Examining this planet further that far away is impossible.\n' \
+            planet['examine_description'] = 'Examining this planet further that far away is impossible. ' \
                                             'You have to enter its parent system to take a closer look.'
             planet['is_known'] = True
             planet['as_dirobj'] = {'Look': True, 'Landon': True}
             planet['as_indobj'] = {'To': True}
             planet['action_description'] = {'On Send': "Sent drones!",
                                             'On Use telescope': 'Examining this planet further that far away is '
-                                                                'impossible.\nYou have to enter its parent system '
+                                                                'impossible. You have to enter its parent system '
                                                                 'to take a closer look.',
                                             'Landon': 'You are slowly descending onto {name}.',
                                             'Takeoff': 'You leave {name} behind.'}
@@ -329,7 +331,7 @@ class PlanetDescriptionGenerator:
         description = f'{self.generator_data["descriptions"][planet.planet_type]}' \
                       f'There {"are" if planet.num_satellites != 1 else "is"} ' \
                       f'{planet.num_satellites} satellite{"s" if planet.num_satellites != 1 else ""} ' \
-                      f'orbiting around it.\n{self.generator_data["descriptions"][rings]}' \
+                      f'orbiting around it. {self.generator_data["descriptions"][rings]}' \
                       f'{self.generator_data["descriptions"][planet.entity_state["features"]["orbit"]]}'
 
         if "surface color" in planet.entity_state['features']:
@@ -346,7 +348,7 @@ class PlanetDescriptionGenerator:
         else:
             rotation = self.generator_data["descriptions"][planet.entity_state["features"]["rotation"]]
             temperature = self.generator_data["descriptions"][planet.temperature]
-            description = planet.action_description["On Use telescope"] + "\n"
+            description = planet.action_description["On Use telescope"] + " "
             description += (rotation + temperature)
             if planet.atmosphere_type == "Cloudy Atmosphere":
                 description += "Unfortunately, due to the dense cloud cover of the atmosphere, " \
@@ -397,13 +399,13 @@ class ColonyDescriptionGenerator:
                 description += self.threat_data[threat]['colony'] + '\n'
 
         if description == "":
-            description = "As the years go by, your colony grows stronger and stronger.\n" \
-                          "Here you can see the grandeur and vision of the Union back on Earth. Your people\n" \
-                          "are now free to build their Utopia undisturbed, and build they do. This is not the\n" \
-                          "end, it is just the beginning. Colony ships leave to find more worlds to colonize\n" \
+            description = "As the years go by, your colony grows stronger and stronger. " \
+                          "Here you can see the grandeur and vision of the Union back on Earth. Your people " \
+                          "are now free to build their Utopia undisturbed, and build they do. This is not the " \
+                          "end, it is just the beginning. Colony ships leave to find more worlds to colonize " \
                           "throughout the galaxy. And you know deep down, that some day, the Earth will be yours again!"
 
-        description = ("All together, in the ways of your ancestors you build your new colony\n" +
+        description = ("All together, in the ways of your ancestors you build your new colony " +
                        f"on {planet.display_name}, that you now call home...\n" + description)
         description += '\n'
 

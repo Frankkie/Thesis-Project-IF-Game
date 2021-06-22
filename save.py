@@ -59,6 +59,21 @@ class Saver:
         # Save Chapters
         cjson.custom_dump(self.game.chapters, os.path.join(self.current_folder, "chapters.json"))
 
+        #Save Solar System
+        try:
+            solar_system_key = self.game.game_state['current system']
+        except KeyError:
+            solar_system_key = None
+        if solar_system_key:
+            try:
+                solar_system = self.game.things[solar_system_key]
+            except KeyError:
+                solar_system = {}
+        else:
+            solar_system = {}
+
+        cjson.custom_dump(solar_system, os.path.join(self.current_folder, "solarsystem.json"))
+
         # Save Game
         with open(os.path.join(self.current_folder, "game.json"), "w") as file:
             json.dump(self.game.to_json(), file)

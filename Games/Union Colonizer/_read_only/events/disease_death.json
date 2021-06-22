@@ -36,7 +36,7 @@
         "_class_": "StateUpdate"
       }
     ],
-    "event_description": "Your breath gets heavier by the minute.\nYou try to move forward, but you fail.\nFinally, you succumb to this alien disease, and die...",
+    "event_description": "Your breath gets heavier by the minute. You try to move forward, but you fail. Finally, you succumb to this alien disease, and die...",
     "done": 0,
     "repeatable": true,
     "_class_": "Event"

@@ -242,19 +242,18 @@ class Game:
         for verb in self.verbs.values():
             v_name = verb.name
             v_descr = verb.description
-            text += f'{v_name}: {v_descr}\n'
+            text += f'    - {v_name}: {v_descr}\n'
         text += '\n\n- Inventory:\n'
         for thing in self.actors['I'].contents.values():
             thing = thing['obj']
             thing_noun = thing.reference_noun
             thing_adj = thing.reference_adjectives
-            text += f'{thing_noun}: {thing_adj}. '
+            text += f'    - {thing_noun}\n'
         text += '\n\n- Topics:\n'
         for topic in self.topics.values():
             if topic.is_active:
                 topic_noun = topic.reference_noun
-                topic_adj = topic.reference_adjectives
-                text += f'{topic_noun}: {topic_adj}. '
+                text += f'    - {topic_noun}\n'
 
         text += '\n'
         self.display.queue(text, "Help")
@@ -266,6 +265,7 @@ class Game:
         self.end_game()
 
     def end_game(self):
+        self.app.game_screen.stop_music()
         self.display.queue("Do you want to save this game? (y/n)", "Prompt")
         self.display.output()
         reply = self.display.fetch()
@@ -278,8 +278,6 @@ class Game:
 
         self.timer.stopped = True
         self.quit = True
-        self.display.queue("You can now close the window.", "Prompt")
-        self.display.output()
         sys.exit(0)
 
     def refresh_things(self):

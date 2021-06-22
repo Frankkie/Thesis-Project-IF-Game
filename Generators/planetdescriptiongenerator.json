@@ -80,60 +80,60 @@
     ]
   },
   "descriptions": {
-    "extensive": "The planet is surrounded by an impressive collection of rings.\n",
-    "small": "A faint ring is visible orbiting the planet.\n",
+    "extensive": "The planet is surrounded by an impressive collection of rings. ",
+    "small": "A faint ring is visible orbiting the planet. ",
     "no rings": "",
-    "close": "It orbits quickly and closely to its parent star.\n",
-    "habitable": "The planet is in its star's habitable zone.\n",
-    "elliptical": "It has a strange elliptical orbit that takes it really close and then very far from its star.\n",
-    "far": "It orbits very far from its parent star, taking decades to complete an orbit.\n",
-    "tidally locked": "The planet is constantly illuminated on one side and in perpetual darkness on the other.\n",
-    "slow": "Its day-night cycle is very slow, one day on there is several Earth days.\n",
-    "fast": "The planet spins very fast on its axis.\n",
-    "earth-like": "A day on there is approximately as long as on Earth.\n",
-    "Super Jupiter": "This is planet which is far more massive than Jupiter.\n" ,
-    "Gas Giant": "This planet is a gas giant.\n" ,
-    "Small Giant": "This is a gas giant, similar to the size of Neptune.\n" ,
-    "Super Earth": "This is a rocky planet, but it's much more massive than Earth.\n" ,
-    "Earth-sized": "The planet is roughly the size of Earth.\n" ,
-    "Small Rocky": "The planet is similar in size to Mars.\n" ,
-    "Dwarf Planet": "This is a very small planet, roughly the size of Pluto.\n",
+    "close": "It orbits quickly and closely to its parent star. ",
+    "habitable": "The planet is in its star's habitable zone. ",
+    "elliptical": "It has a strange elliptical orbit that takes it really close and then very far from its star. ",
+    "far": "It orbits very far from its parent star, taking decades to complete an orbit. ",
+    "tidally locked": "The planet is constantly illuminated on one side and in perpetual darkness on the other. ",
+    "slow": "Its day-night cycle is very slow, one day on there is several Earth days. ",
+    "fast": "The planet spins very fast on its axis. ",
+    "earth-like": "A day on there is approximately as long as on Earth. ",
+    "Super Jupiter": "This is planet which is far more massive than Jupiter. " ,
+    "Gas Giant": "This planet is a gas giant. " ,
+    "Small Giant": "This is a gas giant, similar to the size of Neptune. " ,
+    "Super Earth": "This is a rocky planet, but it's much more massive than Earth. " ,
+    "Earth-sized": "The planet is roughly the size of Earth. " ,
+    "Small Rocky": "The planet is similar in size to Mars. " ,
+    "Dwarf Planet": "This is a very small planet, roughly the size of Pluto. ",
     "drones destroyed": [
       "Due to some freak event, our drones seem to have been destroyed before sending back data on the planet.",
       "An unknown cause has rendered our drones non-functional.",
       "Sadly, our drones were not able to report any data from the surface.",
       "Unfortunately, no data seems to have come back from the drones, and we've lost their signal."
     ],
-    "Hellishly Hot": "Its surface temperature seems to be high enough to melt lead.\n",
-    "Hot": "Its surface temperature seems to be above the boiling point of water.\n",
-    "Warm": "Its surface temperature seems to be warmer than Earth's, but still bearable.\n",
-    "Temperate": "Its surface temperature seems to be about the same as Earth's.\n",
-    "Cold": "Its surface temperature seems to be colder than Earth's, but still survivable.\n",
-    "Frozen": "Its surface temperature seems to be freezing.\n",
-    "Icy": "Its surface temperature seems to be below the boiling point of methane.\n",
-    "No Atmosphere": "The planet seems to have no atmosphere.\n",
-    "Thick Atmosphere": "Its atmosphere seems to be thick enough to sustain life.\n",
-    "Acid Atmosphere": "Its atmosphere is thick, but we have detected some strange compounds.\n",
+    "Hellishly Hot": "Its surface temperature seems to be high enough to melt lead. ",
+    "Hot": "Its surface temperature seems to be above the boiling point of water. ",
+    "Warm": "Its surface temperature seems to be warmer than Earth's, but still bearable. ",
+    "Temperate": "Its surface temperature seems to be about the same as Earth's. ",
+    "Cold": "Its surface temperature seems to be colder than Earth's, but still survivable. ",
+    "Frozen": "Its surface temperature seems to be freezing. ",
+    "Icy": "Its surface temperature seems to be below the boiling point of methane. ",
+    "No Atmosphere": "The planet seems to have no atmosphere. ",
+    "Thick Atmosphere": "Its atmosphere seems to be thick enough to sustain life. ",
+    "Acid Atmosphere": "Its atmosphere is thick, but we have detected some strange compounds. ",
     "No Life": [
-      "There is no life detected on this planet.\n",
-      "There is a slight probability that the planet has some type of life on it already.\n"],
+      "There is no life detected on this planet. ",
+      "There is a slight probability that the planet has some type of life on it already. "],
     "Primordial Life": [
-      "There is no life detected on this planet.\n",
-      "There is a slight probability that the planet has some type of life on it already.\n"
+      "There is no life detected on this planet. ",
+      "There is a slight probability that the planet has some type of life on it already. "
     ],
     "Animal Life": [
-      "There is no life detected on this planet.\n",
-      "There is a slight probability that the planet has some type of life on it already.\n",
-      "There is a high probability that the planet is home to living organisms.\n"
+      "There is no life detected on this planet. ",
+      "There is a slight probability that the planet has some type of life on it already. ",
+      "There is a high probability that the planet is home to living organisms. "
     ],
     "Advanced Life": [
-      "There is a slight probability that the planet has some type of life on it already.\n",
-      "There is a high probability that the planet is home to living organisms.\n",
-      "We have detected radio waves and artificial lighting from orbit!\n"
+      "There is a slight probability that the planet has some type of life on it already. ",
+      "There is a high probability that the planet is home to living organisms. ",
+      "We have detected radio waves and artificial lighting from orbit! "
     ],
     "Former Advanced Life": [
-      "There is no life detected on this planet.\n",
-      "There is a slight probability that the planet has some type of life on it already.\n"
+      "There is no life detected on this planet. ",
+      "There is a slight probability that the planet has some type of life on it already. "
     ]
   }
 }

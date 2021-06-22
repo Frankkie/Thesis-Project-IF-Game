@@ -18,8 +18,9 @@ songs = ['Resurrection.WAV', 'Resurrection2.WAV', 'Belaya Noch.WAV', 'Na Zare.WA
 class GamePage(GridLayout):
     def __init__(self, init_object, app, **kwargs):
         super().__init__(**kwargs)
-        self.rows = 3
-        self.rows_minimum = {0: Window.size[1] * 0.8, 1: Window.size[1] * 0.1, 2: Window.size[1] * 0.1}
+        self.rows = 4
+        self.rows_minimum = {0: Window.size[1] * 0.35, 1: Window.size[1] * 0.1, 2: Window.size[1] * 0.1,
+                             3: Window.size[1] * 0.45}
         self.cols = 3
         self.game = None
         self.init_object = init_object
@@ -34,19 +35,15 @@ class GamePage(GridLayout):
         self.pause_music = False
         self.song = None
         self.songs = [SoundLoader.load(os.path.join('Assets', song)) for song in songs]
-        self.placeholders = [Label() for i in range(6)]
-        self.start_label = Label(text=('Press Start to begin a new game, or replay to play the a previous one.\n' +
+        self.placeholders = [Label() for i in range(9)]
+        self.start_label = Label(text=('Press Start to begin a new game.\nPress Replay to play the a previous one.\n' +
                                        'Press the Right Alt key to stop and start music.\n' +
-                                       'Write q to quit the game.\n'),
+                                       'Write qu to quit the game.\n'),
                                  font_size=FontSize + 10, font_name=FontName,
-                                 color='aa0000')
+                                 color='bb3333')
         
         self.start_label.text_size = (Window.size[0] * 0.5, None)
         self.start_label.texture_size = (Window.size[0] * 0.5, None)
-
-        self.add_widget(self.placeholders[0])
-        self.add_widget(self.start_label)
-        self.add_widget(self.placeholders[1])
 
         self.start_button = Button(text="Start", font_size=FontSize + 20, font_name=FontName,
                                    height=Window.size[1] * 0.1, width=Window.size[0] * 0.3,
@@ -57,6 +54,10 @@ class GamePage(GridLayout):
                                     background_color='aa0000')
         self.replay_button.bind(on_press=self.replay_game)
 
+        self.add_widget(self.placeholders[6])
+        self.add_widget(self.placeholders[7])
+        self.add_widget(self.placeholders[8])
+
         self.add_widget(self.placeholders[2])
         self.add_widget(self.start_button)
         self.add_widget(self.placeholders[3])
@@ -64,6 +65,10 @@ class GamePage(GridLayout):
         self.add_widget(self.placeholders[4])
         self.add_widget(self.replay_button)
         self.add_widget(self.placeholders[5])
+
+        self.add_widget(self.placeholders[0])
+        self.add_widget(self.start_label)
+        self.add_widget(self.placeholders[1])
 
     def start_game(self, _):
         self.init_object.replay = False
@@ -87,8 +92,8 @@ class GamePage(GridLayout):
         self.remove_widget(self.start_button)
         self.remove_widget(self.replay_button)
         self.remove_widget(self.start_label)
-        for i in range(6):
-            self.remove_widget(self.placeholders[i])
+        for widget in self.placeholders:
+            self.remove_widget(widget)
 
         self.cols = 1
         self.rows = 2
@@ -198,6 +203,11 @@ class GamePage(GridLayout):
         Sound.bind(self.song, on_stop=self.on_stop)
         self.song.volume = 0.2
         self.song.play()
+
+    def stop_music(self):
+        if not self.pause_music:
+            self.pause_music = True
+            self.song.stop()
 
 
 class ScrollableLabel(ScrollView):

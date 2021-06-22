@@ -18,7 +18,7 @@ class Initializer:
         self.loader = None
         self.game = None
 
-    def load_game(self, replay):
+    def load_game(self):
         game_name = "Union Colonizer"
         self.loader = Loader(game_name, None)
         dct, game_args = self.loader.load_game(self.display)

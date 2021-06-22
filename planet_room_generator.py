@@ -145,7 +145,7 @@ class PlanetRoomGenerator:
                                    satellite_plural='' if planet.num_satellites == 1 else 's',
                                    rings=rings, atmosphere=atmosphere, radiation=radiation, temperature=temperature)
 
-        room.examine_description = description + '\n' + template
+        room.examine_description = description + template
         room.description = description
         room.audible_description = self.generator_data[room_type]['audible']
 

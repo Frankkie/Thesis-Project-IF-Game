@@ -560,6 +560,7 @@ class NounPhraseParser:
         self.game.display.queue(f'Which {object_type} do you mean?', 'Specify')
         for i, obj in enumerate(object_list):
             self.game.display.queue(f'{i}. {obj.reference_noun}: {obj.reference_adjectives}', 'Specify')
+        self.game.display.queue('', "Prompt")
         self.game.display.output()
         response = self.game.display.fetch()
         try:

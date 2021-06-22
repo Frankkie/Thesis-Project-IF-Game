@@ -105,6 +105,7 @@ class Loader:
         events_files = [os.path.join(self.current_folder, "events", (file + ".json")) for file in chapter.events_files]
         map_files = [os.path.join(self.current_folder, "maps", (file + ".json")) for file in chapter.map_files]
         topics_files = [os.path.join(self.current_folder, "topics", (file + ".json")) for file in chapter.topics_files]
+        solar_system_file = os.path.join(self.current_folder, "solarsystem.json")
 
         for i, file in enumerate(convonodes_files):
             f = chapter.convonodes_files[i].split('.')
@@ -132,6 +133,13 @@ class Loader:
         for file in map_files:
             obj = cjson.custom_load(file)
             self.game.rooms[obj.key] = obj
+
+        sol_system = cjson.custom_load(solar_system_file)
+        if type(sol_system) != dict:
+            self.game.game_state['current system'] = sol_system.key
+            sol_system_dct = dict()
+            sol_system_dct[sol_system.key] = sol_system
+            self.game.things = {**self.game.things, **sol_system_dct}
 
         self.game.game_state["current chapter"] = chapter_key
 
