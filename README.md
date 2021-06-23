@@ -1,5 +1,4 @@
-# Diploma Thesis
-# Development of a Procedural Storytelling game with Dynamic Dialogs
+# Diploma Thesis - Development of a Procedural Storytelling game with Dynamic Dialogs
 
 ## Purpose
 
@@ -35,4 +34,4 @@ Songs (Chiptune versions created from freely available MIDI files):
 
 ## Contact
 
-For any questions do not hesitate to contact me, either by [email](christosfrantzolas@gmail.com) or on my [LinkedIn](https://www.linkedin.com/in/christos-frantzolas-0a37ba184/).
+For any questions do not hesitate to contact me, either by <christosfrantzolas@gmail.com> or on my [LinkedIn](https://www.linkedin.com/in/christos-frantzolas-0a37ba184/).
