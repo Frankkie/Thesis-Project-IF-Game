@@ -230,6 +230,8 @@ class ScrollableLabel(ScrollView):
                 self.game_history.text += message
         except IndexError:
             self.game_history.text += message
+        if len(self.game_history.text) > 15000:
+            self.game_history.text = self.game_history.text[-15000:]
         self.parent.command_sent = True
 
     def update_game_history_layout(self, _=None):

@@ -40,7 +40,7 @@ class Loader:
             os.makedirs(os.path.join(self.game_folder, "current", ""))
         if not os.path.exists(os.path.join(self.game_folder, "_temp", "")):
             os.makedirs(os.path.join(self.game_folder, "_temp", ""))
-            
+
         self.__find_save_folder(game_name, from_save)
 
     def load_game(self, display):
