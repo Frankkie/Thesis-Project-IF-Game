@@ -1,0 +1,6 @@
+future==0.18.2
+Kivy @ file:///D:/bld/kivy_1619129412224/work
+nltk==3.4.4
+numpy==1.18.1
+pandas==1.0.3
+scipy==1.4.1
