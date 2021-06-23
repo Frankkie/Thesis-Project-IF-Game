@@ -3,7 +3,7 @@
 
 ## Purpose
 
-This project was developed as part of my Diploma Thesis at the (http://www.ece.upatras.gr/index.php/en/ "Department of Electrical and Computer Engineering") at the University of Patras. 
+This project was developed as part of my Diploma Thesis at the [Department of Electrical and Computer Engineering](http://www.ece.upatras.gr/index.php/en/ "Department of Electrical and Computer Engineering") at the University of Patras. 
 
 ## Abstract
 
