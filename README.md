@@ -16,7 +16,7 @@ This repository contains both the code and assets of the game developed for the 
 
 ## Getting Started
 
-If you wish to play the game yourself, you can clone the contents of this repository and download the necessary Python modules (which you will find in the project's requirements.txt file).
+If you wish to play the game yourself, you can clone the contents of this repository and download the necessary Python modules (which you will find in the project's [requirements](/requirements.txt) file). The project runs on Python 3.7 or higher.
 
 ## Fonts and Music
 
