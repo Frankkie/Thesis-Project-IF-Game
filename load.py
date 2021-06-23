@@ -23,7 +23,7 @@ class Loader:
         # The game object.
         self.game = game
         # The directory of all game saves.
-        self.game_folder = None
+        self.game_folder = os.path.join("Games", game_name, "")
         # The Games/{game_name}/current_folder
         self.current_folder = None
         # The folder in which the last save of the game exists.
@@ -35,6 +35,12 @@ class Loader:
             "verbs": None,
             "chapters": None
         }
+
+        if not os.path.exists(os.path.join(self.game_folder, "current", "")):
+            os.makedirs(os.path.join(self.game_folder, "current", ""))
+        if not os.path.exists(os.path.join(self.game_folder, "_temp", "")):
+            os.makedirs(os.path.join(self.game_folder, "_temp", ""))
+            
         self.__find_save_folder(game_name, from_save)
 
     def load_game(self, display):
@@ -152,7 +158,6 @@ class Loader:
             self.game.refresh_things()
 
     def __find_save_folder(self, game_name, from_save):
-        self.game_folder = os.path.join("Games", game_name, "")
         self.current_folder = os.path.join(self.game_folder, "current", "")
         with open(os.path.join(self.game_folder, "load_game.json"), "r") as load_file:
             load_info = json.load(load_file)
