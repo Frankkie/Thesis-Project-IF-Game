@@ -1,7 +1,10 @@
 import threading
 from init_all import Initializer
 from app import MyApp
-import sys
+
+import nltk
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 
 class GameThread(threading.Thread):
