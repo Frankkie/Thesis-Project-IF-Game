@@ -12,7 +12,7 @@ This thesis was aimed at the creation of an interactive application which exhibi
 
 ## Repository Contents
 
-This repository contains both the code and assets of the game developed for the purposes of this Diploma Thesis, as well as an exhaustive report on project (written in Greek). The repository also contains a demo video of the game.
+This repository contains both the code and assets of the game developed for the purposes of this Diploma Thesis, as well as an exhaustive report on project (written in Greek). There is also a demo video of the project, which you can find [here](https://drive.google.com/file/d/1EluMKlbzEjIS0zsmizhSQqaZfcgzpw_J/view?usp=sharing).
 
 ## Getting Started
 
